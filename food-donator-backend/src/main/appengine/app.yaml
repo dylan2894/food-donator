@@ -1,0 +1,7 @@
+runtime: java17
+instance_class: F1
+env_variables:
+  CASS_DB_USERNAME: "KtwTnntjBrUiNEGGTGsnFeql"
+  CASS_DB_PASSWORD: "WF5f6vWKT1dkc-1p,D_yPWR90EHetO2g,5uLh3uPzh79Hm5Fe.-A.XdAUKy6gZTunCZaG7Psa.CFuwlz_4ECJKCXkyl+dcUpOn7z3nvfFH-9ZN9RDv4lk_-te3_vqJeZ"
+  PORT: 4070
+entrypoint: java -noverify -jar food-donator-0.0.1-SNAPSHOT.jar

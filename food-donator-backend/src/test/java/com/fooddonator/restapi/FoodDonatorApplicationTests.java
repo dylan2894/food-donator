@@ -1,4 +1,4 @@
-package com.fooddonator.fooddonator;
+package com.fooddonator.restapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
