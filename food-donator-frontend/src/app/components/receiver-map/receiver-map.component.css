@@ -1,0 +1,17 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.map-container{
+  width: 800px !important;
+  height: 600px !important;
+}
+
+google-map {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
