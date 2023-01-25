@@ -15,3 +15,56 @@ google-map {
   width: 100%;
   height: 100%;
 }
+#accountIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 25px;
+}
+
+#accountIcon:hover {
+  color: black;
+}
+
+#accountIconContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 5px;
+}
+
+#accountIconContainer:hover {
+  background-color: white;
+}
+
+
+
+/** Container for Donor Select and Saved Pins Switch */
+.wrapper {
+
+}
+
+#donorSelect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+
+  padding-right: 25px;
+
+  background-color: white;
+  border-radius: 25px;
+}
+
+#donorSelect, #donorSelectLabel {
+  padding-top: 25px;
+  padding-bottom: 10px;
+  padding-left: 25px;
+  left: 0;
+}
+
+.switch {
+  position: absolute;
+  top: 15%;
+  padding-left: 25px;
+}
