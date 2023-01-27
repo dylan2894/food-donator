@@ -25,9 +25,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/assets/css/materialize.min.css",
+              "dist/styles-out/styles.css",
+              "dist/styles-out/app.component.css",
+              "dist/styles-out/receiver-map.component.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./src/assets/js/materialize.min.js"
+            ]
           },
           "configurations": {
             "production": {

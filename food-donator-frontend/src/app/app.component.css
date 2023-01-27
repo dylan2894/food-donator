@@ -1,9 +1,3 @@
 :root {
   --secondTheme: green;
 }
-
-p {
-  color: var(--secondTheme);
-}
-
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFwcC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOzs7Ozs7OztHQVFHIiwiZmlsZSI6ImFwcC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLyogOnJvb3Qge1xyXG4gIC0tc2Vjb25kVGhlbWU6IHtcclxuICAgIGhlaWdodDogMjUlO1xyXG4gIH1cclxufVxyXG5cclxucCB7XHJcbiAgQGFwcGx5IC0tc2Vjb25kVGhlbWU7XHJcbn0gKi9cclxuIl19 */
