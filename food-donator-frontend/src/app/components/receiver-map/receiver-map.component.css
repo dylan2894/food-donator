@@ -83,3 +83,7 @@ google-map {
 #hiddenMenu:hover {
   background-color: transparent;
 }
+
+.sidenav {
+  background-color: var(--primary);
+}

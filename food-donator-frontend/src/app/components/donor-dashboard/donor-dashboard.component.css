@@ -9,3 +9,47 @@
   --dark: #36363E; /* Jet */
   --light: #FBF5F3; /* Snow */
 }
+
+.sidenav {
+  left: 300px;
+}
+
+a {
+  text-align: center;
+}
+
+li:hover > a {
+  color: var(--secondary);
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#logoutWrapper {
+  position: absolute;
+  bottom: 70px;
+  left: 16px;
+  width: 275px;
+  height: 50px;
+  padding: 15px;
+}
+
+.material-symbols-outlined {
+  user-select: none;
+  transition: all 300ms;
+}
+
+.material-symbols-outlined:hover {
+  color: var(--secondary);
+}
+
+.container {
+  position: absolute;
+  left: 300px;
+
+  margin: 0%;
+  padding: 0%;
+}
