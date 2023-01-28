@@ -1,3 +1,11 @@
 :root {
-  --secondTheme: green;
+  --primary: '#6369D1'; /* Violet Blue Crayola */
+  --secondary: '#C6C6C6'; /* Silver */
+
+  --warning: '#FDB849'; /* Maximum Yellow Red */
+  --danger: #F21B3F; /* Red Munsell */
+  --success: '#60B67A'; /* Medium Sea Green */
+
+  --dark: '#36363E'; /* Jet */
+  --light: '#FBF5F3'; /* Snow */
 }

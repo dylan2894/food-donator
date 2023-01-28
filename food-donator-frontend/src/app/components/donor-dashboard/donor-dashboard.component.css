@@ -9,10 +9,3 @@
   --dark: #36363E; /* Jet */
   --light: #FBF5F3; /* Snow */
 }
-
-html, body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}

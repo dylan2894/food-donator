@@ -16,14 +16,30 @@
 
   <!-- Saved Pins Switch -->
   <div class="switch">
-    <div><label>View Saved Pins</label></div>
-    <label>
-      Off
+    <span class="material-symbols-outlined center booksmarksIcon">bookmarks</span>
+    <span class="center">View Saved Pins</span>
+    <label class="center">
       <input type="checkbox">
       <span class="lever"></span>
-      On
     </label>
   </div>
 </div>
 
-<i id="accountIcon" class="material-icons large ">account_circle</i>
+<div id="hiddenMenu" (click)="this.openMenu()"></div>
+
+<!-- Popout Sidenav -->
+<ul id="slide-out" class="sidenav">
+  <li><div class="user-view">
+    <div class="background">
+      <img src="images/office.jpg">
+    </div>
+    <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
+    <a href="#name"><span class="white-text name">John Doe</span></a>
+    <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+  </div></li>
+  <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+  <li><a href="#!">Second Link</a></li>
+  <li><div class="divider"></div></li>
+  <li><a class="subheader">Subheader</a></li>
+  <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+</ul>

@@ -1,13 +1,14 @@
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
+* {
+  --primary: #6369D1; /* Violet Blue Crayola */
+  --secondary: #C6C6C6; /* Silver */
 
-.map-container{
-  width: 800px !important;
-  height: 600px !important;
+  --warning: #FDB849; /* Maximum Yellow Red */
+  --danger: #F21B3F; /* Red Munsell */
+  --success: #60B67A; /* Medium Sea Green */
+
+  --dark: #36363E; /* Jet */
+  --darkRGB: 21, 21, 24;
+  --light: #FBF5F3; /* Snow */
 }
 
 google-map {
@@ -15,56 +16,70 @@ google-map {
   width: 100%;
   height: 100%;
 }
-#accountIcon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 25px;
-}
-
-#accountIcon:hover {
-  color: black;
-}
-
-#accountIconContainer {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border-radius: 5px;
-}
-
-#accountIconContainer:hover {
-  background-color: white;
-}
-
 
 
 /** Container for Donor Select and Saved Pins Switch */
 .wrapper {
-
+  margin-right: 25px;
 }
 
 #donorSelect {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0%;
+  right: 10px;
   width: 250px;
-
   padding-right: 25px;
+  border-radius: 8px;
 
-  background-color: white;
-  border-radius: 25px;
+  background-color: var(--secondary);
 }
 
 #donorSelect, #donorSelectLabel {
   padding-top: 25px;
   padding-bottom: 10px;
   padding-left: 25px;
-  left: 0;
 }
 
 .switch {
   position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  top: 100px;
+  right: 10px;
+  padding: 20px;
+  padding-left: 10px;
+  padding-right: 0px;
+  margin-top: 10px;
+  height: fit-content;
+  width: 250px;
+  border-radius: 8px;
+
+  background-color: var(--secondary);
+}
+
+.center {
+  height: fit-content;
+  width: fit-content;
+}
+
+.booksmarksIcon {
+  padding-right: 15px;
+}
+
+#hiddenMenu {
+  position: absolute;
   top: 15%;
-  padding-left: 25px;
+  left: -10px;
+  height: 70%;
+  width: 20px;
+  border-radius: 10px;
+
+  background-color: rgba(var(--darkRGB), 0.5);
+  z-index: 99999;
+}
+
+#hiddenMenu:hover {
+  background-color: transparent;
 }

@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReceiverMapComponent } from './components/receiver-map/receiver-map.component';
 
-import { GoogleMapsModule } from '@angular/google-maps'
+import { GoogleMapsModule } from '@angular/google-maps';
+import { DonorDashboardComponent } from './components/donor-dashboard/donor-dashboard.component'
 
 @NgModule({
   declarations: [
     AppComponent,
-    ReceiverMapComponent
+    ReceiverMapComponent,
+    DonorDashboardComponent
   ],
   imports: [
     BrowserModule,
