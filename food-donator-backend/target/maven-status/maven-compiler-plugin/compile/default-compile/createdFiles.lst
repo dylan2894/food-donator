@@ -1,1 +1,4 @@
 com\fooddonator\restapi\Application.class
+com\fooddonator\restapi\repository\DonorRepository.class
+com\fooddonator\restapi\controller\DonorController.class
+com\fooddonator\restapi\model\Donor.class
