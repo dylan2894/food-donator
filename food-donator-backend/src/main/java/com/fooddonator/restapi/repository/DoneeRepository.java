@@ -2,21 +2,16 @@ package com.fooddonator.restapi.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.stargate.grpc.StargateBearerToken;
-import io.stargate.proto.QueryOuterClass;
-import io.stargate.proto.QueryOuterClass.ResultSet;
-import io.stargate.proto.QueryOuterClass.Row;
-import io.stargate.proto.StargateGrpc;
-
-import org.json.simple.JSONObject;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.context.annotation.PropertySource;
-
 import com.fooddonator.restapi.model.Donee;
 
 @PropertySource("classpath:src/main/resources/application.properties")
@@ -25,121 +20,99 @@ public class DoneeRepository {
   private final String ASTRA_DB_ID = resource.getString("astra.id");
   private final String ASTRA_DB_REGION = resource.getString("astra.region");
   private final String ASTRA_DB_TOKEN = resource.getString("astra.token");
- 
-  private StargateGrpc.StargateBlockingStub blockingStub;
+  private final String ASTRA_DB_KEYSPACE = resource.getString("astra.keyspace");
+  private String baseUrl;
+  private RestTemplate restTemplate;
 
-  private void config() {
-    ManagedChannel channel = ManagedChannelBuilder
-    .forAddress(ASTRA_DB_ID + "-" + ASTRA_DB_REGION + ".apps.astra.datastax.com", 443)
-    .useTransportSecurity()
-    .build();
+  public DoneeRepository() {
+    this.baseUrl = "https://" + ASTRA_DB_ID + "-" + ASTRA_DB_REGION + ".apps.astra.datastax.com/api/rest/v2/keyspaces/" + ASTRA_DB_KEYSPACE;
 
-    this.blockingStub =
-    StargateGrpc.newBlockingStub(channel)
-      .withDeadlineAfter(10, TimeUnit.SECONDS)
-      .withCallCredentials(new StargateBearerToken(ASTRA_DB_TOKEN));
+    this.restTemplate = new RestTemplate();
+    this.restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
   }
 
-  public JSONObject createDonee(Donee donee) {
-    this.config();
+  public Map createDonee(Donee donee) {
+    var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+    .pathSegment("/donee")
+    .build()
+    .toUri();
 
-    if(donee.phone_num.equals("")) {
-      JSONObject resp = new JSONObject();
-      resp.put("error", "Provide phone_num");
-      return resp;
-    }
+    donee.id = UUID.randomUUID().toString();
+    HashMap map = new HashMap();
+    map.put("id", donee.id);
+    map.put("phone_num", donee.phone_num);
 
-    UUID id = UUID.randomUUID();
 
-    QueryOuterClass.Response queryString = blockingStub.executeQuery(QueryOuterClass
-    .Query.newBuilder()
-    .setCql("INSERT INTO main_keyspace.donee (id, phone_num) VALUES ('"+id+"', '"+donee.phone_num+"') IF NOT EXISTS;")
-    .build()); 
+    RequestEntity<Map> req = RequestEntity.post(uri)
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .body(map);
 
-    ResultSet rs = queryString.getResultSet();
-    JSONObject response = new JSONObject();
-    for (Row row : rs.getRowsList()) {
-      response.putAll(row.getAllFields());
-    }
-
-    return response;
+    ResponseEntity<Map> resp = restTemplate.exchange(req, Map.class);
+    return (Map) resp.getBody().get("data");
   }
 
-  //TODO
-  public Donee getDonee(String id) {
-    this.config();
-
-    QueryOuterClass.Response queryString = blockingStub.executeQuery(QueryOuterClass
-    .Query.newBuilder()
-    .setCql("SELECT * FROM main_keyspace.donee WHERE id=\'"+id+"\';")
-    .build()); 
-
-    ResultSet rs = queryString.getResultSet();
-    Row row = rs.getRows(0);
-
-    //TODO fix this index
-    String phone_num = row.getValues(2).getString();
-
-    return new Donee(id, phone_num);
+  public Map getDonee(String id) {
+    var uri =UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment("/donee/" + id)
+      .build()
+      .toUri();
+    var request = RequestEntity.get(uri)
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .build();
+      
+    ResponseEntity<Map> rateResponse =
+    restTemplate.exchange(
+      request,
+      Map.class
+    );
+    Map data = rateResponse.getBody();
+    ArrayList<Map> many = (ArrayList<Map>) data.get("data");
+    return many.get(0);
   }
 
-  //TODO
-  public List<Donee> getDonees() {
-    this.config();
-
-    QueryOuterClass.Response queryString = blockingStub.executeQuery(QueryOuterClass
-    .Query.newBuilder()
-    .setCql("SELECT * FROM main_keyspace.donee;")
-    .build());
-
-    ResultSet rs = queryString.getResultSet();
-    List<Row> list = rs.getRowsList();
-
-    List<Donee> response = new ArrayList<Donee>();
-    for (Row row : list) {
-      //TODO get correct index
-      String id = row.getValues(0).getString();
-      //TODO get correct index
-      String phone_num = row.getValues(3).getString();
-
-      Donee donee = new Donee(id, phone_num);
-      response.add(donee);
-    }
-
-    return response;
+  public List<Map> getDonees() {
+    var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment("/donee/rows")
+      .build()
+      .toUri();
+    var request = RequestEntity.get(uri)
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .build();
+    
+    ResponseEntity<Map> response =
+    restTemplate.exchange(
+      request,
+      Map.class
+    );
+    Map data = response.getBody();
+    return (ArrayList<Map>) data.get("data");
   }
 
-  public JSONObject updateDonee(Donee donee) {
-    this.config();
+  public void updateDonee(Donee donee) {
+    var updateUri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment("/donee/" + donee.id)
+      .build()
+      .toUri();
 
-    QueryOuterClass.Response queryString = blockingStub.executeQuery(QueryOuterClass
-    .Query.newBuilder()
-    .setCql("UPDATE main_keyspace.donee SET phone_num='"+donee.phone_num+"' WHERE id='"+donee.id+"';")
-    .build()); 
+    HashMap map = new HashMap();
+    map.put("phone_num", donee.phone_num);
 
-    ResultSet rs = queryString.getResultSet();
-    JSONObject response = new JSONObject();
-    for (Row row : rs.getRowsList()) {
-      response.putAll(row.getAllFields());
-    }
+    RequestEntity<Map> updateRequest = RequestEntity.put(updateUri)
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .body(map);
 
-    return response;
+    restTemplate.exchange(updateRequest, Map.class);
   }
 
-  public JSONObject deleteDonee(String id) {
-    this.config();
+  public void deleteDonee(String id) {
+    var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment("/donee/" + id)
+      .build()
+      .toUri();
+    var deleteRequest = RequestEntity.delete(uri)
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .build();
 
-    QueryOuterClass.Response queryString = blockingStub.executeQuery(QueryOuterClass
-    .Query.newBuilder()
-    .setCql("DELETE FROM main_keyspace.donee WHERE id='"+id+"' IF EXISTS;")
-    .build());
-
-    ResultSet rs = queryString.getResultSet();
-    JSONObject response = new JSONObject();
-    for (Row row : rs.getRowsList()) {
-      response.putAll(row.getAllFields());
-    }
-
-    return response;
+    restTemplate.exchange(deleteRequest, Map.class);
   }
 }

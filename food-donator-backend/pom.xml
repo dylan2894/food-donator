@@ -59,6 +59,19 @@
       <version>1.2</version>
     </dependency>
 
+    <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.14</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.24</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- Native CassandraDB driver -->
     <!-- <dependency>
       <groupId>com.datastax.oss</groupId>

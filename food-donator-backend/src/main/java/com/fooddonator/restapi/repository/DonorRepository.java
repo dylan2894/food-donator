@@ -3,148 +3,126 @@ package com.fooddonator.restapi.repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
 import org.springframework.context.annotation.PropertySource;
-
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import com.fooddonator.restapi.model.Donor;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.stargate.grpc.StargateBearerToken;
-import io.stargate.proto.QueryOuterClass;
-import io.stargate.proto.QueryOuterClass.ResultSet;
-import io.stargate.proto.QueryOuterClass.Row;
-import io.stargate.proto.StargateGrpc;
 
-import org.json.simple.JSONObject;
-
-@PropertySource("classpath:src/main/resources/application.properties")
+@PropertySource("classpath:application.properties")
+@Repository
 public class DonorRepository {
 
   private static final ResourceBundle resource = ResourceBundle.getBundle("application");
   private final String ASTRA_DB_ID = resource.getString("astra.id");
   private final String ASTRA_DB_REGION = resource.getString("astra.region");
   private final String ASTRA_DB_TOKEN = resource.getString("astra.token");
+  private final String ASTRA_DB_KEYSPACE = resource.getString("astra.keyspace");
+  private String baseUrl;
+  private RestTemplate restTemplate;
 
+  public DonorRepository() {
+    this.baseUrl = "https://" + ASTRA_DB_ID + "-" + ASTRA_DB_REGION + ".apps.astra.datastax.com/api/rest/v2/keyspaces/" + ASTRA_DB_KEYSPACE;
 
-  private StargateGrpc.StargateBlockingStub blockingStub;
-
-  private void config() {
-    ManagedChannel channel = ManagedChannelBuilder
-    .forAddress(ASTRA_DB_ID + "-" + ASTRA_DB_REGION + ".apps.astra.datastax.com", 443)
-    .useTransportSecurity()
-    .build();
-
-    this.blockingStub =
-    StargateGrpc.newBlockingStub(channel)
-      .withDeadlineAfter(10, TimeUnit.SECONDS)
-      .withCallCredentials(new StargateBearerToken(ASTRA_DB_TOKEN));
+    this.restTemplate = new RestTemplate();
+    this.restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
   }
 
-  public JSONObject createDonor(String name, Map<String, String> coords, String phone_num) {
-    this.config();
+  public Map createDonor(Donor donor) {
+    var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment("/donor")
+      .build()
+      .toUri();
 
-    if(name.equals("") || coords.equals("") || phone_num.equals("")) {
-      JSONObject resp = new JSONObject();
-      resp.put("error", "Provide name, coords and phone_num");
-      return resp;
-    }
+    donor.id = UUID.randomUUID().toString();
+    HashMap map = new HashMap();
+    map.put("id", donor.id);
+    map.put("name", donor.name);
+    map.put("phone_num", donor.phone_num);
+    map.put("lat", donor.lat);
+    map.put("lon", donor.lon);
 
-    UUID id = UUID.randomUUID();
 
-    QueryOuterClass.Response queryString = blockingStub.executeQuery(QueryOuterClass
-    .Query.newBuilder()
-    .setCql("INSERT INTO main_keyspace.donor (id, name, coords, phone_num) VALUES ('"+id+"', '"+name+"', ('"+coords.get("lat")+"', '"+coords.get("lon")+"'), '"+phone_num+"') IF NOT EXISTS;")
-    .build()); 
+    RequestEntity<Map> req = RequestEntity.post(uri)
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .body(map);
 
-    ResultSet rs = queryString.getResultSet();
-    JSONObject response = new JSONObject();
-    for (Row row : rs.getRowsList()) {
-      response.putAll(row.getAllFields());
-    }
-
-    return response;
+    ResponseEntity<Map> resp = restTemplate.exchange(req, Map.class);
+    return (Map) resp.getBody().get("data");
   }
 
-  public Donor getDonor(String id) {
-    this.config();
-
-    QueryOuterClass.Response queryString = blockingStub.executeQuery(QueryOuterClass
-    .Query.newBuilder()
-    .setCql("SELECT * FROM main_keyspace.donor WHERE id=\'"+id+"\';")
-    .build()); 
-
-    ResultSet rs = queryString.getResultSet();
-    Row row = rs.getRows(0);
-
-    String name = row.getValues(1).getString();
-    String phone_num = row.getValues(2).getString();
-    String lat = row.getValues(3).getCollection().getElements(0).toString();
-    String lon = row.getValues(3).getCollection().getElements(1).toString();
-
-    return new Donor(id, name, phone_num, lat, lon);
+  public Map getDonor(String id) {
+    var uri =UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment("/donor/" + id)
+      .build()
+      .toUri();
+    var request = RequestEntity.get(uri)
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .build();
+      
+    ResponseEntity<Map> rateResponse =
+    restTemplate.exchange(
+      request,
+      Map.class
+    );
+    Map data = rateResponse.getBody();
+    ArrayList<Map> many = (ArrayList<Map>) data.get("data");
+    return many.get(0);
   }
 
-  public List<Donor> getDonors() {
-    this.config();
-
-    QueryOuterClass.Response queryString = blockingStub.executeQuery(QueryOuterClass
-    .Query.newBuilder()
-    .setCql("SELECT * FROM main_keyspace.donor;")
-    .build());
-
-    ResultSet rs = queryString.getResultSet();
-    List<Row> list = rs.getRowsList();
-
-    List<Donor> response = new ArrayList<Donor>();
-    for (Row row : list) {
-      String id = row.getValues(0).getString();
-      String lat = row.getValues(1).getCollection().getElements(0).getString();
-      String lon = row.getValues(1).getCollection().getElements(1).getString();
-      String name = row.getValues(2).getString();
-      String phone_num = row.getValues(3).getString();
-      Donor donor = new Donor(id, name, phone_num, lat, lon);
-      response.add(donor);
-    }
-
-    return response;
+  public List<Map> getDonors() {
+    var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment("/donor/rows")
+      .build()
+      .toUri();
+    var request = RequestEntity.get(uri)
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .build();
+    
+    ResponseEntity<Map> response =
+    restTemplate.exchange(
+      request,
+      Map.class
+    );
+    Map data = response.getBody();
+    return (ArrayList<Map>) data.get("data");
   }
   
-  public JSONObject updateDonor(Donor donor) {
-    this.config();
+  public void updateDonor(Donor donor) {
+    var updateUri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment("/donor/" + donor.id)
+      .build()
+      .toUri();
 
-    QueryOuterClass.Response queryString = blockingStub.executeQuery(QueryOuterClass
-    .Query.newBuilder()
-    .setCql("UPDATE main_keyspace.donor SET name='"+donor.name+"', phone_num='"+donor.phone_num+"', coords=('"+donor.coords.get("lat")+"', '"+donor.coords.get("lon")+"') WHERE id='"+donor.id+"';")
-    .build()); 
+    HashMap map = new HashMap();
+    map.put("name", donor.name);
+    map.put("phone_num", donor.phone_num);
+    map.put("lat", donor.lat);
+    map.put("lon", donor.lon);
 
-    ResultSet rs = queryString.getResultSet();
-    JSONObject response = new JSONObject();
-    for (Row row : rs.getRowsList()) {
-      response.putAll(row.getAllFields());
-    }
+    RequestEntity<Map> updateRequest = RequestEntity.put(updateUri)
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .body(map);
 
-    return response;
+    restTemplate.exchange(updateRequest, Map.class);
   }
 
-  public JSONObject deleteDonor(String id) {
-    this.config();
+  public void deleteDonor(String id) {
+    var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment("/donor/" + id)
+      .build()
+      .toUri();
+    var deleteRequest = RequestEntity.delete(uri)
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .build();
 
-    QueryOuterClass.Response queryString = blockingStub.executeQuery(QueryOuterClass
-    .Query.newBuilder()
-    .setCql("DELETE FROM main_keyspace.donor WHERE id='"+id+"' IF EXISTS;")
-    .build());
-
-    ResultSet rs = queryString.getResultSet();
-    JSONObject response = new JSONObject();
-    for (Row row : rs.getRowsList()) {
-      response.putAll(row.getAllFields());
-    }
-
-    return response;
+    restTemplate.exchange(deleteRequest, Map.class);
   }
-
 }
