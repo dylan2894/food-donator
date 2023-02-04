@@ -74,6 +74,7 @@ public class AuthenticationService {
     if(this.isPasswordCorrect(_phone_num, _password)) {
       //TODO generate a JWT and return it 
 
+      return "123"; // *Temporary JWT string
     }
     System.out.println("[AUTH SERVICE] Login unsuccessful.");
     return "";
