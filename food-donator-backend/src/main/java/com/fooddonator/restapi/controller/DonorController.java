@@ -2,6 +2,8 @@ package com.fooddonator.restapi.controller;
 
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +20,8 @@ public class DonorController {
 
   DonorController() {}
 
-  private DonorRepository repository = new DonorRepository();
+  @Autowired
+  private DonorRepository repository;
 
   @PostMapping("/create")
   public Map createDonor(@RequestBody Donor donor) {

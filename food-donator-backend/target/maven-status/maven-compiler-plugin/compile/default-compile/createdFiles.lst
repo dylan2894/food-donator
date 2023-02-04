@@ -3,6 +3,7 @@ com\fooddonator\restapi\model\RestResponse.class
 com\fooddonator\restapi\controller\DoneeController.class
 com\fooddonator\restapi\repository\DoneeRepository.class
 com\fooddonator\restapi\controller\DonorController.class
+com\fooddonator\restapi\service\RegistrationService.class
 com\fooddonator\restapi\repository\DonorRepository.class
 com\fooddonator\restapi\model\Donee.class
 com\fooddonator\restapi\model\Donor.class

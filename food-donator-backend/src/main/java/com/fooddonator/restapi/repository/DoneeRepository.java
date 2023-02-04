@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.UUID;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.RequestEntity;
@@ -14,7 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.context.annotation.PropertySource;
 import com.fooddonator.restapi.model.Donee;
 
-@PropertySource("classpath:src/main/resources/application.properties")
+@PropertySource("classpath:application.properties")
+@Repository
 public class DoneeRepository {
   private static final ResourceBundle resource = ResourceBundle.getBundle("application");
   private final String ASTRA_DB_ID = resource.getString("astra.id");
@@ -31,6 +33,11 @@ public class DoneeRepository {
     this.restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
   }
 
+  /**
+   * Creates a new {@link Donee} in the Donee table using AstraDB's REST API.
+   * @param donee the new {@link Donee} to create in the DB
+   * @return the result from the AstraDB REST API request
+   */
   public Map createDonee(Donee donee) {
     var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
     .pathSegment("/donee")
@@ -51,6 +58,11 @@ public class DoneeRepository {
     return (Map) resp.getBody().get("data");
   }
 
+  /**
+   * Gets a {@link Donee} in the Donee table using AstraDB's REST API.
+   * @param id a {@link Donee} ID as an index for querying
+   * @return the {@link Donee} object which matches the provided ID parameter
+   */
   public Map getDonee(String id) {
     var uri =UriComponentsBuilder.fromHttpUrl(baseUrl)
       .pathSegment("/donee/" + id)
@@ -70,6 +82,39 @@ public class DoneeRepository {
     return many.get(0);
   }
 
+    /**
+   * Gets a {@link Donee} from the Donee table using AstraDB's REST API using the phone number as an index 
+   * @param phone_num the phone number of the {@link Donee} to retrieve
+   * @return the {@link Donee} object which matches the provided phone number parameter
+   */
+  public Map getDoneeByPhoneNum(String phone_num) {
+    var uri =UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment("/donee?where={\"phone_num\":{\"$eq\": \""+ phone_num +"\"}}")
+      .build()
+      .toUri();
+    var request = RequestEntity.get(uri)
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .build();
+      
+    ResponseEntity<Map> rateResponse =
+    restTemplate.exchange(
+      request,
+      Map.class
+    );
+    Map data = rateResponse.getBody();
+    ArrayList<Map> many = (ArrayList<Map>) data.get("data");
+    if(many.size() == 0) {
+      Map result = new HashMap<String, String>();
+      result.put("error", "could not find donee by phone number.")
+      return result;
+    }
+    return many.get(0);
+  }
+
+  /**
+   * Gets all {@link Donee}s from the Donee table using AstraDB's REST API.
+   * @return a list of all {@link Donee} objects
+   */
   public List<Map> getDonees() {
     var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
       .pathSegment("/donee/rows")
@@ -88,6 +133,11 @@ public class DoneeRepository {
     return (ArrayList<Map>) data.get("data");
   }
 
+  /**
+   * Updates a {@link Donee} in the Donee table using AstraDB's REST API.
+   * @param donee the updated {@link Donee} object
+   * @return the result from the AstraDB REST API request
+   */
   public void updateDonee(Donee donee) {
     var updateUri = UriComponentsBuilder.fromHttpUrl(baseUrl)
       .pathSegment("/donee/" + donee.id)
@@ -104,6 +154,11 @@ public class DoneeRepository {
     restTemplate.exchange(updateRequest, Map.class);
   }
 
+  /**
+   * Deletes a {@link Donee} from the Donee table using AstraDB's REST API.
+   * @param id the {@link Donee} ID of the donee to be deleted
+   * @return the result from the AstraDB REST API request
+   */
   public void deleteDonee(String id) {
     var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
       .pathSegment("/donee/" + id)

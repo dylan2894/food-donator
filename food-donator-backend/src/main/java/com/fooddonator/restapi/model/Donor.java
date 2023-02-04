@@ -1,21 +1,15 @@
 package com.fooddonator.restapi.model;
 
-import java.util.HashMap;
-
-public class Donor {
-  public String id;
+public class Donor extends User {
   public String name;
   public String lat;
   public String lon;
-  public String phone_num;
 
-  public Donor() {}
-
-  public Donor(String _id, String _name, String _phone_num, String latitude, String longitude) {
-    id = _id;
-    name = _name;
-    phone_num = _phone_num;
+  public Donor(String _id, String _name, String _phone_num, String latitude, String longitude, String _password) {
+    super(_id, _phone_num, _password);
+    
     lat = latitude;
     lon = longitude;
+    password = _password;
   }
 }

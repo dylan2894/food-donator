@@ -5,4 +5,5 @@ C:\dev\FoodDonator\food-donator-backend\src\main\java\com\fooddonator\restapi\mo
 C:\dev\FoodDonator\food-donator-backend\src\main\java\com\fooddonator\restapi\repository\DoneeRepository.java
 C:\dev\FoodDonator\food-donator-backend\src\main\java\com\fooddonator\restapi\Application.java
 C:\dev\FoodDonator\food-donator-backend\src\main\java\com\fooddonator\restapi\model\RestResponse.java
+C:\dev\FoodDonator\food-donator-backend\src\main\java\com\fooddonator\restapi\service\RegistrationService.java
 C:\dev\FoodDonator\food-donator-backend\src\main\java\com\fooddonator\restapi\repository\DonorRepository.java

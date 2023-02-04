@@ -35,6 +35,11 @@ public class DonorRepository {
     this.restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
   }
 
+  /**
+   * Creates a new {@link Donor} in the Donor table using AstraDB's REST API.
+   * @param donor the new {@link Donor} to create in the DB
+   * @return the result from the AstraDB REST API request
+   */
   public Map createDonor(Donor donor) {
     var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
       .pathSegment("/donor")
@@ -58,6 +63,11 @@ public class DonorRepository {
     return (Map) resp.getBody().get("data");
   }
 
+ /**
+   * Gets a {@link Donor} in the Donor table using AstraDB's REST API.
+   * @param id a {@link Donor} ID as an index for querying
+   * @return the {@link Donor} object which matches the provided ID parameter
+   */
   public Map getDonor(String id) {
     var uri =UriComponentsBuilder.fromHttpUrl(baseUrl)
       .pathSegment("/donor/" + id)
@@ -77,6 +87,39 @@ public class DonorRepository {
     return many.get(0);
   }
 
+  /**
+   * Gets a {@link Donor} from the Donor table using AstraDB's REST API using the phone number as an index 
+   * @param phone_num the phone number of the {@link Donor} to retrieve
+   * @return the {@link Donor} object which matches the provided phone number parameter
+   */
+  public Map getDonorByPhoneNum(String phone_num) {
+    var uri =UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment("/donor?where={\"phone_num\":{\"$eq\": \""+ phone_num +"\"}}")
+      .build()
+      .toUri();
+    var request = RequestEntity.get(uri)
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .build();
+      
+    ResponseEntity<Map> rateResponse =
+    restTemplate.exchange(
+      request,
+      Map.class
+    );
+    Map data = rateResponse.getBody();
+    ArrayList<Map> many = (ArrayList<Map>) data.get("data");
+    if(many.size() == 0) {
+      Map result = new HashMap<String, String>();
+      result.put("error", "could not find donor by phone number.")
+      return result;
+    }
+    return many.get(0);
+  }
+
+  /**
+   * Gets all {@link Donor}s from the Donor table using AstraDB's REST API.
+   * @return a list of all {@link Donor} objects
+   */
   public List<Map> getDonors() {
     var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
       .pathSegment("/donor/rows")
@@ -95,6 +138,11 @@ public class DonorRepository {
     return (ArrayList<Map>) data.get("data");
   }
   
+  /**
+   * Updates a {@link Donor} in the Donor table using AstraDB's REST API.
+   * @param donor the updated {@link Donor} object
+   * @return the result from the AstraDB REST API request
+   */
   public void updateDonor(Donor donor) {
     var updateUri = UriComponentsBuilder.fromHttpUrl(baseUrl)
       .pathSegment("/donor/" + donor.id)
@@ -114,6 +162,11 @@ public class DonorRepository {
     restTemplate.exchange(updateRequest, Map.class);
   }
 
+  /**
+   * Deletes a {@link Donor} from the Donor table using AstraDB's REST API.
+   * @param id the {@link Donor} ID of the donor to be deleted
+   * @return the result from the AstraDB REST API request
+   */
   public void deleteDonor(String id) {
     var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
       .pathSegment("/donor/" + id)
