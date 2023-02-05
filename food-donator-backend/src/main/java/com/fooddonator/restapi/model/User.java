@@ -12,4 +12,10 @@ public class User {
     password = _password;
     salt = _salt;
   }
+
+  User(String _id, String _phone_num, String _password) {
+    id = _id;
+    phone_num = _phone_num;
+    password = _password;
+  }
 }

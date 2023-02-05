@@ -110,7 +110,7 @@ public class DonorRepository {
     ArrayList<Map> many = (ArrayList<Map>) data.get("data");
     if(many.size() == 0) {
       Map result = new HashMap<String, String>();
-      result.put("error", "could not find donor by phone number.")
+      result.put("error", "could not find donor by phone number.");
       return result;
     }
     return many.get(0);
