@@ -10,20 +10,37 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { DonorDashboardComponent } from './components/donor-dashboard/donor-dashboard.component'
 import { AuthenticationModule } from './services/authentication/authentication.module';
 import { RegistrationModule } from './services/registration/registration.module';
+import { DonorDonateComponent } from './components/donor-donate/donor-donate.component';
+import { SidenavComponent } from './components/shared/sidenav/sidenav.component';
+
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DonorSettingsComponent } from './components/donor-settings/donor-settings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ReceiverMapComponent,
-    DonorDashboardComponent
+    DonorDashboardComponent,
+    DonorDonateComponent,
+    SidenavComponent,
+    DonorSettingsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
     GoogleMapsModule,
     AuthenticationModule,
-    RegistrationModule
+    RegistrationModule,
+    MatStepperModule,
+    MatInputModule,
+    MatButtonModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
