@@ -10,10 +10,6 @@
   --light: #FBF5F3; /* Snow */
 }
 
-.sidenav {
-  left: 300px;
-}
-
 a {
   text-align: center;
 }
@@ -28,28 +24,15 @@ ul {
   justify-content: center;
 }
 
-#logoutWrapper {
-  position: absolute;
-  bottom: 70px;
-  left: 16px;
-  width: 275px;
-  height: 50px;
-  padding: 15px;
+app-donor-donate {
+  display: none;
 }
 
-.material-symbols-outlined {
-  user-select: none;
-  transition: all 300ms;
+#subtitle {
+  opacity: 0.8;
 }
 
-.material-symbols-outlined:hover {
-  color: var(--secondary);
+.collection {
+  width: 100%;
 }
 
-.container {
-  position: absolute;
-  left: 300px;
-
-  margin: 0%;
-  padding: 0%;
-}
