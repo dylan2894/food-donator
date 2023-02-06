@@ -8,5 +8,12 @@ declare const $: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'food-donator';
+  title = 'Food Donator';
+  isDonor = true;
+
+  constructor() {
+    //TODO check if user is a donor or donee
+
+  }
+
 }

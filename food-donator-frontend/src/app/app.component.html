@@ -1,1 +1,14 @@
-<router-outlet></router-outlet>
+<!-- Donor flow -->
+<ng-container *ngIf="this.isDonor; else donee">
+  <div class="outer">
+    <app-sidenav></app-sidenav>
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Donee flow -->
+<ng-template #donee>
+  <router-outlet></router-outlet>
+</ng-template>

@@ -9,3 +9,24 @@
   --dark: '#36363E'; /* Jet */
   --light: '#FBF5F3'; /* Snow */
 }
+
+.outer {
+  display: flex;
+  flex-direction: row;
+}
+
+.container {
+  display: inline;
+  height: 96%;
+  /* left: 350px; */
+  left: 25%;
+
+  margin: 0%;
+  padding: 0%;
+  padding-top: 2%;
+}
+
+app-sidenav {
+  width: fit-content;
+  display: inline;
+}
