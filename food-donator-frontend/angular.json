@@ -25,6 +25,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/custom-theme.scss",
               "src/assets/css/materialize.min.css",
               "dist/styles-out/styles.css",
               "dist/styles-out/app.component.css",

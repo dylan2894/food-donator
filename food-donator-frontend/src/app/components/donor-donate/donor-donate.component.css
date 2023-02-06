@@ -1,0 +1,31 @@
+.mat-stepper-vertical {
+  margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+  margin-top: 16px;
+}
+
+mat-stepper {
+  height: 100%;
+}
+
+mat-step {
+  height: 33%;
+}
+
+
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+p {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 120%;
+}
+
+.mat-horizontal-content-container{
+  height: 100%;
+}
+.mat-horizontal-stepper-content{
+  height: 100%;
+  display: flex;
+}
