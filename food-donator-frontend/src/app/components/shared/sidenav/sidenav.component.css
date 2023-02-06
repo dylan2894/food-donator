@@ -1,0 +1,34 @@
+#slide-out {
+  position: relative;
+  display: inline-block;
+  left: 300px;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+#logoutWrapper {
+  position: absolute;
+
+  bottom: 15px;
+  left: 16px;
+  width: 275px;
+  height: 50px;
+  padding: 15px;
+}
+
+.material-symbols-outlined {
+  user-select: none;
+  transition: all 150ms;
+}
+
+.material-symbols-outlined:hover {
+  color: var(--secondary);
+}
+
+.navContainer {
+  display: inline-block;
+  width: fit-content;
+  margin: 0;
+  padding: 0;
+}

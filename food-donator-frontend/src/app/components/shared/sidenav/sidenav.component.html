@@ -1,0 +1,19 @@
+<div class="navContainer">
+  <ul id="slide-out" class="sidenav">
+    <div id="navBtnWrapper">
+      <li><a [routerLink]="['/donate']">Donate</a></li>
+      <li><a [routerLink]="['/alerts']">Alerts</a></li>
+      <li><a [routerLink]="['/map']">Map</a></li>
+      <li><a [routerLink]="['/dashboard']">Dashboard</a></li>
+    </div>
+
+    <div id="logoutWrapper">
+      <span class="material-symbols-outlined" style="float: left;">
+        logout
+      </span>
+      <span [routerLink]="['/settings']" class="material-symbols-outlined" style="float: right;">
+        settings
+      </span>
+    </div>
+  </ul>
+</div>
