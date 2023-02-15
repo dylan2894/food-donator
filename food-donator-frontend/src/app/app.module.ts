@@ -19,6 +19,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DonorSettingsComponent } from './components/donor-settings/donor-settings.component';
+import { DonorServiceModule } from './services/donor/donor-service.module';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,9 @@ import { DonorSettingsComponent } from './components/donor-settings/donor-settin
     DonorDashboardComponent,
     DonorDonateComponent,
     SidenavComponent,
-    DonorSettingsComponent
+    DonorSettingsComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +42,7 @@ import { DonorSettingsComponent } from './components/donor-settings/donor-settin
     GoogleMapsModule,
     AuthenticationModule,
     RegistrationModule,
+    DonorServiceModule,
     MatStepperModule,
     MatInputModule,
     MatButtonModule,

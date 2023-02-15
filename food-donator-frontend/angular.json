@@ -27,9 +27,15 @@
             "styles": [
               "src/custom-theme.scss",
               "src/assets/css/materialize.min.css",
-              "dist/styles-out/styles.css",
               "dist/styles-out/app.component.css",
-              "dist/styles-out/receiver-map.component.css"
+              "dist/styles-out/donor-dashboard.component.css",
+              "dist/styles-out/donor-donate.component.css",
+              "dist/styles-out/donor-settings.component.css",
+              "dist/styles-out/login.component.css",
+              "dist/styles-out/receiver-map.component.css",
+              "dist/styles-out/register.component.css",
+              "dist/styles-out/sidenav.component.css",
+              "dist/styles-out/styles.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",

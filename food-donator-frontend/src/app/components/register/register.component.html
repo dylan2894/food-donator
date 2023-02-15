@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="row">
+      <form class="col s12" id="reg-form">
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="phone_num" type="text" class="validate">
+            <label for="phone_num">Phone Number</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="password" type="password" class="validate">
+            <label for="password">Password</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <div class="donor">
+              <input class="with-gap" name="gender" type="radio" id="donor" required />
+              <label for="donor">Donor</label>
+            </div>
+            <div class="donee">
+              <input class="with-gap" name="gender" type="radio" id="donee" required />
+              <label for="donee">Donee</label>
+            </div>
+          </div>
+
+          <div class="input-field col s6">
+            <button class="btn btn-large btn-register waves-effect waves-light" type="submit" name="action">Register
+              <i class="material-icons right">done</i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- <p>register works!</p>
+
+<form [formGroup]="registerForm" (ngSubmit)="this.register()">
+  <label>Phone Number</label>
+  <input formControlName="phone_num" type="text" placeholder="phone number">
+  <label>Password</label>
+  <input formControlName="password" type="text" placeholder="password" >
+  <fieldset formControlName="donorOrDonee">
+    <legend>Select Role</legend>
+    <div>
+      <label for="donor">Donor</label>
+      <input type="radio" id="donor" name="donor" value="donor" checked>
+    </div>
+    <div>
+      <label for="donee">Donee</label>
+      <input type="radio" id="donee" name="donee" value="donee">
+    </div>
+  </fieldset>
+</form> -->

@@ -1,14 +1,20 @@
-<!-- Donor flow -->
-<ng-container *ngIf="this.isDonor; else donee">
-  <div class="outer">
-    <app-sidenav></app-sidenav>
-    <div class="container">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</ng-container>
+<!-- <ng-container *ngIf="this.isLoggedIn() else notLoggedIn"> -->
+  <!-- Donor flow -->
+  <!-- <ng-container *ngIf="this.isDonor(); else donee"> -->
+    <!-- <div class="outer"> -->
+      <!-- <app-sidenav></app-sidenav> -->
+      <!-- <div class="container"> -->
+        <router-outlet></router-outlet>
+      <!-- </div>
+    </div> -->
+  <!-- </ng-container> -->
 
-<!-- Donee flow -->
-<ng-template #donee>
+  <!-- Donee flow -->
+  <!-- <ng-template #donee>
+    <router-outlet></router-outlet>
+  </ng-template> -->
+<!-- </ng-container>
+
+<ng-template #notLoggedIn>
   <router-outlet></router-outlet>
-</ng-template>
+</ng-template> -->

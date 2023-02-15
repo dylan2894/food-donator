@@ -1,15 +1,24 @@
 <div class="google-map">
-  <google-map width="100%" height="100vh" [options]="mapOptions" ></google-map>
+  <google-map width="100%" height="100vh" [options]="mapOptions" >
+      <map-marker
+        *ngFor="let marker of markers"
+        [position]="marker.position"
+        [label]="marker.label"
+        [title]="marker.title"
+        [options]="marker.options"
+        (mapClick)="this.openModal()"
+      ></map-marker>
+  </google-map>
 </div>
 
 <!-- Donor Select -->
 <div class="wrapper">
   <div id="donorSelect" class="input-field col s12">
-    <select>
+    <select id="donorInnerSelect">
       <option value="" disabled selected>Choose your option</option>
-      <option value="option1">Option 1</option>
-      <option value="2">Option 2</option>
-      <option value="3">Option 3</option>
+      <option *ngFor="let donor of donors" [value]="donor.id">
+        {{ donor.name }}
+      </option>
     </select>
     <label id="donorSelectLabel">Select Donor</label>
   </div>
@@ -43,3 +52,17 @@
   <li><a class="subheader">Subheader</a></li>
   <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
 </ul>
+
+<!-- Modal Trigger -->
+<!-- <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> -->
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal bottom-sheet">
+  <div class="modal-content">
+    <h4>Modal Header</h4>
+    <p>A bunch of text</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+</div>

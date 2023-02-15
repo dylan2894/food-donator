@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.fooddonator.restapi.model.User;
 import com.fooddonator.restapi.repository.DoneeRepository;
 import com.fooddonator.restapi.repository.DonorRepository;
+import com.fooddonator.restapi.utils.JwtTokenUtil;
+
 import java.security.spec.KeySpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.SecretKeyFactory;
@@ -18,6 +20,31 @@ public class AuthenticationService {
   private DonorRepository donorRepository;
   @Autowired
   private DoneeRepository doneeRepository;
+  @Autowired
+  private JwtTokenUtil jwtTokenUtil;
+
+  /**
+   * Attempts to login using the user's phone number and password
+   * @param _phone_num the user's phone number
+   * @param _password the user's password
+   * @return a JWT token if login is successful, else it will return an empty string
+   */
+  public String login(String _phone_num, String _password) {
+    if(this.isPasswordCorrect(_phone_num, _password)) {
+      return this.jwtTokenUtil.generateToken(_phone_num);
+    }
+    System.out.println("[AUTH SERVICE] Login unsuccessful.");
+    return "";
+  }
+
+  /**
+   * Validates whether a JWT is valid or not
+   * @param jwt the candidate JWT token to validate
+   * @return true if the provided JWT is valid, false otherwise
+   */
+  public Boolean isJwtValid(String jwt) {
+    return this.jwtTokenUtil.validateToken(jwt);
+  }
 
   /**
    * Hashes the provided plaintext password 
@@ -61,33 +88,8 @@ public class AuthenticationService {
       return true;
     }
 
+    System.out.println("[AUTH SERVICE] password is incorrect.");
     return false;
   }
 
-  /**
-   * Attempts to login using the user's phone number and password
-   * @param _phone_num the user's phone number
-   * @param _password the user's password
-   * @return a JWT token if login is successful, else it will return an empty string
-   */
-  public String login(String _phone_num, String _password) {
-    if(this.isPasswordCorrect(_phone_num, _password)) {
-      //TODO generate a JWT and return it 
-
-      return "123"; // *Temporary JWT string
-    }
-    System.out.println("[AUTH SERVICE] Login unsuccessful.");
-    return "";
-  }
-
-  /**
-   * Validates whether a JWT is valid or not
-   * @param jwt the candidate JWT token to validate
-   * @return true if the provided JWT is valid, false otherwise
-   */
-  public boolean isJwtValid(String jwt) {
-    //TODO check if jwt is valid, then return true or false
-
-    return false;
-  }
 }

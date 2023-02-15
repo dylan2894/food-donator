@@ -25,12 +25,7 @@ public class RegistrationService {
    * @param password the user defined plaintext password
    * @return salted and hashed result of provided password
    */
-  private byte[] createPasswordHash(String password) {
-    // 1. create a random salt
-    SecureRandom random = new SecureRandom();
-    byte[] salt = new byte[16];
-    random.nextBytes(salt);
-    
+  private byte[] createPasswordHash(String password, byte[] salt) {  
     byte[] hash;
 
     // 2. create a password hash using PBKDF2 algorithm 
@@ -52,13 +47,21 @@ public class RegistrationService {
    * @param donor the new donor to register on the system
    */
   public void registerDonor(Donor donor) {
-    // 1. salt and hash password
-    byte[] hashedPassword = this.createPasswordHash(donor.password);
+    // 1. create a random salt
+    SecureRandom random = new SecureRandom();
+    byte[] newSalt = new byte[16];
+    random.nextBytes(newSalt);
+    
+    // 2. hash the password
+    byte[] hashedPassword = this.createPasswordHash(donor.password, newSalt);
 
-    // 2. set the new password to be the password hash
+    // 3. set the new password to be the password hash
     donor.password = Arrays.toString(hashedPassword);
 
-    // 3. create a new donor in the DB
+    // 4. save the password salt
+    donor.salt = Arrays.toString(newSalt);
+
+    // 5. create a new donor in the DB
     this.donorRepository.createDonor(donor);
   }
 
@@ -68,13 +71,21 @@ public class RegistrationService {
    * @param donee the new donee to create on the system
    */
   public void registerDonee(Donee donee) {
-    // 1. salt and hash password
-    byte[] hashedPassword = this.createPasswordHash(donee.password);
+    // 1. create a random salt
+    SecureRandom random = new SecureRandom();
+    byte[] newSalt = new byte[16];
+    random.nextBytes(newSalt);
 
-    // 2. set the new password to be the password hash
+    // 2. hash the password
+    byte[] hashedPassword = this.createPasswordHash(donee.password, newSalt);
+
+    // 3. set the new password to be the password hash
     donee.password = Arrays.toString(hashedPassword);
 
-    // 3. create a new donee in the DB
+    // 4. save the password salt
+    donee.salt = Arrays.toString(newSalt);
+
+    // 5. create a new donee in the DB
     this.doneeRepository.createDonee(donee);
   }
 }

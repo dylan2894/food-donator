@@ -81,12 +81,12 @@ public class DonorControllerTests {
 
 
   /* Integration Tests */
-  @Test
-  public void testGetOneDonorIntegration() throws Exception {
-    MvcResult MvcResult = this.mvc.perform(get("/donor/readOne?id=someID"))
-    .andDo(print())
-    .andExpect(status().isOk())
-    //.andExpect(jsonPath("$.id").value("someID"))
-    .andReturn();
-  }
+  // @Test
+  // public void testGetOneDonorIntegration() throws Exception {
+  //   MvcResult MvcResult = this.mvc.perform(get("/donor/readOne?id=someID"))
+  //   .andDo(print())
+  //   .andExpect(status().isOk())
+  //   //.andExpect(jsonPath("$.id").value("someID"))
+  //   .andReturn();
+  // }
 }

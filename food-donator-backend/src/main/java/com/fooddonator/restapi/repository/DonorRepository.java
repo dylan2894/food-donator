@@ -84,7 +84,10 @@ public class DonorRepository {
     );
     Map data = rateResponse.getBody();
     ArrayList<Map> many = (ArrayList<Map>) data.get("data");
-    return many.get(0);
+    if(many.size() > 0) {
+      return many.get(0);
+    }
+    return new HashMap<String, String>();
   }
 
   /**

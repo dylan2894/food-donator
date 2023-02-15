@@ -1,0 +1,47 @@
+<div class="wrapper">
+  <div class="card grey lighten-4">
+    <div class="card-tabs">
+      <ul class="tabs tabs-fixed-width">
+        <li class="tab"><a class="active" href="/login#login">Login</a></li>
+        <li class="tab"><a href="/login#register">Register</a></li>
+      </ul>
+    </div>
+    <div class="card-content grey lighten-4">
+      <div id="login">
+        <form [formGroup]="loginForm" (ngSubmit)="this.login()">
+          <label for="phone_num">Phone Number</label>
+          <input formControlName="phone_num" class="input" placeholder="phone number">
+          <small *ngIf="invalidLoginForm && loginForm.controls['phone_num'].errors">Please enter a valid phone number</small>
+          <label>Password</label>
+          <input formControlName="password" class="input" placeholder="password" >
+          <small *ngIf="invalidLoginForm && loginForm.controls['password'].errors">Please enter a valid password</small>
+          <button class="btn">Login</button>
+        </form>
+      </div>
+      <div id="register">
+        <form [formGroup]="registerForm" (ngSubmit)="this.register()">
+          <label for="phone_num">Phone Number</label>
+          <input formControlName="phone_num" class="input" placeholder="phone number">
+          <small *ngIf="invalidRegisterForm && registerForm.controls['phone_num'].errors">Please enter a valid phone number</small>
+          <label>Password</label>
+          <input formControlName="password" class="input" placeholder="password" >
+          <small *ngIf="invalidRegisterForm && registerForm.controls['password'].errors">Please enter a valid password</small>
+          <p>
+            <label>
+              <input type="radio" formControlName="type" value="donor" class="with-gap">
+              <span>Donor</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input type="radio" formControlName="type" value="donee" class="with-gap">
+              <span>Donee</span>
+            </label>
+          </p>
+          <small *ngIf="invalidRegisterForm && registerForm.controls['type'].errors">Please select whether you are a Donor or Donee (Receiver)</small>
+          <button class="btn">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
