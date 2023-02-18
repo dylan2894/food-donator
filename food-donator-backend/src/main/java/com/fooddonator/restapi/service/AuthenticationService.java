@@ -58,6 +58,11 @@ public class AuthenticationService {
     // 1. get the user which matches the provided phoneNum
     // 1.1 try query the Donor table
     Map<String, Object> result = this.donorRepository.getDonorByPhoneNum(phoneNum);
+
+    System.out.print("\n");
+    result.forEach((key, value) -> System.out.println(key + ": " + value));
+    System.out.print("\n");
+
     if(result.containsKey("id")) {
       user = (User) result;
     }

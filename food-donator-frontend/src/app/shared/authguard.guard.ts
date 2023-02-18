@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 
 @Injectable({
@@ -16,11 +15,11 @@ export class AuthguardGuard implements CanActivate {
     return this.isLoggedIn();
   }
 
-  async isLoggedIn(){
+  async isLoggedIn(): Promise<boolean> {
     // get stored JWT
     const jwt = window.sessionStorage.getItem('food-donator-token');
 
-    if(jwt !== null) {
+    if(jwt !== null && jwt !== '') {
       // validate the JWT on the server-side
       const valid = await this.authService.isJwtValid(jwt);
       if(valid) {
@@ -29,5 +28,4 @@ export class AuthguardGuard implements CanActivate {
     }
     return false;
   }
-
 }

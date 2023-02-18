@@ -55,7 +55,7 @@ export class AuthenticationService {
    * @returns True if the JWT is valid. False if the JWT is invalid.
    */
   async isJwtValid(jwt: string): Promise<boolean> {
-    if(jwt === "") {
+    if(jwt === "" || jwt === undefined) {
       return false;
     }
 
@@ -83,5 +83,35 @@ export class AuthenticationService {
       console.error("[AUTHENTICATION SERVICE] isJwtvalid()", e);
     }
     return false;
+  }
+
+  /**
+   * Checks what type of user the user with the provided phone number is.
+   * @param phoneNum The phone number of the user
+   * @returns Either 'donor', 'donee' or 'none'
+   */
+  async typeOfUser(phoneNum: string): Promise<string> {
+    const body = {
+      phone_num: phoneNum
+    }
+    const req = new Promise((resolve, reject) => {
+      this.http.post(this.baseUrl + "type", body, { headers: this.headers }).subscribe({
+        next: (resp) => {
+          resolve(resp);
+        },
+        error: (err: HttpErrorResponse) => {
+          reject(err);
+        }
+      });
+    });
+
+    try {
+      const userTypeResponse = await req as Map<string, string>
+      return userTypeResponse.get("type") as string;
+    } catch(e) {
+      console.error(e);
+    }
+
+    return "none";
   }
 }

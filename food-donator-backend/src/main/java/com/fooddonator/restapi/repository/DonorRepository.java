@@ -1,5 +1,8 @@
 package com.fooddonator.restapi.repository;
 
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +10,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.UUID;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.fooddonator.restapi.model.Donor;
+import com.google.rpc.context.AttributeContext.Response;
 
 
 @PropertySource("classpath:application.properties")
@@ -96,18 +101,19 @@ public class DonorRepository {
    * @return the {@link Donor} object which matches the provided phone number parameter
    */
   public Map getDonorByPhoneNum(String phone_num) {
-    var uri =UriComponentsBuilder.fromHttpUrl(baseUrl)
-      .pathSegment("/donor?where={\"phone_num\":{\"$eq\": \""+ phone_num +"\"}}")
-      .build()
-      .toUri();
-    var request = RequestEntity.get(uri)
+    System.out.println("\n[DONOR REPO] getDonorByPhoneNum\n");
+    String search = "{\"phone_num\":{\"$eq\":\""+phone_num+"\"}}";
+    var request = RequestEntity.get(baseUrl + "/donor?where={search}")
       .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
       .build();
       
     ResponseEntity<Map> rateResponse =
     restTemplate.exchange(
+      baseUrl + "/donor?where={search}",
+      HttpMethod.GET,
       request,
-      Map.class
+      Map.class,
+      search
     );
     Map data = rateResponse.getBody();
     ArrayList<Map> many = (ArrayList<Map>) data.get("data");

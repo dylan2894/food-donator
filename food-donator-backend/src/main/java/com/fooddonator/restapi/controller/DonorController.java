@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import com.fooddonator.restapi.model.Donor;
 import com.fooddonator.restapi.repository.DonorRepository;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -40,9 +39,6 @@ public class DonorController {
   @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
   public ResponseEntity<Map> getDonor(@RequestParam String id) {
     System.out.println("[CONTROLLER] /donor/readOne");
-    //HttpHeaders responseHeaders = new HttpHeaders();
-    //responseHeaders.setLocation(location);
-    //responseHeaders.set("MyResponseHeader", "MyValue");
     Map donor = repository.getDonor(id);
     if(!donor.containsKey("id")) {
       HashMap<String, String> body = new HashMap<>();

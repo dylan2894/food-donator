@@ -20,8 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DonorSettingsComponent } from './components/donor-settings/donor-settings.component';
 import { DonorServiceModule } from './services/donor/donor-service.module';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+import { LoginRegisterComponent } from './components/login-register/login-register.component';
 
 @NgModule({
   declarations: [
@@ -31,8 +30,7 @@ import { RegisterComponent } from './components/register/register.component';
     DonorDonateComponent,
     SidenavComponent,
     DonorSettingsComponent,
-    LoginComponent,
-    RegisterComponent
+    LoginRegisterComponent
   ],
   imports: [
     BrowserModule,

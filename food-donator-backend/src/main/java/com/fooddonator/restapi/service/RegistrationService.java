@@ -63,6 +63,7 @@ public class RegistrationService {
 
     // 5. create a new donor in the DB
     this.donorRepository.createDonor(donor);
+    System.out.println("[REGISTRATION SERVICE] registerDonor()");
   }
 
   /**
@@ -87,5 +88,6 @@ public class RegistrationService {
 
     // 5. create a new donee in the DB
     this.doneeRepository.createDonee(donee);
+    System.out.println("[REGISTRATION SERVICE] registerDonee()");
   }
 }

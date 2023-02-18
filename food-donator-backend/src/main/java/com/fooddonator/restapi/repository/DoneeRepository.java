@@ -1,5 +1,7 @@
 package com.fooddonator.restapi.repository;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -90,9 +92,12 @@ public class DoneeRepository {
    * @param phone_num the phone number of the {@link Donee} to retrieve
    * @return the {@link Donee} object which matches the provided phone number parameter
    */
+  //TODO fix this query string
   public Map getDoneeByPhoneNum(String phone_num) {
+    String queryString = "/donee?where=%7B%22phone_num%22%3A%7B%22%24eq%22%3A%22"+ phone_num +"%22%7D%7D&fields=id";
+    System.out.println("\nQueryString: "+queryString+"\n");
     var uri =UriComponentsBuilder.fromHttpUrl(baseUrl)
-      .pathSegment("/donee?where={\"phone_num\":{\"$eq\": \""+ phone_num +"\"}}")
+      .pathSegment(queryString)
       .build()
       .toUri();
     var request = RequestEntity.get(uri)

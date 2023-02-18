@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import com.fooddonator.restapi.model.User;
@@ -18,7 +19,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import java.util.ResourceBundle;
 
+@PropertySource("classpath:application.properties")
 @Component
 public class JwtTokenUtil implements Serializable {
 
@@ -33,6 +36,9 @@ public class JwtTokenUtil implements Serializable {
 
 	@Value("${jwt.secret}")
 	private String secret;
+
+  private static final ResourceBundle resource = ResourceBundle.getBundle("application");
+  private final String JWT_SECRET = resource.getString("jwt.secret");
 
   JwtTokenUtil() {
     System.out.println("JWT SECRET: " + secret);
@@ -57,10 +63,15 @@ public class JwtTokenUtil implements Serializable {
     }
     
     if(user.id.equals("")){
+      System.out.println("[JWT TOKEN UTIL] No ID in JWT.");
       return false;
     }
 
-		return !isTokenExpired(token);
+		if(isTokenExpired(token)) {
+      System.out.println("[JWT TOKEN UTIL] JWT is expired.");
+      return false;
+    }
+    return true;
 	}
 
   //retrieve username from jwt token
