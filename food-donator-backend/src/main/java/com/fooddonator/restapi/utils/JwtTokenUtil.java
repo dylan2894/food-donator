@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.fooddonator.restapi.model.User;
 import com.fooddonator.restapi.repository.DonorRepository;
+import com.fooddonator.restapi.repository.UserRepository;
 import com.fooddonator.restapi.repository.DoneeRepository;
 
 import io.jsonwebtoken.Claims;
@@ -26,22 +27,15 @@ import java.util.ResourceBundle;
 public class JwtTokenUtil implements Serializable {
 
   @Autowired
-  private DonorRepository donorRepo;
-  @Autowired
-  private DoneeRepository doneeRepo;
+  UserRepository userRepo;
 
 	private static final long serialVersionUID = -2550185165626007488L;
-
-	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * (long) 60;
-
-	@Value("${jwt.secret}")
-	private String secret;
-
+	private static final long JWT_TOKEN_VALIDITY = 5 * 60 * (long) 60;
   private static final ResourceBundle resource = ResourceBundle.getBundle("application");
   private final String JWT_SECRET = resource.getString("jwt.secret");
 
   JwtTokenUtil() {
-    System.out.println("JWT SECRET: " + secret);
+    System.out.println("JWT SECRET: " + JWT_SECRET);
   }
 
 	//generate token for user
@@ -57,20 +51,17 @@ public class JwtTokenUtil implements Serializable {
     //check if user with this id exists in the DB
     User user = new User();
     user.id = "";
-    user = (User) this.donorRepo.getDonor(userID);
-    if(user.id.equals("")) {
-      user = (User) this.doneeRepo.getDonee(userID);
-    }
-    
+    user = (User) this.userRepo.getUser(userID);
     if(user.id.equals("")){
-      System.out.println("[JWT TOKEN UTIL] No ID in JWT.");
+      System.out.println("[JWT TOKEN UTIL] No user found which matches this JWT userID.");
       return false;
     }
 
-		if(isTokenExpired(token)) {
+    if(isTokenExpired(token)) {
       System.out.println("[JWT TOKEN UTIL] JWT is expired.");
       return false;
     }
+
     return true;
 	}
 
@@ -92,12 +83,12 @@ public class JwtTokenUtil implements Serializable {
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-				.signWith(SignatureAlgorithm.HS512, secret).compact();
+				.signWith(SignatureAlgorithm.HS512, JWT_SECRET).compact();
 	}
 
   //for retrieveing any information from token we will need the secret key
 	private Claims getAllClaimsFromToken(String token) {
-		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+		return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody();
 	}
 
 	//check if the token has expired

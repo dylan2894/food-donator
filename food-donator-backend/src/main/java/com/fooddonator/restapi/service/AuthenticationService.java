@@ -5,10 +5,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fooddonator.restapi.model.User;
-import com.fooddonator.restapi.repository.DoneeRepository;
-import com.fooddonator.restapi.repository.DonorRepository;
+import com.fooddonator.restapi.repository.UserRepository;
 import com.fooddonator.restapi.utils.JwtTokenUtil;
 
+import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.SecretKeyFactory;
@@ -17,9 +17,7 @@ import javax.crypto.SecretKeyFactory;
 public class AuthenticationService {
   
   @Autowired
-  private DonorRepository donorRepository;
-  @Autowired
-  private DoneeRepository doneeRepository;
+  private UserRepository userRepo;
   @Autowired
   private JwtTokenUtil jwtTokenUtil;
 
@@ -27,14 +25,14 @@ public class AuthenticationService {
    * Attempts to login using the user's phone number and password
    * @param _phone_num the user's phone number
    * @param _password the user's password
-   * @return a JWT token if login is successful, else it will return an empty string
+   * @return a JWT token if login is successful, else it will return null
    */
   public String login(String _phone_num, String _password) {
     if(this.isPasswordCorrect(_phone_num, _password)) {
-      return this.jwtTokenUtil.generateToken(_phone_num);
+      return this.jwtTokenUtil.generateToken(_phone_num);  // generate a token with the subject being the phone_num
     }
     System.out.println("[AUTH SERVICE] Login unsuccessful.");
-    return "";
+    return null;
   }
 
   /**
@@ -43,6 +41,10 @@ public class AuthenticationService {
    * @return true if the provided JWT is valid, false otherwise
    */
   public Boolean isJwtValid(String jwt) {
+    if(jwt == null || "".equals(jwt)) {
+      System.out.println("[AUTH SERVICE] JWT is null or empty.");
+      return false;
+    }
     return this.jwtTokenUtil.validateToken(jwt);
   }
 
@@ -52,35 +54,17 @@ public class AuthenticationService {
    * @param 
    * @return a boolean indicating whether the provided password matches the stored password
    */
-  private boolean isPasswordCorrect(String phoneNum, String candidatePassword) {
-    User user;
-    
+  private boolean isPasswordCorrect(String phoneNum, String candidatePassword) {        
     // 1. get the user which matches the provided phoneNum
-    // 1.1 try query the Donor table
-    Map<String, Object> result = this.donorRepository.getDonorByPhoneNum(phoneNum);
-
-    System.out.print("\n");
-    result.forEach((key, value) -> System.out.println(key + ": " + value));
-    System.out.print("\n");
-
-    if(result.containsKey("id")) {
-      user = (User) result;
-    }
-    else {
-      // 1.2 if user not found, try query the Donee table
-      result = this.doneeRepository.getDoneeByPhoneNum(phoneNum);
-      if(result.containsKey("id")) {
-        user = (User) result;
-      }
-      else {
-        System.out.println("[AUTH SERVICE] could not find user by phone number.");
-        return false;
-      }
+    User user = this.userRepo.getUserByPhoneNum(phoneNum);
+    if(user == null){
+      System.out.println("[AUTH SERVICE] could not find user by phone number.");
+      return false;
     }
 
     // 2. hash the candidate password
-    byte[] hash = "".getBytes();
-    KeySpec spec = new PBEKeySpec(candidatePassword.toCharArray(), user.salt.getBytes(), 65536, 128);
+    byte[] hash = "".getBytes(StandardCharsets.UTF_8);
+    KeySpec spec = new PBEKeySpec(candidatePassword.toCharArray(), user.salt.getBytes(StandardCharsets.UTF_8), 65536, 128);
     try {
       SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
       hash = factory.generateSecret(spec).getEncoded();
@@ -89,7 +73,7 @@ public class AuthenticationService {
     }
 
     // 3. compare the hashed candidate password to the user's password hash stored in the DB
-    if(user.password.equals(Arrays.toString(hash))) {
+    if(user.password.equals(new String(hash, StandardCharsets.UTF_8))) {
       return true;
     }
 

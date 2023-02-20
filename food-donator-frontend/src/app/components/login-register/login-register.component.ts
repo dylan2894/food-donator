@@ -41,7 +41,7 @@ export class LoginRegisterComponent {
   async login() {
     const phoneNumCtrl = this.loginForm.controls['phone_num'];
     const passwordCtrl = this.loginForm.controls['password']
-    if(phoneNumCtrl.errors == null && passwordCtrl.errors == null) {
+    if() {
       this.invalidLoginForm = false;
       const input: LoginInput = {
         phone_num: phoneNumCtrl.value,
