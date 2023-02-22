@@ -5,13 +5,14 @@ import { DonorDonateComponent } from './components/donor-donate/donor-donate.com
 import { DonorSettingsComponent } from './components/donor-settings/donor-settings.component';
 import { LoginRegisterComponent } from './components/login-register/login-register.component';
 import { ReceiverMapComponent } from './components/receiver-map/receiver-map.component';
-import { AuthguardGuard } from './shared/authguard.guard';
+import { DonorGuard } from './shared/guard/donor.guard';
+import { DoneeGuard } from './shared/guard/donee.guard';
 
 const routes: Routes = [
-  { path: 'dashboard', component: DonorDashboardComponent, canActivate: [AuthguardGuard] }, //TODO protect these routes with a DonorGuard
-  { path: 'map', component: ReceiverMapComponent, canActivate: [AuthguardGuard] },
-  { path: 'donate', component: DonorDonateComponent, canActivate: [AuthguardGuard] },
-  { path: 'settings', component: DonorSettingsComponent, canActivate: [AuthguardGuard] },
+  { path: 'dashboard', component: DonorDashboardComponent, canActivate: [DonorGuard] }, //TODO protect these routes with a DonorGuard
+  { path: 'map', component: ReceiverMapComponent, canActivate: [DoneeGuard] },
+  { path: 'donate', component: DonorDonateComponent, canActivate: [DonorGuard] },
+  { path: 'settings', component: DonorSettingsComponent, canActivate: [DonorGuard] },
   { path: 'login', component: LoginRegisterComponent },
   { path: '**', component: LoginRegisterComponent }
 ];

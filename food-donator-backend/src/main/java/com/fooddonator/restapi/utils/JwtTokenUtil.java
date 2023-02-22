@@ -7,14 +7,11 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import com.fooddonator.restapi.model.User;
-import com.fooddonator.restapi.repository.DonorRepository;
 import com.fooddonator.restapi.repository.UserRepository;
-import com.fooddonator.restapi.repository.DoneeRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -34,25 +31,60 @@ public class JwtTokenUtil implements Serializable {
   private static final ResourceBundle resource = ResourceBundle.getBundle("application");
   private final String JWT_SECRET = resource.getString("jwt.secret");
 
-  JwtTokenUtil() {
-    System.out.println("JWT SECRET: " + JWT_SECRET);
-  }
+  JwtTokenUtil() {}
 
-	//generate token for user
-	public String generateToken(String userID) {
+	public String generateTokenForDonor(String userID) {
 		Map<String, Object> claims = new HashMap<>();
+    claims.put("aud", "donor");
 		return doGenerateToken(claims, userID);
 	}
 
-  //validate token
-	public Boolean validateToken(String token) {
+  public String generateTokenForDonee(String userID) {
+		Map<String, Object> claims = new HashMap<>();
+    claims.put("aud", "donee");
+		return doGenerateToken(claims, userID);
+	}
+
+	public Boolean validateTokenForDonor(String token) {
 		final String userID = getIdFromToken(token);
+    final String type = getTypeFromToken(token);
+
+    if(!type.equals("donor")) {
+      System.out.println("[JWT TOKEN UTIL] This user is not a donor.");
+      return false;
+    }
 
     //check if user with this id exists in the DB
     User user = new User();
     user.id = "";
     user = (User) this.userRepo.getUser(userID);
-    if(user.id.equals("")){
+    if("".equals(user.id)){
+      System.out.println("[JWT TOKEN UTIL] No user found which matches this JWT userID.");
+      return false;
+    }
+
+    if(isTokenExpired(token)) {
+      System.out.println("[JWT TOKEN UTIL] JWT is expired.");
+      return false;
+    }
+
+    return true;
+	}
+
+  public Boolean validateTokenForDonee(String token) {
+		final String userID = getIdFromToken(token);
+    final String type = getTypeFromToken(token);
+
+    if(!type.equals("donee")) {
+      System.out.println("[JWT TOKEN UTIL] This user is not a donee.");
+      return false;
+    }
+
+    //check if user with this id exists in the DB
+    User user = new User();
+    user.id = "";
+    user = (User) this.userRepo.getUser(userID);
+    if("".equals(user.id)){
       System.out.println("[JWT TOKEN UTIL] No user found which matches this JWT userID.");
       return false;
     }
@@ -69,6 +101,10 @@ public class JwtTokenUtil implements Serializable {
 	public String getIdFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
 	}
+
+  public String getTypeFromToken(String token) {
+    return getClaimFromToken(token, Claims::getAudience);
+  }
 
 	//retrieve expiration date from jwt token
 	public Date getExpirationDateFromToken(String token) {

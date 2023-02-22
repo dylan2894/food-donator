@@ -1,7 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RegisterDoneeInput } from 'src/app/models/inputs/register-donee-input.model';
-import { RegisterDonorInput } from 'src/app/models/inputs/register-donor-input.model';
+import { RegisterUserInput } from 'src/app/models/inputs/register-user-input.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +16,9 @@ export class RegistrationService {
     this.headers.set("Host", "http://localhost:4200");
   }
 
-  async registerDonor(donor: RegisterDonorInput): Promise<void> {
+  async registerUser(user: RegisterUserInput): Promise<void> {
     const req = new Promise((resolve, reject) => {
-      this.http.post<string|null>(this.baseUrl + "donor", donor, { headers: this.headers }).subscribe({
+      this.http.post<string|null>(this.baseUrl + "user", user, { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
@@ -38,24 +37,45 @@ export class RegistrationService {
     }
   }
 
-  async registerDonee(donee: RegisterDoneeInput): Promise<void> {
-    const req = new Promise((resolve, reject) => {
-      this.http.post<string|null>(this.baseUrl + "donee", donee, { headers: this.headers }).subscribe({
-        next: (resp) => {
-          resolve(resp);
-        },
-        error: (err: HttpErrorResponse) => {
-          reject(err);
-        }
-      });
-    });
+  // async registerDonor(donor: RegisterDonorInput): Promise<void> {
+  //   const req = new Promise((resolve, reject) => {
+  //     this.http.post<string|null>(this.baseUrl + "donor", donor, { headers: this.headers }).subscribe({
+  //       next: (resp) => {
+  //         resolve(resp);
+  //       },
+  //       error: (err: HttpErrorResponse) => {
+  //         reject(err);
+  //       }
+  //     });
+  //   });
 
-    try {
-      const response = await req as Map<string, string>
-      const json = JSON.parse(JSON.stringify(response));
-      console.log("[REGISTRATION SERVICE] registerDonee()", json);
-    } catch (e) {
-      console.error(e);
-    }
-  }
+  //   try {
+  //     const response = await req as Map<string, string>
+  //     const json = JSON.parse(JSON.stringify(response));
+  //     console.log("[REGISTRATION SERVICE] registerDonor()", json);
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // }
+
+  // async registerDonee(donee: RegisterDoneeInput): Promise<void> {
+  //   const req = new Promise((resolve, reject) => {
+  //     this.http.post<string|null>(this.baseUrl + "donee", donee, { headers: this.headers }).subscribe({
+  //       next: (resp) => {
+  //         resolve(resp);
+  //       },
+  //       error: (err: HttpErrorResponse) => {
+  //         reject(err);
+  //       }
+  //     });
+  //   });
+
+  //   try {
+  //     const response = await req as Map<string, string>
+  //     const json = JSON.parse(JSON.stringify(response));
+  //     console.log("[REGISTRATION SERVICE] registerDonee()", json);
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // }
 }

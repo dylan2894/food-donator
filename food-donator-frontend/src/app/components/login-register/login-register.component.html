@@ -20,6 +20,9 @@
       </div>
       <div id="register">
         <form [formGroup]="registerForm" (ngSubmit)="this.register()">
+          <label for="name">Name</label>
+          <input formControlName="name" class="input" placeholder="Joe's Restaurant">
+          <small *ngIf="invalidRegisterForm && registerForm.controls['name'].errors">Please enter a name</small>
           <label for="phone_num">Phone Number</label>
           <input formControlName="phone_num" class="input" placeholder="phone number">
           <small *ngIf="invalidRegisterForm && registerForm.controls['phone_num'].errors">Please enter a valid phone number</small>

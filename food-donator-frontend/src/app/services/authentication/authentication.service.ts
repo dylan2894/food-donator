@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { LoginInput } from 'src/app/models/inputs/login-input.model';
 import { ValidateJwtInput } from 'src/app/models/inputs/validate-jwt-input.model';
+import { User } from 'src/app/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,7 @@ export class AuthenticationService {
       const response = await req as string;
       const json = JSON.parse(JSON.stringify(response));
       //const token = response.get('token');
-      if(json.token !== undefined && json.token !== ''){
+      if(json !== undefined && json.token !== undefined && json.token !== ''){
         //store token
         window.sessionStorage.setItem('food-donator-token', json.token);
         return;
@@ -46,6 +47,7 @@ export class AuthenticationService {
       console.log("Login Response: ", json);
     } catch(e) {
       console.error("[AUTHENTICATION SERVICE] login()", e);
+      throw e;
     }
   }
 
@@ -54,7 +56,7 @@ export class AuthenticationService {
    * @param jwt The JWT token to validate
    * @returns True if the JWT is valid. False if the JWT is invalid.
    */
-  async isJwtValid(jwt: string): Promise<boolean> {
+  async isJwtValidForDonor(jwt: string): Promise<boolean> {
     if(jwt === "" || jwt === undefined) {
       return false;
     }
@@ -64,7 +66,7 @@ export class AuthenticationService {
     }
 
     const req = new Promise((resolve, reject) => {
-      this.http.post(this.baseUrl + "validateJwt", body, { headers: this.headers }).subscribe({
+      this.http.post(this.baseUrl + "validateJwtForDonor", body, { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
@@ -80,22 +82,27 @@ export class AuthenticationService {
         return true;
       }
     } catch(e) {
-      console.error("[AUTHENTICATION SERVICE] isJwtvalid()", e);
+      console.error("[AUTHENTICATION SERVICE] isJwtvalidForDonor()", e);
     }
     return false;
   }
 
   /**
-   * Checks what type of user the user with the provided phone number is.
-   * @param phoneNum The phone number of the user
-   * @returns Either 'donor', 'donee' or 'none'
+   * Checks whether the provided JWT is valid on the server-side
+   * @param jwt The JWT token to validate
+   * @returns True if the JWT is valid. False if the JWT is invalid.
    */
-  async typeOfUser(phoneNum: string): Promise<string> {
-    const body = {
-      phone_num: phoneNum
+  async isJwtValidForDonee(jwt: string): Promise<boolean> {
+    if(jwt === "" || jwt === undefined) {
+      return false;
     }
+
+    const body: ValidateJwtInput = {
+      jwt: jwt
+    }
+
     const req = new Promise((resolve, reject) => {
-      this.http.post(this.baseUrl + "type", body, { headers: this.headers }).subscribe({
+      this.http.post(this.baseUrl + "validateJwtForDonee", body, { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
@@ -106,12 +113,43 @@ export class AuthenticationService {
     });
 
     try {
-      const userTypeResponse = await req as Map<string, string>
-      return userTypeResponse.get("type") as string;
+      const response = await req as Map<string, boolean>;
+      if(response.get('status') === true) {
+        return true;
+      }
     } catch(e) {
-      console.error(e);
+      console.error("[AUTHENTICATION SERVICE] isJwtvalidForDonee()", e);
     }
-
-    return "none";
+    return false;
   }
+
+  /**
+   * Checks what type of user the user with the provided phone number is.
+   * @param phoneNum The phone number of the user
+   * @returns Either 'donor', 'donee' or 'none'
+   */
+  // async typeOfUser(phoneNum: string): Promise<string> {
+  //   const body = {
+  //     phone_num: phoneNum
+  //   }
+  //   const req = new Promise((resolve, reject) => {
+  //     this.http.post(this.baseUrl + "type", body, { headers: this.headers }).subscribe({
+  //       next: (resp) => {
+  //         resolve(resp);
+  //       },
+  //       error: (err: HttpErrorResponse) => {
+  //         reject(err);
+  //       }
+  //     });
+  //   });
+
+  //   try {
+  //     const userTypeResponse = await req as Map<string, string>
+  //     return userTypeResponse.get("type") as string;
+  //   } catch(e) {
+  //     console.error(e);
+  //   }
+
+  //   return "none";
+  // }
 }
