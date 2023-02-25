@@ -7,6 +7,8 @@ import com.fooddonator.restapi.repository.UserRepository;
 import com.fooddonator.restapi.utils.JwtTokenUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
+import java.util.Base64;
+
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.SecretKeyFactory;
 
@@ -69,7 +71,8 @@ public class AuthenticationService {
   /**
    * Hashes the provided plaintext password 
    * and then compares the result with the stored hash in the DB
-   * @param 
+   * @param user the user from the DB which corresponds to the phone number provided upon login
+   * @param candidatePassword the plaintext candidate password provided upon login
    * @return a boolean indicating whether the provided password matches the stored password
    */
   private boolean isPasswordCorrect(User user, String candidatePassword) {            
@@ -78,9 +81,12 @@ public class AuthenticationService {
       return false;
     }
 
-    // hash the candidate password
+    // Base64 decode the corresponding user's salt
+    byte[] decodedUserSalt = Base64.getDecoder().decode(user.salt);
+
+    // hash the candidate password along with the user's salt
     byte[] hash = "".getBytes(StandardCharsets.UTF_8);
-    KeySpec spec = new PBEKeySpec(candidatePassword.toCharArray(), user.salt, 65536, 128);
+    KeySpec spec = new PBEKeySpec(candidatePassword.toCharArray(), decodedUserSalt, 65536, 128);
     try {
       SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
       hash = factory.generateSecret(spec).getEncoded();
@@ -88,8 +94,11 @@ public class AuthenticationService {
       System.out.println(e);
     }
 
-    // compare the hashed candidate password to the user's password hash stored in the DB
-    if(user.password == hash) {
+    // Base64 encode the hashed candidate password
+    String encodedHashedCandidatePassword = Base64.getEncoder().encodeToString(hash);
+
+    // compare the encoded hashed candidate password to the user's encoded password hash stored in the DB
+    if(user.password.equals(encodedHashedCandidatePassword)) {
       return true;
     }
 

@@ -13,7 +13,6 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.SerializationUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -90,9 +89,9 @@ public class UserRepository {
       Map target = many.get(0);
       User user = new User();
       user.id = target.get("id").toString();
-      user.password = SerializationUtils.serialize(target.get("password"));
+      user.password = target.get("password").toString();
       user.phone_num = target.get("phone_num").toString();
-      user.salt = SerializationUtils.serialize(target.get("salt"));
+      user.salt = target.get("salt").toString();
       user.lat = ((Number) target.get("lat")).doubleValue();
       user.lon = ((Number) target.get("lon")).doubleValue();
       user.name = target.get("name").toString();
@@ -131,9 +130,9 @@ public class UserRepository {
     Map target = many.get(0);
     User user = new User();
     user.id = target.get("id").toString();
-    user.password = SerializationUtils.serialize(target.get("password"));
+    user.password =target.get("password").toString();
     user.phone_num = target.get("phone_num").toString();
-    user.salt = SerializationUtils.serialize(target.get("salt"));
+    user.salt = target.get("salt").toString();
     user.lat = ((Number) target.get("lat")).doubleValue();
     user.lon = ((Number) target.get("lon")).doubleValue();
     user.name = target.get("name").toString();

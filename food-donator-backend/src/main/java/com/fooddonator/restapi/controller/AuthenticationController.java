@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fooddonator.restapi.service.AuthenticationService;
 import com.fooddonator.restapi.constants.RequestKeys;
 import com.fooddonator.restapi.constants.ResponseKeys;
-import com.fooddonator.restapi.model.UserInput;
+import com.fooddonator.restapi.model.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,7 +32,7 @@ public class AuthenticationController {
    * @return A map containing a 'token' key and a JWT token if successful. Else, an 'error' key and an error message.
    */
   @PostMapping("/login")
-  public ResponseEntity<Map<String, String>> authenticate(@RequestBody UserInput user) {
+  public ResponseEntity<Map<String, String>> authenticate(@RequestBody User user) {
     if(user.phone_num == null || user.password == null) {
       System.out.println("[AUTH CONTROLLER] Phone number or password is empty.");
       Map<String, String> emptyResp = new HashMap<>();

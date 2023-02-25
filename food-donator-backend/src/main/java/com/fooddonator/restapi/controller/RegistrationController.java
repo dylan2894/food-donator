@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import com.fooddonator.restapi.constants.ResponseKeys;
 import com.fooddonator.restapi.model.User;
-import com.fooddonator.restapi.model.UserInput;
 import com.fooddonator.restapi.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class RegistrationController {
 
   @PostMapping("/user")
   @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
-  public ResponseEntity<Map> registerUser(@RequestBody UserInput user) {
+  public ResponseEntity<Map> registerUser(@RequestBody User user) {
     Map<String, String> msg = new HashMap<>();
 
     // check if user exists already

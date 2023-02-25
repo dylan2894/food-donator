@@ -3,12 +3,12 @@ package com.fooddonator.restapi.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fooddonator.restapi.model.User;
-import com.fooddonator.restapi.model.UserInput;
 import com.fooddonator.restapi.repository.UserRepository;
-import com.fooddonator.restapi.utils.UserInputMapper;
 
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
+import java.util.Base64;
+
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.SecretKeyFactory;
 
@@ -23,7 +23,7 @@ public class RegistrationService {
    * and then creates a new {@link User} in the User table within the DB
    * @param candidatePassword the password of the new User to register on the system
    */
-  public boolean registerUser(UserInput userInput) throws Exception {
+  public boolean registerUser(User userInput) throws Exception {
     // 1. create a random salt
     SecureRandom random = new SecureRandom();
     byte[] newSalt = new byte[16];
@@ -37,17 +37,19 @@ public class RegistrationService {
       throw e;
     }
 
-    User user = UserInputMapper.MapUserInputToUser(userInput);
+    //TODO convert hashedPassword and newSalt to Base64 encoded strings
+    String encodedHashedPassword = Base64.getEncoder().encodeToString(hashedPassword);
+    String encodedNewSalt = Base64.getEncoder().encodeToString(newSalt);
 
-    // 3. set the new password to be the password hash
-    user.password = hashedPassword;
+    // 3. set the new password to be the Base64-encoded password hash
+    userInput.password = encodedHashedPassword;
 
-    // 4. save the password salt
-    user.salt = newSalt;
+    // 4. save the Base64-encoded password salt
+    userInput.salt = encodedNewSalt;
 
     // 5. create a new user in the DB
     try {
-      this.userRepo.createUser(user);
+      this.userRepo.createUser(userInput);
     } catch (Exception e) {
       throw e;
     }
@@ -57,60 +59,6 @@ public class RegistrationService {
   }
 
   /**
-   * creates a hash of the provided password for storage 
-   * and then creates a new donor in the Donor table within the DB
-   * @param donor the new donor to register on the system
-   */
-  // public void registerDonor(Donor donor) {
-  //   // 1. create a random salt
-  //   SecureRandom random = new SecureRandom();
-  //   byte[] newSalt = new byte[16];
-  //   random.nextBytes(newSalt);
-
-  //   String saltString = new String(newSalt, StandardCharsets.UTF_8);
-    
-  //   // 2. hash the password
-  //   byte[] hashedPassword = this.createPasswordHash(donor.password, saltString.getBytes());
-
-  //   // 3. set the new password to be the password hash
-  //   donor.password = new String(hashedPassword, StandardCharsets.UTF_8);
-
-  //   // 4. save the password salt
-  //   donor.salt = saltString;
-
-  //   // 5. create a new donor in the DB
-  //   this.donorRepository.createDonor(donor);
-  //   System.out.println("[REGISTRATION SERVICE] registerDonor()");
-  // }
-
-  /**
-   * creates a hashed password for a new {@link Donee} 
-   * and then creates the new {@link Donee} in the DB 
-   * @param donee the new donee to create on the system
-   */
-  // public void registerDonee(Donee donee) {
-  //   // 1. create a random salt
-  //   SecureRandom random = new SecureRandom();
-  //   byte[] newSalt = new byte[16];
-  //   random.nextBytes(newSalt);
-
-  //   String saltString = new String(newSalt, StandardCharsets.UTF_8);
-
-  //   // 2. hash the password
-  //   byte[] hashedPassword = this.createPasswordHash(donee.password, saltString.getBytes());
-
-  //   // 3. set the new password to be the password hash
-  //   donee.password = new String(hashedPassword, StandardCharsets.UTF_8);
-
-  //   // 4. save the password salt
-  //   donee.salt = saltString;
-
-  //   // 5. create a new donee in the DB
-  //   this.doneeRepository.createDonee(donee);
-  //   System.out.println("[REGISTRATION SERVICE] registerDonee()");
-  // }
-
-    /**
    * creates a salted hash for the provided password using the PBKDF2 algorithm
    * @param password the user defined plaintext password
    * @return salted and hashed result of provided password

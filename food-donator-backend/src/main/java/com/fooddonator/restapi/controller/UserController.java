@@ -46,6 +46,18 @@ public class UserController {
     return new ResponseEntity<>((Map) user, HttpStatus.OK);
   }
 
+  @GetMapping("/readOneByPhoneNum")
+  public ResponseEntity<Map> getUserByPhoneNum(@RequestParam String phoneNum) {
+    System.out.println("[USER CONTROLLER] /user/readOneByPhoneNum");
+    User user = repository.getUserByPhoneNum(phoneNum);
+    if(user == null) {
+      HashMap<String, String> body = new HashMap<>();
+      body.put(ResponseKeys.ERROR, "User with phone number: " + phoneNum + " not found.");
+      return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<>((Map) user, HttpStatus.OK);
+  }
+
   @GetMapping("/readAll")
   public List<Map> getUsers() {
     System.out.println("[USER CONTROLLER] /user/readAll");

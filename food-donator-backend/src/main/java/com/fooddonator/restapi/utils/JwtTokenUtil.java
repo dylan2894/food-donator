@@ -46,7 +46,7 @@ public class JwtTokenUtil implements Serializable {
 	}
 
 	public Boolean validateTokenForDonor(String token) {
-		final String userID = getIdFromToken(token);
+		final String userPhoneNum = getIdFromToken(token);
     final String type = getTypeFromToken(token);
 
     if(!type.equals("donor")) {
@@ -55,10 +55,14 @@ public class JwtTokenUtil implements Serializable {
     }
 
     //check if user with this id exists in the DB
-    User user = new User();
-    user.id = "";
-    user = (User) this.userRepo.getUser(userID);
-    if("".equals(user.id)){
+    User user;
+    user = (User) this.userRepo.getUserByPhoneNum(userPhoneNum);
+    if(user == null) {
+      System.out.println("[JWT TOKEN UTIL] No user found with this ID.");
+      return false;
+    }
+
+    if(user.id == null){
       System.out.println("[JWT TOKEN UTIL] No user found which matches this JWT userID.");
       return false;
     }
@@ -72,7 +76,7 @@ public class JwtTokenUtil implements Serializable {
 	}
 
   public Boolean validateTokenForDonee(String token) {
-		final String userID = getIdFromToken(token);
+		final String userPhoneNum = getIdFromToken(token);
     final String type = getTypeFromToken(token);
 
     if(!type.equals("donee")) {
@@ -81,10 +85,14 @@ public class JwtTokenUtil implements Serializable {
     }
 
     //check if user with this id exists in the DB
-    User user = new User();
-    user.id = "";
-    user = (User) this.userRepo.getUser(userID);
-    if("".equals(user.id)){
+    User user;
+    user = (User) this.userRepo.getUserByPhoneNum(userPhoneNum);
+    if(user == null) {
+      System.out.println("[JWT TOKEN UTIL] No user found with this phone number.");
+      return false;
+    }
+
+    if(user.id == null){
       System.out.println("[JWT TOKEN UTIL] No user found which matches this JWT userID.");
       return false;
     }

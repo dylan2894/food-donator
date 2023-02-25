@@ -2,7 +2,6 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { LoginInput } from 'src/app/models/inputs/login-input.model';
 import { ValidateJwtInput } from 'src/app/models/inputs/validate-jwt-input.model';
-import { User } from 'src/app/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,15 +37,14 @@ export class AuthenticationService {
     try {
       const response = await req as string;
       const json = JSON.parse(JSON.stringify(response));
-      //const token = response.get('token');
-      if(json !== undefined && json.token !== undefined && json.token !== ''){
-        //store token
+      if(json != null && json.token !== undefined && json.token !== ''){
+        // store token
         window.sessionStorage.setItem('food-donator-token', json.token);
         return;
       }
-      console.log("Login Response: ", json);
+      console.log("[AUTH SERVICE] json response does not contain token");
     } catch(e) {
-      console.error("[AUTHENTICATION SERVICE] login()", e);
+      console.error("[AUTH SERVICE] login() error", e);
       throw e;
     }
   }
@@ -57,7 +55,7 @@ export class AuthenticationService {
    * @returns True if the JWT is valid. False if the JWT is invalid.
    */
   async isJwtValidForDonor(jwt: string): Promise<boolean> {
-    if(jwt === "" || jwt === undefined) {
+    if(jwt === "" || jwt == null) {
       return false;
     }
 
@@ -78,11 +76,17 @@ export class AuthenticationService {
 
     try {
       const response = await req as Map<string, boolean>;
-      if(response.get('status') === true) {
-        return true;
+      const json = JSON.parse(JSON.stringify(response));
+      if(json != null && json.status != undefined) {
+        if(json.status === true) {
+          return true;
+        }
+        console.error("[AUTH SERVICE] invalid donor jwt.");
+        return false;
       }
+      console.error("[AUTH SERVICE] json response does not contain 'status'.");
     } catch(e) {
-      console.error("[AUTHENTICATION SERVICE] isJwtvalidForDonor()", e);
+      console.error("[AUTH SERVICE] isJwtvalidForDonor()", e);
     }
     return false;
   }
@@ -114,9 +118,15 @@ export class AuthenticationService {
 
     try {
       const response = await req as Map<string, boolean>;
-      if(response.get('status') === true) {
-        return true;
+      const json = JSON.parse(JSON.stringify(response));
+      if(json != null && json.status != undefined) {
+        if(json.status === true) {
+          return true;
+        }
+        console.error("[AUTH SERVICE] invalid donee jwt.");
+        return false;
       }
+      console.error("[AUTH SERVICE] json response does not contain 'status'.");
     } catch(e) {
       console.error("[AUTHENTICATION SERVICE] isJwtvalidForDonee()", e);
     }

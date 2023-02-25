@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginInput } from 'src/app/models/inputs/login-input.model';
-import { RegisterDoneeInput } from 'src/app/models/inputs/register-donee-input.model';
 import { RegisterUserInput } from 'src/app/models/inputs/register-user-input.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { RegistrationService } from 'src/app/services/registration/registration.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-login-register',
@@ -18,7 +18,7 @@ export class LoginRegisterComponent {
   invalidRegisterForm: boolean;
   invalidLoginForm: boolean;
 
-  constructor(private fb: FormBuilder, private authService: AuthenticationService, private registrationService: RegistrationService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthenticationService, private registrationService: RegistrationService, private router: Router, private userService: UserService) {
     this.loginForm = fb.group({
       phone_num: new FormControl('', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]),
       password: new FormControl('', [Validators.required])
@@ -49,7 +49,18 @@ export class LoginRegisterComponent {
         password: passwordCtrl.value
       }
       try {
-       await this.authService.login(input);
+        await this.authService.login(input);
+        const user = await this.userService.getUserByPhoneNum(phoneNumCtrl.value);
+        if(user != null) {
+          if(user.type === 'donor') {
+            this.router.navigateByUrl('/dashboard');
+            return;
+          } else if(user.type === 'donee') {
+            this.router.navigateByUrl('/map');
+            return;
+          }
+        }
+        console.error("[LOGIN-REG COMPONENT] login() getUserByPhoneNum() user is null.");
       } catch(e) {
         console.error("Cannot login: ", e);
         M.toast({html: 'Incorrect details. Cannot sign in.'})

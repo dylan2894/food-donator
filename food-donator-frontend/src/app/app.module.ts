@@ -19,8 +19,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DonorSettingsComponent } from './components/donor-settings/donor-settings.component';
-import { DonorServiceModule } from './services/donor/donor-service.module';
 import { LoginRegisterComponent } from './components/login-register/login-register.component';
+import { UserModule } from './services/user/user.module';
 
 @NgModule({
   declarations: [
@@ -40,7 +40,7 @@ import { LoginRegisterComponent } from './components/login-register/login-regist
     GoogleMapsModule,
     AuthenticationModule,
     RegistrationModule,
-    DonorServiceModule,
+    UserModule,
     MatStepperModule,
     MatInputModule,
     MatButtonModule,
