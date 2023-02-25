@@ -11,12 +11,43 @@
   --light: #FBF5F3; /* Snow */
 }
 
+/* Custom scrollbar */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--dark);
+  border-radius: 25px;
+  height: 90%;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #8b8b8b;
+  border-radius: 25px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 google-map {
   display: block;
   width: 100%;
   height: 100%;
 }
 
+p {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
 
 /** Container for Donor Select and Saved Pins Switch */
 .wrapper {
@@ -30,7 +61,6 @@ google-map {
   width: 250px;
   padding-right: 25px;
   border-radius: 8px;
-
   background-color: var(--secondary);
 }
 
@@ -77,7 +107,7 @@ google-map {
   border-radius: 10px;
 
   background-color: rgba(var(--darkRGB), 0.5);
-  z-index: 99999;
+  z-index: 999;
 }
 
 #hiddenMenu:hover {
@@ -89,4 +119,104 @@ google-map {
   top: 0px;
   left: 0px;
   background-color: var(--primary);
+}
+
+#modal1 {
+  z-index: 99999;
+  overflow-y: hidden;
+  background-color: var(--secondary);
+  overflow-y: scroll;
+}
+
+tr, td, th {
+  height: 40px;
+  padding: 2px;
+}
+
+#savedPinsContainer {
+  float: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#savedPinsContainer > i {
+  margin-right: 10px;
+}
+
+#flexContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+#modalHeading {
+  display: inline;
+  width: fit-content;
+  margin: 0;
+}
+
+.material-symbols-outlined:hover {
+  color: var(--primary);
+}
+
+.btn {
+  margin: 0;
+}
+
+#scheduleContainer {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #b4b4b4;
+  border-radius: 10px;
+
+  max-height: 30vh;
+  width: 100%;
+  overflow-y: scroll;
+  scrollbar-width: 0px;
+}
+
+#actionButtonsContainer {
+  display: inline-block;
+  margin: 0;
+}
+
+/* Bigger screens */
+@media only screen and (min-width: 769px) {
+  #scheduleContainer {
+    width: 50%;
+  }
+
+  #flexContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+  }
+
+  #savedPinsContainer {
+    float: right;
+  }
+
+  #actionButtonsContainer {
+    display: inline-block;
+    margin: 0;
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  #modal1::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  #modal1 {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 }
