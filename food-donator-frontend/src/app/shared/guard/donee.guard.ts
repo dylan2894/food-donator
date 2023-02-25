@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
@@ -8,7 +8,7 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 })
 export class DoneeGuard implements CanActivate {
 
-  constructor(private authService: AuthenticationService) {}
+  constructor(private authService: AuthenticationService, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -22,9 +22,20 @@ export class DoneeGuard implements CanActivate {
 
     if(jwt !== null && jwt !== '') {
       // validate the JWT on the server-side
-      return this.authService.isJwtValidForDonee(jwt);
+      const validDonee = await this.authService.isJwtValidForDonee(jwt);
+      if(!validDonee) {
+        // check if this is a donor
+        const validDonor = await this.authService.isJwtValidForDonor(jwt);
+        if(validDonor) {
+          // redirect
+          this.router.navigateByUrl('/dashboard');
+          return false;
+        }
+        this.router.navigateByUrl('/login');
+        return false;
+      }
     }
-    return false;
+    return true;
   }
 
 }

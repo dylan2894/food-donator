@@ -1,11 +1,12 @@
+com\fooddonator\restapi\constants\ResponseKeys.class
+com\fooddonator\restapi\service\RegistrationService.class
 com\fooddonator\restapi\Application.class
 com\fooddonator\restapi\constants\RequestKeys.class
 com\fooddonator\restapi\repository\UserRepository.class
 com\fooddonator\restapi\utils\JwtTokenUtil.class
-com\fooddonator\restapi\constants\ResponseKeys.class
 com\fooddonator\restapi\model\User.class
 com\fooddonator\restapi\service\AuthenticationService.class
-com\fooddonator\restapi\service\RegistrationService.class
+com\fooddonator\restapi\utils\UserMapper.class
 com\fooddonator\restapi\controller\RegistrationController.class
 com\fooddonator\restapi\controller\UserController.class
 com\fooddonator\restapi\controller\AuthenticationController.class

@@ -2,6 +2,9 @@ package com.fooddonator.restapi.controller;
 
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nullable;
+
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,27 +38,26 @@ public class UserController {
   // }
   
   @GetMapping("/readOne")
-  public ResponseEntity<Map> getUser(@RequestParam String id) {
+  public ResponseEntity<User> getUser(@RequestParam String id) {
     System.out.println("[USER CONTROLLER] /user/readOne");
     User user = repository.getUser(id);
     if(user == null) {
-      HashMap<String, String> body = new HashMap<>();
-      body.put(ResponseKeys.ERROR, "User with id: " + id + " not found.");
-      return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+      System.out.println("[USER CONTROLLER] User with id: " + id + " not found.");
+      return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
     }
-    return new ResponseEntity<>((Map) user, HttpStatus.OK);
+    return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
   @GetMapping("/readOneByPhoneNum")
-  public ResponseEntity<Map> getUserByPhoneNum(@RequestParam String phoneNum) {
+  public ResponseEntity<User> getUserByPhoneNum(@RequestParam String phoneNum) {
     System.out.println("[USER CONTROLLER] /user/readOneByPhoneNum");
     User user = repository.getUserByPhoneNum(phoneNum);
     if(user == null) {
       HashMap<String, String> body = new HashMap<>();
-      body.put(ResponseKeys.ERROR, "User with phone number: " + phoneNum + " not found.");
-      return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+      System.out.println("[USER CONTROLLER] User with phone number: " + phoneNum + " not found.");
+      return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
     }
-    return new ResponseEntity<>((Map) user, HttpStatus.OK);
+    return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
   @GetMapping("/readAll")
