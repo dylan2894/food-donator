@@ -59,7 +59,6 @@ export class ReceiverMapComponent implements OnInit {
 
   markers: IMarker[] = [];
 
-  //TODO convert this to user service
   constructor(private userService: UserService) {
     this.userService.getDonors().then((donors: User[] | null) => {
       if(donors != null) {
@@ -128,7 +127,6 @@ export class ReceiverMapComponent implements OnInit {
       });
 
       $( "#slide-out" ).on("close", () => {
-        alert('sd');
         this.closeMenu();
       });
     });
