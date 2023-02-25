@@ -8,7 +8,7 @@
     </div>
 
     <div id="logoutWrapper">
-      <span class="material-symbols-outlined" style="float: left;">
+      <span (click)="this.logout()" class="material-symbols-outlined" style="float: left;">
         logout
       </span>
       <span [routerLink]="['/settings']" class="material-symbols-outlined" style="float: right;">

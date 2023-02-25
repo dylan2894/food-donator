@@ -21,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DonorSettingsComponent } from './components/donor-settings/donor-settings.component';
 import { LoginRegisterComponent } from './components/login-register/login-register.component';
 import { UserModule } from './services/user/user.module';
+import { DonorComponent } from './components/donor/donor.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { UserModule } from './services/user/user.module';
     DonorDonateComponent,
     SidenavComponent,
     DonorSettingsComponent,
-    LoginRegisterComponent
+    LoginRegisterComponent,
+    DonorComponent
   ],
   imports: [
     BrowserModule,

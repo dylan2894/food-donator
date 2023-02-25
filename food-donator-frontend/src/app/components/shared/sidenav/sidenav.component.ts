@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav',
@@ -6,7 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent {
-  goToDonate() {
-    $('app-donor-donate').css('display', 'block');
+
+  constructor(private router: Router){}
+
+  logout() {
+    window.sessionStorage.removeItem("food-donator-token");
+    this.router.navigateByUrl("/login");
   }
 }
