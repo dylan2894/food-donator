@@ -31,11 +31,12 @@ export class DoneeGuard implements CanActivate {
           this.router.navigateByUrl('/dashboard');
           return false;
         }
-        this.router.navigateByUrl('/login');
-        return false;
+      } else {
+        return true;
       }
     }
-    return true;
+    this.router.navigateByUrl('/login');
+    return false;
   }
 
 }

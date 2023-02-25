@@ -30,10 +30,11 @@ export class DonorGuard implements CanActivate {
           this.router.navigateByUrl('/map');
           return false;
         }
-        this.router.navigateByUrl('/login');
-        return false;
+      } else {
+        return true;
       }
     }
-    return true;
+    this.router.navigateByUrl('/login');
+    return false;
   }
 }
