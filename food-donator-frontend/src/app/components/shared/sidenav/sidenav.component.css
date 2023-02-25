@@ -22,9 +22,9 @@
   transition: all 150ms;
 }
 
-.material-symbols-outlined:hover {
+/* .material-symbols-outlined:hover {
   color: var(--secondary);
-}
+} */
 
 .navContainer {
   display: inline-block;

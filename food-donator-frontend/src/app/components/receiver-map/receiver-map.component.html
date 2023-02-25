@@ -12,45 +12,59 @@
 </div>
 
 <!-- Donor Select -->
-<!-- <div class="wrapper"> -->
-  <div id="donorSelect" class="input-field col s12">
-    <select id="donorInnerSelect">
-      <option value="" disabled selected>Choose your option</option>
-      <option *ngFor="let donor of donors" [value]="donor.id">
-        {{ donor.name }}
-      </option>
-    </select>
-    <label id="donorSelectLabel">Select Donor</label>
-  </div>
+<div id="donorSelect" class="input-field col s12">
+  <select id="donorInnerSelect">
+    <option value="" disabled selected>Choose your option</option>
+    <option *ngFor="let donor of donors" [value]="donor.id">
+      {{ donor.name }}
+    </option>
+  </select>
+  <label id="donorSelectLabel">Select Donor</label>
+</div>
 
-  <!-- Saved Pins Switch -->
-  <div class="switch">
-    <span class="material-symbols-outlined center booksmarksIcon">bookmarks</span>
-    <span class="center">View Saved Pins</span>
-    <label class="center">
-      <input type="checkbox">
-      <span class="lever"></span>
-    </label>
-  </div>
-<!-- </div> -->
+<!-- Saved Pins Switch -->
+<div class="switch pins-switch">
+  <span class="material-symbols-outlined center booksmarksIcon">bookmarks</span>
+  <span class="center">View Saved Pins</span>
+  <label class="center">
+    <input type="checkbox">
+    <span class="lever"></span>
+  </label>
+</div>
 
 <div id="hiddenMenu" (click)="this.openMenu()"></div>
 
 <!-- Popout Sidenav -->
 <ul id="slide-out" class="sidenav">
-  <li><div class="user-view">
-    <div class="background">
-      <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80">
+  <li>
+    <div class="user-view">
+      <h3>Settings</h3>
     </div>
-    <a href="#user"><img class="circle" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"></a>
-    <a href="#name"><span class="white-text name">John Doe</span></a>
-    <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
-  </div></li>
-  <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-  <li><a href="#!">Second Link</a></li>
-  <li><div class="divider"></div></li>
-  <li><a class="subheader">Subheader</a></li>
-  <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+  </li>
+  <li>
+    <div class="user-view">
+      <h5>Push notifications</h5>
+      <div class="switch">
+        <label>
+          Off
+          <input type="checkbox">
+          <span class="lever"></span>
+          On
+        </label>
+      </div>
+    </div>
+  </li>
+  <li>
+    <div class="user-view">
+      <h5>Personal Information</h5>
+      Phone Number
+      <input type="text" placeholder="0827263872" readonly>
+      <button class="btn">Edit Phone Number</button>
+    </div>
+  </li>
+  <li id="logout">
+    <i (click)="this.logout()" class="material-symbols-outlined medium">logout</i>
+  </li>
 </ul>
 
 <!-- Modal Trigger -->

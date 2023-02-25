@@ -70,7 +70,7 @@ p {
   padding-left: 25px;
 }
 
-.switch {
+.pins-switch {
   position: absolute;
   display: flex;
   flex-direction: row;
@@ -184,6 +184,20 @@ tr, td, th {
 #actionButtonsContainer {
   display: inline-block;
   margin: 0;
+}
+
+#logout {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+}
+
+.material-symbols-outlined:active {
+  color: var(--dark);
+}
+
+.material-symbols-outlined:hover {
+  color: var(--dark);
 }
 
 /* Bigger screens */

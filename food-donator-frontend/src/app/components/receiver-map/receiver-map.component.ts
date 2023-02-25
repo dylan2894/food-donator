@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 // import { GoogleMap } from '@angular/google-maps';
 import M from 'materialize-css';
 import { User } from 'src/app/models/user.model';
@@ -59,7 +60,7 @@ export class ReceiverMapComponent implements OnInit {
 
   markers: IMarker[] = [];
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private router: Router) {
     this.userService.getDonors().then((donors: User[] | null) => {
       if(donors != null) {
         this.donors = donors;
@@ -130,6 +131,12 @@ export class ReceiverMapComponent implements OnInit {
         this.closeMenu();
       });
     });
+  }
+
+  logout() {
+    window.sessionStorage.removeItem("food-donator-token");
+    this.closeMenu();
+    this.router.navigateByUrl("/login");
   }
 
   openMenu() {
