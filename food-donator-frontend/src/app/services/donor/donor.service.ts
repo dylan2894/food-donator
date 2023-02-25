@@ -1,25 +1,25 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from 'src/app/models/user.model';
+import { Donor } from 'src/app/models/donor.model';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class DonorService {
   baseUrl: string;
   headers: HttpHeaders = new HttpHeaders();
 
   constructor(private http: HttpClient) {
     //TODO inject base url
-    this.baseUrl = "http://localhost:8080/user";
+    this.baseUrl = "http://localhost:8080";
     this.headers.set("Origin", "http://localhost:4200");
     this.headers.set("Host", "http://localhost:4200");
   }
 
-  async getUserByPhoneNum(phoneNum: string): Promise<User | null> {
+  async getDonor(id: string): Promise<Donor | null> {
     const req = new Promise((resolve, reject) => {
-      this.http.get(this.baseUrl + "/readOneByPhoneNum?phoneNum=" + phoneNum, { headers: this.headers }).subscribe({
+      this.http.get(this.baseUrl + "/donor/readOne?id=" + id, { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
@@ -30,17 +30,17 @@ export class UserService {
     });
 
     try {
-      const resp = await req as User;
+      const resp = await req as Donor;
       return resp;
     } catch(e) {
-      console.error("[DONOR SERVICE] getUserByPhoneNum() error", e);
+      console.error("[DONOR SERVICE] getDonor()", e);
     }
     return null;
   }
 
-  async getDonors(): Promise<User[] | null> {
+  async getDonors(): Promise<Donor[] | null> {
     const req = new Promise((resolve, reject) => {
-      this.http.get(this.baseUrl + "/readDonors", { headers: this.headers }).subscribe({
+      this.http.get(this.baseUrl + "/donor/readAll", { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
@@ -51,11 +51,10 @@ export class UserService {
     });
 
     try {
-      return await req as User[];
+      return await req as Donor[];
     } catch(e) {
-      console.error("[DONOR SERVICE] getDonors() error", e);
+      console.error("[DONOR SERVICE] getDonor()", e);
     }
     return null;
   }
-
 }

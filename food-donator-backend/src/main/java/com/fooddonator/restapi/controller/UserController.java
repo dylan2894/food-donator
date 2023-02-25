@@ -59,11 +59,17 @@ public class UserController {
   }
 
   @GetMapping("/readAll")
-  public List<Map> getUsers() {
+  public List<User> getUsers() {
     System.out.println("[USER CONTROLLER] /user/readAll");
     return repository.getUsers();
   }
 
+  @GetMapping("/readDonors")
+  public List<User> getDonors() {
+    System.out.println("[USER CONTROLLER] /user/readDonors");
+    return repository.getDonors();
+  }
+  
   // @PostMapping("/update")
   // public void updateDonor(@RequestBody Donor donor) {
   //   System.out.println("[CONTROLLER] /donor/update");

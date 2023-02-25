@@ -9,7 +9,7 @@ import { DonorGuard } from './shared/guard/donor.guard';
 import { DoneeGuard } from './shared/guard/donee.guard';
 
 const routes: Routes = [
-  { path: 'dashboard', component: DonorDashboardComponent, canActivate: [DonorGuard] }, //TODO protect these routes with a DonorGuard
+  { path: 'dashboard', component: DonorDashboardComponent, canActivate: [DonorGuard] },
   { path: 'map', component: ReceiverMapComponent, canActivate: [DoneeGuard] },
   { path: 'donate', component: DonorDonateComponent, canActivate: [DonorGuard] },
   { path: 'settings', component: DonorSettingsComponent, canActivate: [DonorGuard] },

@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fooddonator.restapi.model.User;
+import com.fooddonator.restapi.utils.UserMapper;
 
 @PropertySource("classpath:application.properties")
 @Repository
@@ -140,7 +141,7 @@ public class UserRepository {
     return user;
   }
 
-  public List<Map> getUsers() {
+  public List<User> getUsers() {
     var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
     .pathSegment("/user/rows")
     .build()
@@ -149,13 +150,52 @@ public class UserRepository {
       .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
       .build();
     
-    ResponseEntity<Map> response =
+    ResponseEntity<Map> rateResponse =
     restTemplate.exchange(
       request,
       Map.class
     );
-    Map data = response.getBody();
-    return (ArrayList<Map>) data.get("data");
+    Map data = rateResponse.getBody();
+    ArrayList<Map> many = (ArrayList<Map>) data.get("data");
+    if(many.size() <= 0) {
+      return null;
+    }
+
+    List<User> response = new ArrayList<>();
+    for (Map map : many) {
+      response.add(UserMapper.MapUserJsonToUser(map));
+    }
+
+    return response;
+  }
+
+  public List<User> getDonors() {
+    System.out.println("\n[USER REPO] getDonors\n");
+    String search = "{\"type\":{\"$eq\":\"donor\"}}";
+    var request = RequestEntity.get(baseUrl + "/user?where={search}")
+      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .build();
+      
+    ResponseEntity<Map> rateResponse =
+    restTemplate.exchange(
+      baseUrl + "/user?where={search}",
+      HttpMethod.GET,
+      request,
+      Map.class,
+      search
+    );
+    Map data = rateResponse.getBody();
+    ArrayList<Map> many = (ArrayList<Map>) data.get("data");
+    if(many.size() <= 0) {
+      return null;
+    }
+
+    List<User> response = new ArrayList<>();
+    for (Map map : many) {
+      response.add(UserMapper.MapUserJsonToUser(map));
+    }
+
+    return response;
   }
 
   /**
