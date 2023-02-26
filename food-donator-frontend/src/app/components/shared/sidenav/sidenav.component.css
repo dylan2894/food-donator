@@ -1,5 +1,5 @@
 #slide-out {
-  position: relative;
+  position: fixed;
   display: inline-block;
   left: 300px;
   height: 100vh;

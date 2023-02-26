@@ -1,0 +1,21 @@
+button {
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+}
+
+i {
+  margin-right: 10px;
+}
+
+.inlineEditControls {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+#editLocationBtn {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

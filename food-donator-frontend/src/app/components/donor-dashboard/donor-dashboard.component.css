@@ -24,10 +24,6 @@ ul {
   justify-content: center;
 }
 
-app-donor-donate {
-  display: none;
-}
-
 #subtitle {
   opacity: 0.8;
 }
