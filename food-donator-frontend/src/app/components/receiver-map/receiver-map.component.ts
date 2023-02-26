@@ -60,7 +60,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     this.center = { lat: -25.781951024040037, lng: 28.338064949199595 };
     this.mapOptions = {
       //center: { lat: -25.781951024040037, lng: 28.338064949199595 },
-      zoom: 16,
+      //zoom: 16,
       zoomControl: true,
       mapTypeControl: false,
       streetViewControl: true,
@@ -87,6 +87,11 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       west = west !== 0 ? Math.min(west, marker.position.lng) : marker.position.lng;
     }
 
+    north += 0.005;
+    south -= 0.002;
+    //east += 0.005;
+    //west += 0.01;
+
     const bounds: google.maps.LatLngBoundsLiteral = { north: north!, south: south!, east: east!, west: west! };
 
     return bounds;
@@ -98,15 +103,16 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
    */
   async onChange(event: any) {
     const donorId: string = event.target.value;
-    const donor = await this.userService.getUser(donorId);
-    if(donor != null) {
-      const newCenter: CenterMapInput = {
-        lat: donor.lat!,
-        lng: donor.lon!
+    this.donors.forEach((donor: User) => {
+      if(donor.id == donorId) {
+        const newCenter: CenterMapInput = {
+          lat: donor.lat!,
+          lng: donor.lon!
+        }
+        this.center = newCenter;
+        this.map.googleMap?.setCenter(this.center);
       }
-      this.center = newCenter;
-      this.map.googleMap?.setCenter(this.center);
-    }
+    });
   }
 
   ngOnInit() {
