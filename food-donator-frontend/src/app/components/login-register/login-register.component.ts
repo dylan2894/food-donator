@@ -89,9 +89,10 @@ export class LoginRegisterComponent {
           type: typeOfUserCtrl.value,
           phone_num: phoneNumCtrl.value,
           password: passwordCtrl.value,
-          lat: -25.774846046008786,
-          lon: 28.269390595747705
+          lat: -25.778015465668425,
+          lon: 28.256784309020002
         }
+
         await this.registrationService.registerUser(input);
 
         const loginInp: LoginInput = {

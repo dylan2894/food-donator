@@ -45,6 +45,8 @@ public class UserController {
       System.out.println("[USER CONTROLLER] User with id: " + id + " not found.");
       return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
     }
+    user.salt = null;
+    user.password = null;
     return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
@@ -57,19 +59,31 @@ public class UserController {
       System.out.println("[USER CONTROLLER] User with phone number: " + phoneNum + " not found.");
       return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
     }
+    user.salt = null;
+    user.password = null;
     return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
   @GetMapping("/readAll")
   public List<User> getUsers() {
     System.out.println("[USER CONTROLLER] /user/readAll");
-    return repository.getUsers();
+    List<User> users = repository.getUsers();
+    users.forEach(user -> {
+      user.password = null;
+      user.salt = null;
+    });
+    return users;
   }
 
   @GetMapping("/readDonors")
   public List<User> getDonors() {
     System.out.println("[USER CONTROLLER] /user/readDonors");
-    return repository.getDonors();
+    List<User> donors = repository.getDonors();
+    donors.forEach(donor -> {
+      donor.password = null;
+      donor.salt = null;
+    });
+    return donors;
   }
   
   // @PostMapping("/update")

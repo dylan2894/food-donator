@@ -1,5 +1,10 @@
 <div class="google-map">
-  <google-map width="100%" height="100vh" [options]="mapOptions" >
+  <google-map width="100%" height="100vh"
+  [options]="mapOptions"
+  *ngIf="this.center"
+  [center]="this.center"
+
+  >
       <map-marker
         *ngFor="let marker of markers"
         [position]="marker.position"
@@ -13,7 +18,7 @@
 
 <!-- Donor Select -->
 <div id="donorSelect" class="input-field col s12">
-  <select id="donorInnerSelect">
+  <select id="donorInnerSelect" (change)="onChange($event)">
     <option value="" disabled selected>Choose your option</option>
     <option *ngFor="let donor of donors" [value]="donor.id">
       {{ donor.name }}
