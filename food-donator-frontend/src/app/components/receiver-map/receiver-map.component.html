@@ -10,8 +10,8 @@
         [position]="marker.position"
         [label]="marker.label"
         [title]="marker.title"
-        [options]="marker.options"
-        (mapClick)="this.openModal()"
+        [options]="this.markerOptions"
+        (mapClick)="this.openModal(marker.id)"
       ></map-marker>
   </google-map>
 </div>

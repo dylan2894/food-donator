@@ -9,12 +9,23 @@ public final class DonationMapper {
   
   public static Donation MapDonationJsonToDonation(Map map) {
     Donation donation = new Donation();
-    donation.setID(map.get("id").toString());
-    donation.setUserID(map.get("userid").toString());
-    donation.setDonationDate(Integer.parseInt(map.get("donation_date").toString()));
-    donation.setStartTime(map.get("starttime").toString());
-    donation.setEndTime(map.get("endtime").toString());
 
+    if(map.get("id") != null){
+      donation.id = map.get("id").toString();
+    }
+    if(map.get("userid") != null){
+      donation.userid = map.get("userid").toString();
+    }
+    if(map.get("donationdate") != null){
+      donation.donationdate = Integer.parseInt(map.get("donationdate").toString());
+    }
+    if(map.get("starttime") != null){
+      donation.starttime = map.get("starttime").toString();
+    }
+    if(map.get("endtime") != null){
+      donation.endtime = map.get("endtime").toString();    
+    }
+  
     return donation;
   }
 }

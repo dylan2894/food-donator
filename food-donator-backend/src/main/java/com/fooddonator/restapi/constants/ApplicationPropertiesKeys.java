@@ -4,6 +4,7 @@ public final class ApplicationPropertiesKeys {
   
   private ApplicationPropertiesKeys(){}
 
+  public final static String ASTRA_URL = "astra.url";
   public final static String ASTRA_ID = "astra.id";
   public final static String ASTRA_REGION = "astra.region";
   public final static String ASTRA_TOKEN = "astra.token";

@@ -6,11 +6,13 @@ import { Router } from '@angular/router';
 import M from 'materialize-css';
 import { CenterMapInput } from 'src/app/models/inputs/center-map-input.model';
 import { User } from 'src/app/models/user.model';
+import { DonationService } from 'src/app/services/donation/donation.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 declare const $: any
 
 interface IMarker {
+  id: string,
   position: {
     lat: number,
     lng: number
@@ -54,8 +56,11 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   center: CenterMapInput;
 
   markers: IMarker[] = [];
+  markerOptions = {
+    animation: google.maps.Animation.BOUNCE
+  };
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private donationService: DonationService, private router: Router) {
     // set the google map options
     this.center = { lat: -25.781951024040037, lng: 28.338064949199595 };
     this.mapOptions = {
@@ -81,10 +86,14 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     for (const marker of markers){
       // set the coordinates to marker's lat and lng on the first run.
       // if the coordinates exist, get max or min depends on the coordinates.
-      north = north !== 0 ? Math.max(north, marker.position.lat) : marker.position.lat;
-      south = south !== 0 ? Math.min(south, marker.position.lat) : marker.position.lat;
-      east = east !== 0 ? Math.max(east, marker.position.lng) : marker.position.lng;
-      west = west !== 0 ? Math.min(west, marker.position.lng) : marker.position.lng;
+
+      const lat: number = marker.position.lat;
+      const lon: number = marker.position.lng;
+
+      north = north !== 0 ? Math.max(north, lat) : lat;
+      south = south !== 0 ? Math.min(south, lat) : lat;
+      east = east !== 0 ? Math.max(east, lon) : lon;
+      west = west !== 0 ? Math.min(west, lon) : lon;
     }
 
     north += 0.005;
@@ -153,6 +162,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           // Push donors onto the markers array
           //TODO change marker colours based on whether they have 'available' donations or 'upcoming' donations or 'none'
           this.markers.push({
+            id: donor.id,
             position: {
               lat: donor.lat!,
               lng: donor.lon!
@@ -201,7 +211,13 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     $('#hiddenMenu').css('display', 'block');
   }
 
-  openModal(): void {
+  openModal(donorId: string): void {
     $('.modal').modal('open');
+
+    //TODO fetch donations for this donorId
+    this.donationService.getDonationsByUserId(donorId).then((donations) => {
+      console.log("Donations: ", donations);
+    });
+    //TODO populate donation schedule table with donations
   }
 }

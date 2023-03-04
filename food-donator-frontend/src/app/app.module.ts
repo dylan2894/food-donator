@@ -22,6 +22,7 @@ import { DonorSettingsComponent } from './components/donor-settings/donor-settin
 import { LoginRegisterComponent } from './components/login-register/login-register.component';
 import { UserModule } from './services/user/user.module';
 import { DonorComponent } from './components/donor/donor.component';
+import { DonationModule } from './services/donation/donation.module';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { DonorComponent } from './components/donor/donor.component';
     AuthenticationModule,
     RegistrationModule,
     UserModule,
+    DonationModule,
     MatStepperModule,
     MatInputModule,
     MatButtonModule,

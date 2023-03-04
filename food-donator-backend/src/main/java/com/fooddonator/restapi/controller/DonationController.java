@@ -1,16 +1,13 @@
 package com.fooddonator.restapi.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
-
-import javax.annotation.Nullable;
-
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +29,23 @@ public class DonationController {
   @Autowired
   private DonationRepository repository;
 
+  @PostMapping("/create")
+  public ResponseEntity<Map> createDonation(@RequestBody Donation donation) {
+
+    System.out.println("\nDonation Date: " + Integer.toString(donation.donationdate) + "\n");
+
+    System.out.println("[DONATION CONTROLLER] /donation/create");
+    Map createDonationResult = repository.createDonation(donation);
+    
+    if(createDonationResult.isEmpty()) {
+      Map<String, String> response = new HashMap<>();
+      response.put("error", "cannot create donation.");
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    return new ResponseEntity<>(createDonationResult, HttpStatus.OK);
+  }
+
   @GetMapping("/readOne")
   public ResponseEntity<Donation> getDonation(@RequestParam String id) {
     System.out.println("[DONATION CONTROLLER] /donation/readOne");
@@ -45,8 +59,15 @@ public class DonationController {
 
   @GetMapping("/readAll")
   public ResponseEntity<List<Donation>> getDonations() {
-    System.out.println("[USER CONTROLLER] /user/readAll");
+    System.out.println("[DONATION CONTROLLER] /donation/readAll");
     List<Donation> donations = repository.getDonations();
+    return new ResponseEntity<>(donations, null, HttpStatus.OK);
+  }
+
+  @GetMapping("/readAllByUserId")
+  public ResponseEntity<List<Donation>> getDonationsByUserId(@RequestParam String userId) {
+    System.out.println("[DONATION CONTROLLER] /donation/readAllByUserId");
+    List<Donation> donations = repository.getDonationsByUserId(userId);
     return new ResponseEntity<>(donations, null, HttpStatus.OK);
   }
 
