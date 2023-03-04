@@ -4,6 +4,7 @@ import { GoogleMap } from '@angular/google-maps';
 import { Router } from '@angular/router';
 // import { GoogleMap } from '@angular/google-maps';
 import M from 'materialize-css';
+import { Donation } from 'src/app/models/donation.model';
 import { CenterMapInput } from 'src/app/models/inputs/center-map-input.model';
 import { User } from 'src/app/models/user.model';
 import { DonationService } from 'src/app/services/donation/donation.service';
@@ -36,6 +37,8 @@ interface IMarker {
 export class ReceiverMapComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   donors: User[] = [];
+  currentDonorName = "";
+  currentDonorDonations: Donation[] | null = [];
 
   // styles to hide pins (points of interest) and declutter the map
   styles: Record<string, google.maps.MapTypeStyle[]> = {
@@ -211,13 +214,14 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     $('#hiddenMenu').css('display', 'block');
   }
 
-  openModal(donorId: string): void {
+  openModal(donorId: string, donorName: string): void {
+    this.currentDonorName = donorName;
     $('.modal').modal('open');
 
-    //TODO fetch donations for this donorId
+    // fetch donations for this clicked donor
     this.donationService.getDonationsByUserId(donorId).then((donations) => {
-      console.log("Donations: ", donations);
+      // this populates the donation schedule table
+      this.currentDonorDonations = donations;
     });
-    //TODO populate donation schedule table with donations
   }
 }

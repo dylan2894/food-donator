@@ -11,7 +11,7 @@
         [label]="marker.label"
         [title]="marker.title"
         [options]="this.markerOptions"
-        (mapClick)="this.openModal(marker.id)"
+        (mapClick)="this.openModal(marker.id, marker.title)"
       ></map-marker>
   </google-map>
 </div>
@@ -79,7 +79,7 @@
 <div id="modal1" class="modal bottom-sheet">
   <div class="modal-content">
     <span>
-      <h4 id="modalHeading">Checker's Forest Walk</h4>
+      <h4 id="modalHeading">{{ this.currentDonorName }}</h4>
       <span id="savedPinsContainer">
         <i class="material-symbols-outlined center">bookmarks</i>
         Save Pin
@@ -91,54 +91,18 @@
         <table >
           <thead>
             <tr style="border: none;">
-              <th>Donation Schedule</th>
+              <th scope="colgroup">Donation Schedule</th>
             </tr>
             <tr>
-                <th>Date</th>
-                <th>Time</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr>
-              <td>5 January 2023</td>
-              <td>17:00 - 19:00</td>
-            </tr>
-            <tr>
-              <td>6 January 2023</td>
-              <td>17:00 - 19:00</td>
-            </tr>
-            <tr>
-              <td>10 February 2023</td>
-              <td>17:00 - 19:00</td>
-            </tr>
-            <tr>
-              <td>10 February 2023</td>
-              <td>17:00 - 19:00</td>
-            </tr>
-            <tr>
-              <td>10 February 2023</td>
-              <td>17:00 - 19:00</td>
-            </tr>
-            <tr>
-              <td>10 February 2023</td>
-              <td>17:00 - 19:00</td>
-            </tr>
-            <tr>
-              <td>10 February 2023</td>
-              <td>17:00 - 19:00</td>
-            </tr>
-            <tr>
-              <td>10 February 2023</td>
-              <td>17:00 - 19:00</td>
-            </tr>
-            <tr>
-              <td>10 February 2023</td>
-              <td>17:00 - 19:00</td>
-            </tr>
-            <tr>
-              <td>10 February 2023</td>
-              <td>17:00 - 19:00</td>
+            <tr *ngFor="let donation of this.currentDonorDonations">
+              <td>{{ donation.donationdate }}</td>
+              <td>{{ donation.starttime }} - {{ donation.endtime }}</td>
             </tr>
           </tbody>
         </table>
