@@ -40,3 +40,7 @@ app-sidenav {
 .btn:hover, .btn:focus {
   background-color: var(--deep-purple-accent-2);
 }
+
+.btn, label {
+  user-select: none;
+}
