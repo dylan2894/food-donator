@@ -5,6 +5,6 @@ export interface User {
   salt?: string;
   lat?: number;
   lon?: number;
-  type: string;
+  type?: string;
   name?: string;
 }

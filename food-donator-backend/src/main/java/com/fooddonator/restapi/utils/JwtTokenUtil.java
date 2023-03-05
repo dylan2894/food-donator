@@ -33,20 +33,20 @@ public class JwtTokenUtil implements Serializable {
 
   JwtTokenUtil() {}
 
-	public String generateTokenForDonor(String userID) {
+	public String generateTokenForDonor(String phoneNum) {
 		Map<String, Object> claims = new HashMap<>();
     claims.put("aud", "donor");
-		return doGenerateToken(claims, userID);
+		return doGenerateToken(claims, phoneNum);
 	}
 
-  public String generateTokenForDonee(String userID) {
+  public String generateTokenForDonee(String phoneNum) {
 		Map<String, Object> claims = new HashMap<>();
     claims.put("aud", "donee");
-		return doGenerateToken(claims, userID);
+		return doGenerateToken(claims, phoneNum);
 	}
 
 	public Boolean validateTokenForDonor(String token) {
-		final String userPhoneNum = getIdFromToken(token);
+		final String userPhoneNum = getPhoneNumFromToken(token);
     final String type = getTypeFromToken(token);
 
     if(!type.equals("donor")) {
@@ -76,7 +76,7 @@ public class JwtTokenUtil implements Serializable {
 	}
 
   public Boolean validateTokenForDonee(String token) {
-		final String userPhoneNum = getIdFromToken(token);
+		final String userPhoneNum = getPhoneNumFromToken(token);
     final String type = getTypeFromToken(token);
 
     if(!type.equals("donee")) {
@@ -106,7 +106,7 @@ public class JwtTokenUtil implements Serializable {
 	}
 
   //retrieve username from jwt token
-	public String getIdFromToken(String token) {
+	public String getPhoneNumFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
 	}
 

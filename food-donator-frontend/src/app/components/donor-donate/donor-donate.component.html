@@ -1,38 +1,68 @@
 <h3>Donate</h3>
 
 <mat-stepper orientation="vertical" [linear]="true" #stepper>
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Fill out your name</ng-template>
-      <mat-form-field appearance="fill">
-        <mat-label>Name</mat-label>
-        <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-      </mat-form-field>
+
+  <mat-step [stepControl]="dateForm">
+    <form [formGroup]="dateForm">
+      <ng-template matStepLabel>Select the donation date</ng-template>
+        <mat-label>Donation Date</mat-label>
+        <input formControlName="dateCtrl" type="text" class="datepicker" readonly>
+        <small *ngIf="isDateFormSubmitted && dateForm.controls.dateCtrl.errors">Please select a donation date</small>
       <div>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button (click)="this.isDateSelected(stepper)">Next</button>
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Fill out your address</ng-template>
-      <mat-form-field appearance="fill">
-        <mat-label>Address</mat-label>
-        <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
-                required>
-      </mat-form-field>
+
+  <mat-step [stepControl]="startTimeForm">
+    <form [formGroup]="startTimeForm">
+      <ng-template matStepLabel>Specify the time when the donation window starts</ng-template>
+      <mat-label>Start Time</mat-label>
+      <input formControlName="startTimeCtrl" type="text" class="timepicker" id="startTime" required readonly>
+      <small *ngIf="isStartTimeFormSubmitted && startTimeForm.controls.startTimeCtrl.errors">Please select a start time</small>
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button (click)="this.isStartTimeSelected(stepper)">Next</button>
       </div>
     </form>
   </mat-step>
+
+  <mat-step [stepControl]="endTimeForm">
+    <form [formGroup]="endTimeForm">
+      <ng-template matStepLabel>Specify the time when the donation window ends</ng-template>
+      <mat-label>End Time</mat-label>
+      <input formControlName="endTimeCtrl" type="text" class="timepicker" id="endTime" readonly>
+      <small *ngIf="isEndTimeFormSubmitted && endTimeForm.controls.endTimeCtrl.errors">Please select an end time</small>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="this.isEndTimeSelected(stepper)">Create Donation</button>
+      </div>
+    </form>
+  </mat-step>
+
   <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <p>You are now done.</p>
-    <div>
+    <ng-template matStepLabel>Review details</ng-template>
+    <table>
+      <thead>
+        <tr>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ this.date.getDate() }}  {{ this.months[this.date.getMonth()] }} {{ this.date.getFullYear() }}</td>
+          <td>{{ this.startTime }}</td>
+          <td>{{ this.endTime }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div id="finalStepBtnContainer">
+      <button mat-button (click)="stepper.reset()">Reset Steps</button>
       <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
+      <button mat-button (click)="this.onSubmitDonation()">Create Donation</button>
     </div>
   </mat-step>
+
 </mat-stepper>

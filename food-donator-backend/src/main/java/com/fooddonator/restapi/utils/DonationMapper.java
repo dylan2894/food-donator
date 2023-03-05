@@ -17,7 +17,7 @@ public final class DonationMapper {
       donation.userid = map.get("userid").toString();
     }
     if(map.get("donationdate") != null){
-      donation.donationdate = Integer.parseInt(map.get("donationdate").toString());
+      donation.donationdate = Long.parseLong(map.get("donationdate").toString());
     }
     if(map.get("starttime") != null){
       donation.starttime = map.get("starttime").toString();

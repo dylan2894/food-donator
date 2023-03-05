@@ -32,7 +32,7 @@ public class DonationController {
   @PostMapping("/create")
   public ResponseEntity<Map> createDonation(@RequestBody Donation donation) {
 
-    System.out.println("\nDonation Date: " + Integer.toString(donation.donationdate) + "\n");
+    System.out.println("\nDonation Date: " + Long.toString(donation.donationdate) + "\n");
 
     System.out.println("[DONATION CONTROLLER] /donation/create");
     Map createDonationResult = repository.createDonation(donation);

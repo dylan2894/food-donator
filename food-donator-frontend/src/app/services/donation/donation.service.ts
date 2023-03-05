@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Donation } from 'src/app/models/donation.model';
 
@@ -14,6 +14,27 @@ export class DonationService {
    this.baseUrl = "http://localhost:8080/donation";
    this.headers.set("Origin", "http://localhost:4200");
    this.headers.set("Host", "http://localhost:4200");
+  }
+
+  async createDonation(donation: Donation): Promise<any> {
+    const req = new Promise((resolve, reject) => {
+      this.http.post(this.baseUrl + "/create", donation, { headers: this.headers }).subscribe({
+        next: (resp) => {
+          resolve(resp);
+        },
+        error: (err: HttpErrorResponse) => {
+          reject(err);
+        }
+      });
+    });
+
+    try {
+      const resp = await req;
+      return resp;
+    } catch(e) {
+      console.error("[DONATION SERVICE] createDonation() error", e);
+    }
+    return null;
   }
 
   async getDonation(id: string): Promise<Donation | null> {

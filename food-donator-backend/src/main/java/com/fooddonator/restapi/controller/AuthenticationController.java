@@ -12,6 +12,7 @@ import com.fooddonator.restapi.model.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
@@ -79,5 +80,18 @@ public class AuthenticationController {
 
     result.put(ResponseKeys.STATUS, false);
     return new ResponseEntity<>(result, HttpStatus.OK);
+  }
+
+  @PostMapping("/getUserByJWT")
+  public ResponseEntity<User> getUserByJWT(@RequestBody String jwt) {
+    System.out.println("[AUTHENTICATION CONTROLLER] /authenticate/getUserByJWT");
+    User user = this.authenticationService.getUserByJWT(jwt);
+    if(user == null) {
+      System.out.println("[AUTHENTICATION CONTROLLER] User with jwt: " + jwt + " not found.");
+      return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
+    }
+    user.salt = null;
+    user.password = null;
+    return new ResponseEntity<>(user, HttpStatus.OK);
   }
 }

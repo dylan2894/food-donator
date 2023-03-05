@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { LoginInput } from 'src/app/models/inputs/login-input.model';
 import { ValidateJwtInput } from 'src/app/models/inputs/validate-jwt-input.model';
+import { User } from 'src/app/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -97,7 +98,7 @@ export class AuthenticationService {
    * @returns True if the JWT is valid. False if the JWT is invalid.
    */
   async isJwtValidForDonee(jwt: string): Promise<boolean> {
-    if(jwt === "" || jwt === undefined) {
+    if(jwt === "" || jwt === null) {
       return false;
     }
 
@@ -131,6 +132,35 @@ export class AuthenticationService {
       console.error("[AUTHENTICATION SERVICE] isJwtvalidForDonee()", e);
     }
     return false;
+  }
+
+  /**
+   * Gets a user by JWT
+   * @param jwt the provided JWT of the user
+   * @returns a {@link User} if the JWT matches, else null
+   */
+  async getUserByJWT(jwt: string | null): Promise<User | null> {
+    const req = new Promise((resolve, reject) => {
+      if(jwt == null) {
+        reject(null);
+      }
+      this.http.post(this.baseUrl + "getUserByJWT", jwt, { headers: this.headers }).subscribe({
+        next: (resp) => {
+          resolve(resp);
+        },
+        error: (err: HttpErrorResponse) => {
+          reject(err);
+        }
+      });
+    });
+
+    try {
+      const resp = await req as User | null;
+      return resp;
+    } catch(e) {
+      console.error("[AUTHENTICATION SERVICE] getUserByJWT() error", e);
+    }
+    return null;
   }
 
   /**

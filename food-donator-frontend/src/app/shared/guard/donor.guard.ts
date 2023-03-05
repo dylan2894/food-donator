@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { User } from 'src/app/models/user.model';
+import { UserService } from 'src/app/services/user/user.service';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 
 @Injectable({
@@ -12,6 +14,7 @@ export class DonorGuard implements CanActivate {
   async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean> {
+
     return this.isLoggedInDonor();
   }
 

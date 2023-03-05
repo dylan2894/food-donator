@@ -47,6 +47,10 @@ public class DonationRepository {
   public Map createDonation(Donation donation) {
     donation.id = UUID.randomUUID().toString();
 
+    System.out.println("New donation date: " + donation.donationdate);
+    System.out.println("New donation start time: " + donation.starttime);
+    System.out.println("New donation end time: " + donation.endtime);
+
     URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
       .pathSegment(RequestRouting.Donation.Repository.CREATE_DONATION)
       .build()

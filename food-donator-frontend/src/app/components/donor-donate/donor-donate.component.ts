@@ -1,18 +1,140 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
+import { Router } from '@angular/router';
+import { Donation } from 'src/app/models/donation.model';
+import { CreateDonationOutput } from 'src/app/models/outputs/create-donation-output.model';
+import { User } from 'src/app/models/user.model';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { DonationService } from 'src/app/services/donation/donation.service';
 
 @Component({
   selector: 'app-donor-donate',
   templateUrl: './donor-donate.component.html',
   styleUrls: ['./donor-donate.component.css']
 })
-export class DonorDonateComponent {
-  firstFormGroup = this._formBuilder.group({
-    firstCtrl: ['', Validators.required],
+export class DonorDonateComponent implements OnInit{
+  months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  isDateFormSubmitted = false;
+  isStartTimeFormSubmitted = false;
+  isEndTimeFormSubmitted = false;
+
+  date = new Date();
+  startTime = "";
+  endTime = "";
+
+  dateForm = this.fb.group({
+    dateCtrl: ['', Validators.required]
   });
-  secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
+  startTimeForm = this.fb.group({
+    startTimeCtrl: ['', Validators.required]
+  });
+  endTimeForm = this.fb.group({
+    endTimeCtrl: ['', Validators.required]
   });
 
-  constructor(private _formBuilder: FormBuilder) {}
+  constructor(private fb: FormBuilder, private donationService: DonationService, private authenticationService: AuthenticationService, private router: Router) {}
+
+  ngOnInit() {
+    $(document).ready(() => {
+      const dateOptions = {
+        defaultDate: new Date()
+      }
+      const timeOptions: Partial<M.TimepickerOptions> = {
+        defaultTime: new Date().getTime().toLocaleString()
+      }
+      const datepicker = document.querySelector('.datepicker') as Element;
+      M.Datepicker.init(datepicker, dateOptions);
+
+      const startTimepicker = document.querySelector('#startTime') as Element;
+      M.Timepicker.init(startTimepicker, timeOptions);
+
+      const endTimepicker = document.querySelector('#endTime') as Element;
+      M.Timepicker.init(endTimepicker, timeOptions);
+
+      $('.datepicker').on('change', () => {
+        this.isDateFormSubmitted = false;
+      });
+
+      $('#startTime').on('change', () => {
+        this.isStartTimeFormSubmitted = false;
+      });
+
+      $('#endTime').on('change', () => {
+        this.isEndTimeFormSubmitted = false;
+      });
+    });
+  }
+
+  isDateSelected(stepper: MatStepper): void {
+    this.isDateFormSubmitted = true;
+
+    const datepicker = document.querySelector('.datepicker') as Element;
+    const instance = M.Datepicker.getInstance(datepicker);
+    if(instance.date != null) {
+      this.date = instance.date;
+
+      this.dateForm.controls.dateCtrl.setErrors(null);
+      stepper.next();
+      return;
+    }
+    this.dateForm.controls.dateCtrl.setErrors({ required: true });
+  }
+
+  isStartTimeSelected(stepper: MatStepper): void {
+    this.isStartTimeFormSubmitted = true;
+
+    const timepicker = document.getElementById('startTime') as Element;
+    const instance = M.Timepicker.getInstance(timepicker);
+    if(instance.time != null) {
+      this.startTime = instance.time;
+
+      this.startTimeForm.controls.startTimeCtrl.setErrors(null);
+      stepper.next();
+      return;
+    }
+    this.startTimeForm.controls.startTimeCtrl.setErrors({ required: true });
+  }
+
+  isEndTimeSelected(stepper: MatStepper): void {
+    this.isEndTimeFormSubmitted = true;
+
+    const timepicker = document.querySelector('#endTime') as Element;
+    const instance = M.Timepicker.getInstance(timepicker);
+    if(instance.time != null) {
+      this.endTime = instance.time;
+
+      this.endTimeForm.controls.endTimeCtrl.setErrors(null);
+      stepper.next();
+      return;
+    }
+    this.endTimeForm.controls.endTimeCtrl.setErrors({ required: true });
+  }
+
+  onSubmitDonation() {
+    const jwt = window.sessionStorage.getItem('food-donator-token');
+    this.authenticationService.getUserByJWT(jwt).then((user: User | null) => {
+      if(user != null){
+        const donation: Donation = {
+          id: "",
+          userid: user.id,
+          donationdate: this.date.valueOf(),
+          starttime: this.startTime,
+          endtime: this.endTime
+        }
+
+        this.donationService.createDonation(donation).then((resp: CreateDonationOutput) => {
+          if(resp.id != null){
+            this.router.navigateByUrl('/dashboard');
+            M.toast({html: 'New donation successfully created!' })
+            return;
+          }
+
+          M.toast({html: 'Failed to create the donation. Try again later.' })
+        });
+      }
+    });
+  }
+
 }

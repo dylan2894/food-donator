@@ -14,13 +14,14 @@ mat-step {
   height: 33%;
 }
 
+#finalStepBtnContainer {
+  margin-top: 25px;
+}
 
-
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
-p {
+/* p {
   font-family: 'Open Sans', sans-serif;
   font-size: 120%;
-}
+} */
 
 .mat-horizontal-content-container{
   height: 100%;

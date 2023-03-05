@@ -68,6 +68,14 @@ public class AuthenticationService {
     return this.jwtTokenUtil.validateTokenForDonee(jwt);
   }
 
+  public User getUserByJWT(String jwt) {
+    String phoneNum = this.jwtTokenUtil.getPhoneNumFromToken(jwt);
+    if(phoneNum == null) {
+      return null;
+    }
+    return this.userRepo.getUserByPhoneNum(phoneNum);
+  }
+
   /**
    * Hashes the provided plaintext password 
    * and then compares the result with the stored hash in the DB

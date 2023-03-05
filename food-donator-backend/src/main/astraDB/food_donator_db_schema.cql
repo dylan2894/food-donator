@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS main_keyspace.user (
 CREATE TABLE IF NOT EXISTS donation (
    id text PRIMARY KEY,
    userId text,
-   donationDate int,
+   donationDate bigint,
    startTime time,
    endTime time
 );
