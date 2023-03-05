@@ -169,10 +169,14 @@ public class DonationRepository {
     return response;
   }
 
-  //TODO
+  /**
+   * Deletes a {@link Donation} from the Donation table matching the supplied donation id using AstraDB's REST API.
+   * @param donationId A {@link String} UUID.
+   * @return the result from the AstraDB REST API request
+   */
   public Map deleteDonation(String donationId) {
     URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
-      .pathSegment(RequestRouting.Donation.Repository.DELETE_DONATION)
+      .pathSegment(RequestRouting.Donation.Repository.DELETE_DONATION + donationId)
       .build()
       .toUri();
 

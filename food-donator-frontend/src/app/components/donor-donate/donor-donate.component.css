@@ -1,3 +1,8 @@
+* {
+  --deep-purple-accent-2: #7c4dff;
+  --indigo-lighten-2: #7986cb;
+}
+
 .mat-stepper-vertical {
   margin-top: 8px;
 }
@@ -29,4 +34,26 @@ mat-step {
 .mat-horizontal-stepper-content{
   height: 100%;
   display: flex;
+}
+
+.datepicker-date-display {
+  background-color: var(--indigo-lighten-2);
+}
+
+.datepicker-cancel, .datepicker-done, .lever {
+  color: var(--indigo-lighten-2);
+  background-color: var(--indigo-lighten-2) !important;
+}
+
+.dropdown-content li > span {
+  color: var(--indigo-lighten-2);
+}
+
+.lever::after {
+  background-color: white !important;
+}
+
+.input-field input[type=text]:focus, .materialize-textarea:focus:not([readonly]) {
+  border-bottom: 0.5px solid var(--indigo-lighten-2) !important;
+  box-shadow: 0 1px 0 0 var(--indigo-lighten-2) !important;
 }

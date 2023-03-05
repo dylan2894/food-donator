@@ -8,6 +8,9 @@
 
   --dark: '#36363E'; /* Jet */
   --light: '#FBF5F3'; /* Snow */
+
+  --deep-purple-accent-2: #7c4dff;
+  --indigo-lighten-2: #7986cb;
 }
 
 .outer {
@@ -28,4 +31,12 @@
 app-sidenav {
   width: fit-content;
   display: inline;
+}
+
+.btn {
+  background-color: var(--indigo-lighten-2);
+}
+
+.btn:hover, .btn:focus {
+  background-color: var(--deep-purple-accent-2);
 }

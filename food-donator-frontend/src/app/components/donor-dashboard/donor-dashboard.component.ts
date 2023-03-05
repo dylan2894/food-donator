@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Donation } from 'src/app/models/donation.model';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
 
 @Component({
@@ -11,10 +12,15 @@ export class DonorDashboardComponent {
 
   donations: Donation[] = [];
 
-  constructor(private donationService: DonationService){
-    this.donationService.getDonations().then((_donations) => {
-      if(_donations != null) {
-        this.donations = _donations;
+  constructor(private donationService: DonationService, private authenticationService: AuthenticationService){
+    const jwt = window.sessionStorage.getItem('food-donator-token');
+    this.authenticationService.getUserByJWT(jwt).then((user) => {
+      if(user != null) {
+        this.donationService.getDonationsByUserId(user.id).then((_donations) => {
+          if(_donations != null) {
+            this.donations = _donations;
+          }
+        });
       }
     });
   }
@@ -22,7 +28,9 @@ export class DonorDashboardComponent {
   async deleteDonation(donationId: string) {
     try {
       await this.donationService.deleteDonation(donationId);
-      this.donations = this.donations.filter((donation) => { donation.id != donationId });
+      this.donations = this.donations.filter((donation) => {
+        return donation.id != donationId;
+      });
     } catch(e) {
       console.error("Could not delete donation: ", e);
     }
