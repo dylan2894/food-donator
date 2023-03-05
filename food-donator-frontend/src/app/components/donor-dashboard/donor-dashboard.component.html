@@ -3,14 +3,26 @@
   <div class="col-12">
 
     <h3>Dashboard</h3>
-    <h4 id="subtitle">Donation History</h4>
+    <h4 id="subtitle">Current Donations</h4>
 
-    <ul class="collection">
-      <li class="collection-item">Alvin</li>
-      <li class="collection-item">Alvin</li>
-      <li class="collection-item">Alvin</li>
-      <li class="collection-item">Alvin</li>
-    </ul>
+    <table class="collection">
+      <thead>
+        <tr>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let donation of donations" >
+          <td>{{ donation.donationdate.toLocaleString() }}</td>
+          <td>{{ donation.starttime }}</td>
+          <td>{{ donation.endtime }}</td>
+          <span class="material-symbols-outlined" (click)="this.deleteDonation(donation.id)">delete</span>
+        </tr>
+      </tbody>
+    </table>
 
   </div>
 </div>

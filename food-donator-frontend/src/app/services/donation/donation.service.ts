@@ -98,4 +98,25 @@ export class DonationService {
     }
     return null;
   }
+
+  async deleteDonation(donationId: string) {
+    const req = new Promise((resolve, reject) => {
+      this.http.get(this.baseUrl + "/delete?id=" + donationId, { headers: this.headers }).subscribe({
+        next: (resp) => {
+          resolve(resp);
+        },
+        error: (err: HttpErrorResponse) => {
+          reject(err);
+        }
+      });
+    });
+
+    try {
+      const resp = await req;
+      return resp;
+    } catch(e) {
+      console.error("[DONATION SERVICE] deleteDonation() error", e);
+    }
+    return null;
+  }
 }

@@ -34,7 +34,11 @@ export class DonorDonateComponent implements OnInit{
     endTimeCtrl: ['', Validators.required]
   });
 
-  constructor(private fb: FormBuilder, private donationService: DonationService, private authenticationService: AuthenticationService, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private donationService: DonationService,
+    private authenticationService: AuthenticationService,
+    private router: Router) {}
 
   ngOnInit() {
     $(document).ready(() => {
@@ -42,7 +46,8 @@ export class DonorDonateComponent implements OnInit{
         defaultDate: new Date()
       }
       const timeOptions: Partial<M.TimepickerOptions> = {
-        defaultTime: new Date().getTime().toLocaleString()
+        defaultTime: new Date().getTime().toLocaleString(),
+        twelveHour: false
       }
       const datepicker = document.querySelector('.datepicker') as Element;
       M.Datepicker.init(datepicker, dateOptions);

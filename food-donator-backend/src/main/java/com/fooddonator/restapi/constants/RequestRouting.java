@@ -14,6 +14,7 @@ public final class RequestRouting {
       public final static String GET_DONATION = "/donation/";
       public final static String GET_DONATIONS = "/donation/rows";
       public final static String GET_DONATIONS_BY_USER_ID = "/donation?where={search}";
+      public final static String DELETE_DONATION = "/donation/PK";
     }
 
     // Controller keys are used when the frontend requests endpoints from this Java API

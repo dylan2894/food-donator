@@ -71,4 +71,16 @@ public class DonationController {
     return new ResponseEntity<>(donations, null, HttpStatus.OK);
   }
 
+  @GetMapping("/delete")
+  public ResponseEntity<Map> deleteDonation(@RequestParam String id) {
+    System.out.println("[DONATION CONTROLLER] /donation/delete");
+    Map deleted = repository.deleteDonation(id);
+    if(deleted.isEmpty()) {
+      System.out.println("[DONATION CONTROLLER] Donation with id: " + id + " could not be deleted.");
+      Map<String, String> response = new HashMap<>();
+      response.put("error", "cannot delete donation.");
+      return new ResponseEntity<>(response, null, HttpStatus.BAD_REQUEST);
+    }
+    return new ResponseEntity<>(deleted, null, HttpStatus.OK);
+  }
 }

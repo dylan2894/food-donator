@@ -168,4 +168,28 @@ public class DonationRepository {
 
     return response;
   }
+
+  //TODO
+  public Map deleteDonation(String donationId) {
+    URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment(RequestRouting.Donation.Repository.DELETE_DONATION)
+      .build()
+      .toUri();
+
+    RequestEntity<Void> req = RequestEntity.delete(uri)
+      .header(RequestKeys.Header.X_CASSANDRA_TOKEN, astraToken)
+      .build();
+
+    try {
+      ResponseEntity<Map> resp = restTemplate.exchange(req, Map.class);
+      if(resp.getBody() != null) {
+        return resp.getBody();
+      }
+    } catch(RestClientException e) {
+      System.out.println("[DONATION REPO] createDonation() error");
+      System.out.println(e.getMessage());
+    }
+
+    return new HashMap<String, String>();
+  }
 }
