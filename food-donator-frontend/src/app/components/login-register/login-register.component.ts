@@ -7,12 +7,20 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 import { RegistrationService } from 'src/app/services/registration/registration.service';
 import { UserService } from 'src/app/services/user/user.service';
 
+export interface Coords {
+  lat: number,
+  lon: number
+}
+
 @Component({
   selector: 'app-login-register',
   templateUrl: './login-register.component.html',
   styleUrls: ['./login-register.component.css']
 })
 export class LoginRegisterComponent {
+  isDonor = false;
+  location: Coords | null = null;
+
   loginForm: FormGroup;
   registerForm: FormGroup;
   invalidRegisterForm: boolean;
@@ -33,9 +41,17 @@ export class LoginRegisterComponent {
     this.invalidRegisterForm = false;
     this.invalidLoginForm = false;
 
-    $(function(){
+    $(document).ready(() => {
       $('.tabs').tabs();
       $('.input').html('');
+
+      $('#donorCheckbox').on('click', () => {
+        this.isDonor = true;
+      });
+
+      $('#doneeCheckbox').on('click', () => {
+        this.isDonor = false;
+      });
     });
   }
 
@@ -78,19 +94,23 @@ export class LoginRegisterComponent {
     const passwordCtrl = this.registerForm.controls['password'];
     const typeOfUserCtrl = this.registerForm.controls['type'];
     const nameCtrl = this.registerForm.controls['name'];
-    if(this.registerForm.valid) {
+    if(this.registerForm.valid && this.location != null) {
       this.invalidRegisterForm = false;
 
       try {
         //* stubbing of lat and lon for now
         //TODO introduce lat and lon UI components
+
+        console.log("Lat:" + this.location.lat);
+        console.log("Lon:" + this.location.lon);
+
         const input: RegisterUserInput = {
           name: nameCtrl.value,
           type: typeOfUserCtrl.value,
           phone_num: phoneNumCtrl.value,
           password: passwordCtrl.value,
-          lat: -25.778015465668425,
-          lon: 28.256784309020002
+          lat: this.location.lat,
+          lon: this.location.lon
         }
 
         await this.registrationService.registerUser(input);
@@ -120,4 +140,27 @@ export class LoginRegisterComponent {
 
     this.invalidRegisterForm = true;
   }
+
+  captureLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.location = {
+          lat: position.coords.latitude,
+          lon: position.coords.longitude
+        }
+
+        $('#locationBtn').addClass('successfulCapture');
+        $('#locationBtn').text('Successfully captured location');
+        $('#locationIcon').html('checkmark');
+      });
+  } else {
+      alert("Geolocation is not supported by this browser.");
+   }
+  }
+
+  // handleAddressChange(address: Address) {
+  //   console.log(address.formatted_address)
+  //   console.log(address.geometry.location.lat())
+  //   console.log(address.geometry.location.lng())
+  // }
 }

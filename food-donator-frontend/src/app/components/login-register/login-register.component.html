@@ -31,17 +31,21 @@
           <small *ngIf="invalidRegisterForm && registerForm.controls['password'].errors">Please enter a valid password</small>
           <p>
             <label>
-              <input type="radio" formControlName="type" value="donor" class="with-gap">
+              <input type="radio" id="donorCheckbox" formControlName="type" value="donor" class="with-gap">
               <span>Donor</span>
             </label>
           </p>
           <p>
             <label>
-              <input type="radio" formControlName="type" value="donee" class="with-gap">
+              <input type="radio" id="doneeCheckbox" formControlName="type" value="donee" class="with-gap">
               <span>Donee</span>
             </label>
           </p>
           <small *ngIf="invalidRegisterForm && registerForm.controls['type'].errors">Please select whether you are a Donor or Donee (Receiver)</small>
+          <div *ngIf="this.isDonor">
+            <label id="donationLabel">Use the button below to register your donation location</label>
+            <button id="locationBtn" class="btn" (click)="this.captureLocation()"><span id="locationIcon" class="material-symbols-outlined">my_location</span>Register with My Location</button>
+          </div>
           <button class="btn">Register</button>
         </form>
       </div>
