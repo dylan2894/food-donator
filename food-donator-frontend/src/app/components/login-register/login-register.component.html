@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="formWrapper">
   <div class="card grey lighten-4">
     <div class="card-tabs">
       <ul class="tabs tabs-fixed-width">
@@ -27,8 +27,17 @@
           <input formControlName="phone_num" class="input" placeholder="phone number">
           <small *ngIf="invalidRegisterForm && registerForm.controls['phone_num'].errors">Please enter a valid phone number</small>
           <label>Password</label>
-          <input formControlName="password" class="input" placeholder="password" >
+          <input formControlName="password" class="input">
           <small *ngIf="invalidRegisterForm && registerForm.controls['password'].errors">Please enter a valid password</small>
+          <label>Confirm Password</label>
+          <input formControlName="confirmPassword" class="input">
+          <small *ngIf="invalidRegisterForm && registerForm.controls['confirmPassword'].errors?.['required']">Please confirm your password</small>
+          <small
+            *ngIf="invalidRegisterForm &&
+            !registerForm.controls['confirmPassword'].errors?.['required'] &&
+            registerForm.controls['confirmPassword'].errors?.['match_error']">
+            Confirmed password does not match password
+          </small>
           <p>
             <label>
               <input type="radio" id="donorCheckbox" formControlName="type" value="donor" class="with-gap">

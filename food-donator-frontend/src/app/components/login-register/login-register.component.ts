@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginInput } from 'src/app/models/inputs/login-input.model';
 import { RegisterUserInput } from 'src/app/models/inputs/register-user-input.model';
@@ -23,8 +23,8 @@ export class LoginRegisterComponent {
 
   loginForm: FormGroup;
   registerForm: FormGroup;
-  invalidRegisterForm: boolean;
-  invalidLoginForm: boolean;
+  invalidRegisterForm = false;
+  invalidLoginForm = false;
 
   constructor(private fb: FormBuilder, private authService: AuthenticationService, private registrationService: RegistrationService, private router: Router, private userService: UserService) {
     this.loginForm = fb.group({
@@ -35,11 +35,13 @@ export class LoginRegisterComponent {
       name: new FormControl('', [Validators.required]),
       phone_num: new FormControl('', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]),
       password: new FormControl('', [Validators.required]),
+      confirmPassword: new FormControl('', [Validators.required]),
       type: new FormControl('', [Validators.required])
     });
 
-    this.invalidRegisterForm = false;
-    this.invalidLoginForm = false;
+    this.registerForm.controls['confirmPassword'].addValidators(
+      this.validateConfirmedPassword(this.registerForm.controls['password'], this.registerForm.controls['confirmPassword'])
+    );
 
     $(document).ready(() => {
       $('.tabs').tabs();
@@ -94,16 +96,10 @@ export class LoginRegisterComponent {
     const passwordCtrl = this.registerForm.controls['password'];
     const typeOfUserCtrl = this.registerForm.controls['type'];
     const nameCtrl = this.registerForm.controls['name'];
-    if(this.registerForm.valid && this.location != null) {
+    if(this.registerForm.valid && this.location != null && this.registerForm.controls['confirmPassword'].valid) {
       this.invalidRegisterForm = false;
 
       try {
-        //* stubbing of lat and lon for now
-        //TODO introduce lat and lon UI components
-
-        console.log("Lat:" + this.location.lat);
-        console.log("Lon:" + this.location.lon);
-
         const input: RegisterUserInput = {
           name: nameCtrl.value,
           type: typeOfUserCtrl.value,
@@ -156,6 +152,18 @@ export class LoginRegisterComponent {
   } else {
       alert("Geolocation is not supported by this browser.");
    }
+  }
+
+  validateConfirmedPassword(controlOne: AbstractControl, controlTwo: AbstractControl): ValidatorFn {
+    return () => {
+      console.log('Confirm Password Errors:');
+      console.log(this.registerForm.controls['confirmPassword'].errors);
+
+      if (controlOne.value !== controlTwo.value) {
+        return { match_error: 'Value does not match' };
+      }
+      return null;
+    }
   }
 
   // handleAddressChange(address: Address) {
