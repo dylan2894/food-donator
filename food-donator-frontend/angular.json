@@ -31,7 +31,7 @@
               "dist/styles-out/donor-dashboard.component.css",
               "dist/styles-out/donor-donate.component.css",
               "dist/styles-out/donor-settings.component.css",
-              "dist/styles-out/login.component.css",
+              "dist/styles-out/login-register.component.css",
               "dist/styles-out/receiver-map.component.css",
               "dist/styles-out/register.component.css",
               "dist/styles-out/sidenav.component.css",

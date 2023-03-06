@@ -16,11 +16,13 @@
 .tabs {
   display: flex;
   flex-direction: row;
+  overflow-x: hidden;
 }
 
 body {
 	background: #d0d0d0;
-	height: 100vh;
+	height: 100%;
+  width: 100%;
 }
 
 .btn {
@@ -45,21 +47,37 @@ small {
   background-color: var(--success);
 }
 
+.formWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 15%;
+  height: 65%;
+  /* width: 100%; */
+}
+
+.formWrapper > .card {
+  display: fixed;
+  width: 90%;
+  height: 20rem;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 25%;
+}
+
 /* TODO implement media queries for larger screens */
-@media screen and (min-width: 348px) {
-  .wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
+@media screen and (min-width: 768px) {
+
+  .formWrapper {
+    display: block;
+    padding: 8%;
   }
 
-  .wrapper > .card {
-    display: block;
-    width: 35rem;
-    min-width: 300px;
-    height: 20rem;
+  .formWrapper > .card {
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
   }
+
+
 }
