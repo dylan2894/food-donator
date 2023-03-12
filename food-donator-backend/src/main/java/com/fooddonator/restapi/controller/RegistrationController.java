@@ -20,7 +20,7 @@ import com.fooddonator.restapi.service.RegistrationService;
 
 @RestController
 @RequestMapping("/register")
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RegistrationController {
   
   RegistrationController() {}

@@ -19,7 +19,7 @@ import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/authenticate")
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthenticationController {
   
   AuthenticationController() {}

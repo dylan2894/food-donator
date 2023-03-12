@@ -23,7 +23,7 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
   UserController() {}

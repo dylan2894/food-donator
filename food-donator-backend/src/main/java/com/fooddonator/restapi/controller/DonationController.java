@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/donation")
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class DonationController {
 
   DonationController() {}
