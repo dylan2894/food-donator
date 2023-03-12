@@ -163,22 +163,35 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
         const donorSelect = document.querySelector("#donorInnerSelect") as HTMLSelectElement;
         donors.forEach((donor: User) => {
           // Push donors onto the markers array
-          //TODO change marker colours based on whether they have 'available' donations or 'upcoming' donations or 'none'
-          this.markers.push({
-            id: donor.id,
-            position: {
-              lat: donor.lat!,
-              lng: donor.lon!
-            },
-            label: {
-              color: 'red',
-              text: donor.name!,
-            },
-            title: donor.name!,
-            info: "Donor info",
-            options: {
-              animation: google.maps.Animation.BOUNCE,
-            },
+          //TODO change marker colours based on whether they have 'current' donations or 'upcoming' donations or 'none'
+          this.donationService.getDonationsByUserId(donor.id).then((donations) => {
+            let determinedColor = "red";
+
+            if(donations != null && this.donationService.isUpcomingDonation(donations)) {
+              // set marker color to yellow
+              determinedColor = "yellow";
+            }
+            else if(donations != null && this.donationService.isCurrentDonation(donations)) {
+              // set marker color to green
+              determinedColor = "green";
+            }
+
+            this.markers.push({
+              id: donor.id,
+              position: {
+                lat: donor.lat!,
+                lng: donor.lon!
+              },
+              label: {
+                color: determinedColor,
+                text: donor.name!,
+              },
+              title: donor.name!,
+              info: "Donor info",
+              options: {
+                animation: google.maps.Animation.BOUNCE,
+              },
+            });
           });
         });
         // set the donors to be supplied in the donor select

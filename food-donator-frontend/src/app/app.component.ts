@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserService } from './services/user/user.service';
+import { environment } from 'src/environments/environment';
 
 declare const $: any;
 
@@ -10,5 +10,9 @@ declare const $: any;
 })
 export class AppComponent {
   title = 'Food Donator';
+
+  constructor() {
+    console.log("Env.link: " + environment.link);
+  }
 }
 

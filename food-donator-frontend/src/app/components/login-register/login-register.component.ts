@@ -156,9 +156,6 @@ export class LoginRegisterComponent {
 
   validateConfirmedPassword(controlOne: AbstractControl, controlTwo: AbstractControl): ValidatorFn {
     return () => {
-      console.log('Confirm Password Errors:');
-      console.log(this.registerForm.controls['confirmPassword'].errors);
-
       if (controlOne.value !== controlTwo.value) {
         return { match_error: 'Value does not match' };
       }

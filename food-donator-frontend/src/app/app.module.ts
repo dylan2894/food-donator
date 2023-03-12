@@ -23,6 +23,7 @@ import { LoginRegisterComponent } from './components/login-register/login-regist
 import { UserModule } from './services/user/user.module';
 import { DonorComponent } from './components/donor/donor.component';
 import { DonationModule } from './services/donation/donation.module';
+import DateUtil from './utils/DateUtil';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,9 @@ import { DonationModule } from './services/donation/donation.module';
     MatButtonModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    DateUtil
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

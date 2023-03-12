@@ -119,4 +119,38 @@ export class DonationService {
     }
     return null;
   }
+
+  isCurrentDonation(donations: Donation[]): boolean {
+    // check if donation start time is previous to now and if end time is not yet reached
+    for(const donation of donations) {
+      console.log("isCurrentDonation donation start time: ", donation.starttime);
+      console.log("isCurrentDonation donation end time: ", donation.endtime);
+
+      const now = new Date().toTimeString().split(' ')[0];
+      console.log("isCurrentDonation now: ", now);
+      //TODO compare date as well
+      if(donation.starttime < now && now < donation.endtime) {
+        // donation is current
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isUpcomingDonation(donations: Donation[]): boolean {
+    // check if donation start time is after now
+    for(const donation of donations) {
+      console.log("isPendingDonation donation start time: ", donation.starttime);
+      console.log("isPendingDonation donation end time: ", donation.endtime);
+
+      const now = new Date().toTimeString().split(' ')[0];
+      console.log("isPendingDonation now: ", now);
+      //TODO compare date as well
+      if(donation.starttime > now) {
+        // donation is upcoming
+        return true;
+      }
+    }
+    return false;
+  }
 }

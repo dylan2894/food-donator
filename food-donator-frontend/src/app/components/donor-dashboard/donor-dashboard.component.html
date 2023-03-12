@@ -16,7 +16,7 @@
 
       <tbody>
         <tr *ngFor="let donation of donations" >
-          <td>{{ donation.donationdate.toLocaleString() }}</td>
+          <td>{{ this.dateUtil.epochDateToReadable(donation.donationdate) }}</td>
           <td>{{ donation.starttime }}</td>
           <td>{{ donation.endtime }}</td>
           <span class="material-symbols-outlined" (click)="this.deleteDonation(donation.id)">delete</span>

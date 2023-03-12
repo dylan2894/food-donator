@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Donation } from 'src/app/models/donation.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
+import DateUtil from 'src/app/utils/DateUtil';
 
 @Component({
   selector: 'app-donor-dashboard',
@@ -12,7 +13,7 @@ export class DonorDashboardComponent {
 
   donations: Donation[] = [];
 
-  constructor(private donationService: DonationService, private authenticationService: AuthenticationService){
+  constructor(private donationService: DonationService, private authenticationService: AuthenticationService, public dateUtil: DateUtil){
     const jwt = window.sessionStorage.getItem('food-donator-token');
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
