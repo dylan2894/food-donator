@@ -128,8 +128,12 @@ export class DonationService {
 
       const now = new Date().toTimeString().split(' ')[0];
       console.log("isCurrentDonation now: ", now);
-      //TODO compare date as well
-      if(donation.starttime < now && now < donation.endtime) {
+      const donationDate = new Date(donation.donationdate);
+      const today = new Date();
+      if(donationDate.getFullYear() == today.getFullYear() && 
+      donationDate.getMonth() == today.getMonth() && 
+      donationDate.getDay() == today.getDay() && 
+      donation.starttime < now && now < donation.endtime) {
         // donation is current
         return true;
       }
@@ -145,9 +149,13 @@ export class DonationService {
 
       const now = new Date().toTimeString().split(' ')[0];
       console.log("isPendingDonation now: ", now);
-      //TODO compare date as well
-      if(donation.starttime > now) {
-        // donation is upcoming
+      const donationDate = new Date(donation.donationdate);
+      const today = new Date();
+      if(donationDate.getFullYear() == today.getFullYear() && 
+      donationDate.getMonth() == today.getMonth() && 
+      donationDate.getDay() == today.getDay() && 
+      donation.starttime > now) {
+        // donationDate is today or in the future and start time is in the future
         return true;
       }
     }

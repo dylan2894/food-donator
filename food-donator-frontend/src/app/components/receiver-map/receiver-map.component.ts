@@ -9,6 +9,7 @@ import { CenterMapInput } from 'src/app/models/inputs/center-map-input.model';
 import { User } from 'src/app/models/user.model';
 import { DonationService } from 'src/app/services/donation/donation.service';
 import { UserService } from 'src/app/services/user/user.service';
+import DateUtil from 'src/app/utils/DateUtil';
 
 declare const $: any
 
@@ -25,7 +26,10 @@ interface IMarker {
   title: string,
   info: string,
   options: {
-    animation: google.maps.Animation
+    animation: google.maps.Animation,
+    icon: {
+      url: string
+    }
   }
 }
 
@@ -39,7 +43,6 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   donors: User[] = [];
   currentDonorName = "";
   currentDonorDonations: Donation[] | null = [];
-
   // styles to hide pins (points of interest) and declutter the map
   styles: Record<string, google.maps.MapTypeStyle[]> = {
     hide: [
@@ -54,18 +57,16 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       // },
     ],
   };
-
   mapOptions: google.maps.MapOptions;
-  center: CenterMapInput;
-
+  center: CenterMapInput | null = null;
   markers: IMarker[] = [];
-  markerOptions = {
-    animation: google.maps.Animation.BOUNCE
-  };
+  greenMarker = "https://maps.google.com/mapfiles/ms/icons/green-dot.png";
+  yellowMarker = "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
+  redMarker = "https://maps.google.com/mapfiles/ms/icons/red-dot.png";
 
-  constructor(private userService: UserService, private donationService: DonationService, private router: Router) {
+  constructor(private userService: UserService, private donationService: DonationService, private router: Router, public dateUtil: DateUtil) {
     // set the google map options
-    this.center = { lat: -25.781951024040037, lng: 28.338064949199595 };
+    //this.center = { lat: -25.781951024040037, lng: 28.338064949199595 };
     this.mapOptions = {
       //center: { lat: -25.781951024040037, lng: 28.338064949199595 },
       //zoom: 16,
@@ -80,13 +81,14 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     $('select').formSelect();
   }
 
-  getBounds(markers: IMarker[]){
+  getBounds(){
     let north = 0;
     let south = 0;
     let east = 0;
     let west = 0;
 
-    for (const marker of markers){
+
+    for (const marker of this.markers){
       // set the coordinates to marker's lat and lng on the first run.
       // if the coordinates exist, get max or min depends on the coordinates.
 
@@ -105,7 +107,6 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     //west += 0.01;
 
     const bounds: google.maps.LatLngBoundsLiteral = { north: north!, south: south!, east: east!, west: west! };
-
     return bounds;
   }
 
@@ -159,55 +160,68 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.userService.getDonors().then((donors: User[] | null) => {
+      const promises: Promise<string | void>[] = [];
+
       if(donors != null) {
         const donorSelect = document.querySelector("#donorInnerSelect") as HTMLSelectElement;
         donors.forEach((donor: User) => {
+          const promise = new Promise<void>((resolve) => {
           // Push donors onto the markers array
-          //TODO change marker colours based on whether they have 'current' donations or 'upcoming' donations or 'none'
           this.donationService.getDonationsByUserId(donor.id).then((donations) => {
-            let determinedColor = "red";
+              let determinedColor = this.redMarker;
 
-            if(donations != null && this.donationService.isUpcomingDonation(donations)) {
-              // set marker color to yellow
-              determinedColor = "yellow";
-            }
-            else if(donations != null && this.donationService.isCurrentDonation(donations)) {
-              // set marker color to green
-              determinedColor = "green";
-            }
+              if(donations != null && this.donationService.isUpcomingDonation(donations)) {
+                // set marker color to yellow
+                determinedColor = this.yellowMarker;
+              }
+              
+              if(donations != null && this.donationService.isCurrentDonation(donations)) {
+                // set marker color to green
+                determinedColor = this.greenMarker;
+              }
 
-            this.markers.push({
-              id: donor.id,
-              position: {
-                lat: donor.lat!,
-                lng: donor.lon!
-              },
-              label: {
-                color: determinedColor,
-                text: donor.name!,
-              },
-              title: donor.name!,
-              info: "Donor info",
-              options: {
-                animation: google.maps.Animation.BOUNCE,
-              },
+              this.markers.push({
+                id: donor.id,
+                position: {
+                  lat: donor.lat!,
+                  lng: donor.lon!
+                },
+                label: {
+                  color: "black",
+                  text: donor.name!,
+                },
+                title: donor.name!,
+                info: "Donor info",
+                options: {
+                  animation: google.maps.Animation.BOUNCE,
+                  icon: {
+                    url: determinedColor
+                  }
+                },
+              });
+              resolve();
             });
           });
+          promises.push(promise);    
+        });
+        
+        // wait for all markers to be added to the markers array
+        Promise.all(promises).then(() => {
+          // rerender donor select with list of fetched donors
+          setTimeout(() => {
+            $('select').formSelect();
+          }, 1000); //200
+
+          // set the Map bounds to encompass all the donors
+          const bounds = this.getBounds();
+          this.map.googleMap?.fitBounds(bounds);
         });
         // set the donors to be supplied in the donor select
         this.donors = donors;
       }
-
-      // rerender donor select with list of fetched donors
-      setTimeout(() => {
-        $('select').formSelect();
-      }, 200);
-
-      // set the Map bounds to encompass all the donors
-      const bounds = this.getBounds(this.markers);
-      this.map.googleMap?.fitBounds(bounds);
     });
   }
+
 
   logout(): void {
     window.sessionStorage.removeItem("food-donator-token");
