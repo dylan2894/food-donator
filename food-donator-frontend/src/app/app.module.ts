@@ -24,6 +24,8 @@ import { UserModule } from './services/user/user.module';
 import { DonorComponent } from './components/donor/donor.component';
 import { DonationModule } from './services/donation/donation.module';
 import DateUtil from './utils/DateUtil';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import PhoneNumUtil from './utils/PhoneNumUtil';
 
 @NgModule({
   declarations: [
@@ -49,10 +51,14 @@ import DateUtil from './utils/DateUtil';
     MatStepperModule,
     MatInputModule,
     MatButtonModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
   providers: [
-    DateUtil
+    DateUtil,
+    PhoneNumUtil,
+    provideNgxMask()
   ],
   bootstrap: [AppComponent]
 })

@@ -3,6 +3,6 @@ export interface RegisterUserInput {
   type: string,
   phone_num: string,
   password: string,
-  lat: number,
-  lon: number
+  lat?: number,
+  lon?: number
 }

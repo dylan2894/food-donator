@@ -10,11 +10,13 @@ import { User } from 'src/app/models/user.model';
 import { DonationService } from 'src/app/services/donation/donation.service';
 import { UserService } from 'src/app/services/user/user.service';
 import DateUtil from 'src/app/utils/DateUtil';
+import PhoneNumUtil from 'src/app/utils/PhoneNumUtil';
 
 declare const $: any
 
 interface IMarker {
   id: string,
+  phoneNum: string,
   position: {
     lat: number,
     lng: number
@@ -42,6 +44,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   donors: User[] = [];
   currentDonorName = "";
+  currentDonorPhoneNum = "";
   currentDonorDonations: Donation[] | null = [];
   // styles to hide pins (points of interest) and declutter the map
   styles: Record<string, google.maps.MapTypeStyle[]> = {
@@ -64,7 +67,11 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   yellowMarker = "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
   redMarker = "https://maps.google.com/mapfiles/ms/icons/red-dot.png";
 
-  constructor(private userService: UserService, private donationService: DonationService, private router: Router, public dateUtil: DateUtil) {
+  constructor(private userService: UserService,
+    private donationService: DonationService,
+    private router: Router,
+    public dateUtil: DateUtil,
+    public phoneNumberUtil: PhoneNumUtil) {
     // set the google map options
     //this.center = { lat: -25.781951024040037, lng: 28.338064949199595 };
     this.mapOptions = {
@@ -174,7 +181,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
                 // set marker color to yellow
                 determinedColor = this.yellowMarker;
               }
-              
+
               if(donations != null && this.donationService.isCurrentDonation(donations)) {
                 // set marker color to green
                 determinedColor = this.greenMarker;
@@ -182,6 +189,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
 
               this.markers.push({
                 id: donor.id,
+                phoneNum: donor.phone_num,
                 position: {
                   lat: donor.lat!,
                   lng: donor.lon!
@@ -202,9 +210,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
               resolve();
             });
           });
-          promises.push(promise);    
+          promises.push(promise);
         });
-        
+
         // wait for all markers to be added to the markers array
         Promise.all(promises).then(() => {
           // rerender donor select with list of fetched donors
@@ -241,8 +249,10 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     $('#hiddenMenu').css('display', 'block');
   }
 
-  openModal(donorId: string, donorName: string): void {
+  openModal(donorId: string, donorName: string, donorPhoneNum: string): void {
     this.currentDonorName = donorName;
+    this.currentDonorPhoneNum = donorPhoneNum;
+
     $('.modal').modal('open');
 
     // fetch donations for this clicked donor

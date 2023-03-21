@@ -8,7 +8,7 @@
         [label]="marker.label"
         [title]="marker.title"
         [options]="marker.options"
-        (mapClick)="this.openModal(marker.id, marker.title)"
+        (mapClick)="this.openModal(marker.id, marker.title, marker.phoneNum)"
       ></map-marker>
   </google-map>
 </div>
@@ -110,7 +110,9 @@
         <p>Need directions?</p>
         <button class="btn">Google Maps</button>
         <p>Arrived? Notify the Donor</p>
-        <button class="btn">WhatsApp Donor</button>
+        <a aria-label="Chat on WhatsApp" [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.currentDonorPhoneNum)" target="_blank">
+          <img alt="Chat on WhatsApp" src="../../../assets/images/WhatsAppButtonGreenLarge.svg"/>
+        </a>
       </div>
     </div>
 

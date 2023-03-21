@@ -28,12 +28,12 @@ export class LoginRegisterComponent {
 
   constructor(private fb: FormBuilder, private authService: AuthenticationService, private registrationService: RegistrationService, private router: Router, private userService: UserService) {
     this.loginForm = fb.group({
-      phone_num: new FormControl('', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]),
+      phone_num: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
     });
     this.registerForm = fb.group({
       name: new FormControl('', [Validators.required]),
-      phone_num: new FormControl('', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]),
+      phone_num: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [Validators.required]),
       type: new FormControl('', [Validators.required])
@@ -54,6 +54,8 @@ export class LoginRegisterComponent {
       $('#doneeCheckbox').on('click', () => {
         this.isDonor = false;
       });
+
+      //$('#phoneNumInp').mask('(000) 000-0000');
     });
   }
 
@@ -92,11 +94,19 @@ export class LoginRegisterComponent {
   }
 
   async register() {
+    console.log('hereeee')
     const phoneNumCtrl = this.registerForm.controls['phone_num'];
     const passwordCtrl = this.registerForm.controls['password'];
     const typeOfUserCtrl = this.registerForm.controls['type'];
     const nameCtrl = this.registerForm.controls['name'];
-    if(this.registerForm.valid && this.location != null && this.registerForm.controls['confirmPassword'].valid) {
+    if(this.registerForm.valid && this.registerForm.controls['confirmPassword'].valid) {
+
+      if(typeOfUserCtrl.value == 'donor' && this.location == null){
+        this.invalidRegisterForm = true;
+        return;
+      }
+
+
       this.invalidRegisterForm = false;
 
       try {
@@ -105,8 +115,8 @@ export class LoginRegisterComponent {
           type: typeOfUserCtrl.value,
           phone_num: phoneNumCtrl.value,
           password: passwordCtrl.value,
-          lat: this.location.lat,
-          lon: this.location.lon
+          lat: this.location?.lat,
+          lon: this.location?.lon
         }
 
         await this.registrationService.registerUser(input);

@@ -10,10 +10,10 @@
       <div id="login">
         <form [formGroup]="loginForm" (ngSubmit)="this.login()">
           <label for="phone_num">Phone Number</label>
-          <input formControlName="phone_num" class="input" placeholder="phone number">
+          <input id="test" prefix="(+27)" mask=' 00 000 0000' formControlName="phone_num" class="input" placeholder="phone number">
           <small *ngIf="invalidLoginForm && loginForm.controls['phone_num'].errors">Please enter a valid phone number</small>
           <label>Password</label>
-          <input formControlName="password" class="input" placeholder="password" >
+          <input type="password" formControlName="password" class="input" placeholder="password" >
           <small *ngIf="invalidLoginForm && loginForm.controls['password'].errors">Please enter a valid password</small>
           <button class="btn">Login</button>
         </form>
@@ -24,13 +24,13 @@
           <input formControlName="name" class="input" placeholder="Joe's Restaurant">
           <small *ngIf="invalidRegisterForm && registerForm.controls['name'].errors">Please enter a name</small>
           <label for="phone_num">Phone Number</label>
-          <input formControlName="phone_num" class="input" placeholder="phone number">
+          <input prefix="(+27)" mask=' 00 000 0000' formControlName="phone_num" class="input" placeholder="phone number">
           <small *ngIf="invalidRegisterForm && registerForm.controls['phone_num'].errors">Please enter a valid phone number</small>
           <label>Password</label>
-          <input formControlName="password" class="input">
+          <input type="password" formControlName="password" class="input">
           <small *ngIf="invalidRegisterForm && registerForm.controls['password'].errors">Please enter a valid password</small>
           <label>Confirm Password</label>
-          <input formControlName="confirmPassword" class="input">
+          <input type="password" formControlName="confirmPassword" class="input">
           <small *ngIf="invalidRegisterForm && registerForm.controls['confirmPassword'].errors?.['required']">Please confirm your password</small>
           <small
             *ngIf="invalidRegisterForm &&

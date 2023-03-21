@@ -134,8 +134,12 @@ public class UserRepository {
     user.password =target.get("password").toString();
     user.phone_num = target.get("phone_num").toString();
     user.salt = target.get("salt").toString();
-    user.lat = ((Number) target.get("lat")).doubleValue();
-    user.lon = ((Number) target.get("lon")).doubleValue();
+    Object lat = target.get("lat");
+    Object lon = target.get("lon");
+    if(lat != null && lon != null) {
+      user.lat = ((Number) target.get("lat")).doubleValue();
+      user.lon = ((Number) target.get("lon")).doubleValue();
+    } 
     user.name = target.get("name").toString();
     user.type = target.get("type").toString();
     return user;
