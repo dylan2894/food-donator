@@ -1,11 +1,23 @@
-/* #slide-out {
-  position: fixed;
+* {
+  --primary: #6369D1; /* Violet Blue Crayola */
+  --secondary: #C6C6C6; /* Silver */
+
+  --warning: #FDB849; /* Maximum Yellow Red */
+  --danger: #F21B3F; /* Red Munsell */
+  --success: #60B67A; /* Medium Sea Green */
+
+  --dark: #36363E; /* Jet */
+  --darkRGB: 21, 21, 24;
+  --light: #FBF5F3; /* Snow */
+}
+
+#slide-out-donee {
   display: inline-block;
-  left: 300px;
   height: 100vh;
   margin: 0;
   padding: 0;
-} */
+  background-color: var(--primary);
+}
 
 .material-icons.md-18 { font-size: 18px; }
 .material-icons.md-24 { font-size: 24px; }

@@ -130,7 +130,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           lng: donor.lon!
         }
         this.center = newCenter;
-        this.map.googleMap?.setCenter(this.center);
+        this.map.googleMap?.panTo(this.center);
       }
     });
   }
@@ -150,7 +150,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       $('.sidenav').mouseleave(() => {
         this.closeMenu();
       });
-      $( "#slide-out" ).on("close", () => {
+      $( "#slide-out-donee" ).on("close", () => {
         this.closeMenu();
       });
       $('*').on('click', () => {
