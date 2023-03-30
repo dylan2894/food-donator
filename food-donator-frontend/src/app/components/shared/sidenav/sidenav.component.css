@@ -1,18 +1,24 @@
-#slide-out {
+/* #slide-out {
   position: fixed;
   display: inline-block;
   left: 300px;
   height: 100vh;
   margin: 0;
   padding: 0;
-}
+} */
+
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
 
 #logoutWrapper {
   position: absolute;
 
-  bottom: 15px;
-  left: 16px;
-  width: 275px;
+  /* bottom: 15px; */
+  bottom: 10%;
+  left: 15px;
+  width: 270px;
   height: 50px;
   padding: 15px;
 }
@@ -22,13 +28,28 @@
   transition: all 150ms;
 }
 
-/* .material-symbols-outlined:hover {
-  color: var(--secondary);
-} */
-
 .navContainer {
   display: inline-block;
   width: fit-content;
   margin: 0;
   padding: 0;
+}
+
+#burgerMenu {
+  display: block;
+  width: fit-content;
+  position: absolute;
+  top: 40px;
+  left: 25px;
+  /* z-index: 999999; */
+}
+
+/* Bigger screens */
+@media only screen and (min-width: 993px) {
+  #donorContainer {
+    position: absolute;
+    left: 300px;
+    padding-left: 80px;
+    width: 70%;
+  }
 }

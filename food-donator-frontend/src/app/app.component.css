@@ -44,3 +44,7 @@ app-sidenav {
 .btn, label {
   user-select: none;
 }
+
+.material-icons {
+  user-select: none;
+}

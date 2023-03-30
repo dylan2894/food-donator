@@ -1,4 +1,4 @@
-<div class="navContainer">
+<!-- <div class="navContainer">
   <ul id="slide-out" class="sidenav">
     <div id="navBtnWrapper">
       <li><a [routerLink]="['/donate']">Donate</a></li>
@@ -16,4 +16,26 @@
       </span>
     </div>
   </ul>
+</div> -->
+
+<div id="burgerMenu" (click)="this.sidenavService.toggleSidenav()">
+  <i class="material-icons md-36">menu</i>
 </div>
+
+<ul id="slide-out" class="sidenav sidenav-fixed">
+  <div id="navBtnWrapper">
+    <li><a [routerLink]="['/donate']">Donate</a></li>
+    <li><a [routerLink]="['/alerts']">Alerts</a></li>
+    <li><a [routerLink]="['/map']">Map</a></li>
+    <li><a [routerLink]="['/dashboard']">Dashboard</a></li>
+  </div>
+
+  <div id="logoutWrapper">
+      <span (click)="this.logout()" class="material-symbols-outlined" style="float: left;">
+        logout
+      </span>
+      <span [routerLink]="['/settings']" class="material-symbols-outlined" style="float: right;">
+        settings
+      </span>
+    </div>
+</ul>

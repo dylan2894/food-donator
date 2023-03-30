@@ -230,6 +230,10 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     });
   }
 
+  getDirections() {
+    //
+  }
+
 
   logout(): void {
     window.sessionStorage.removeItem("food-donator-token");

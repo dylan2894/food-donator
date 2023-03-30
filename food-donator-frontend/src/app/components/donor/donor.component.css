@@ -1,9 +1,9 @@
-#donorContainer {
+/* #donorContainer {
   position: absolute;
   left: 300px;
   padding-left: 80px;
   width: 70%;
-}
+} */
 
 app-donar-settings, app-donar-donate {
   width: 100%;

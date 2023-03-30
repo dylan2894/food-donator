@@ -1,6 +1,7 @@
 * {
   --deep-purple-accent-2: #7c4dff;
   --indigo-lighten-2: #7986cb;
+  --indigo-lighten-4: #c5cae9;
 }
 
 .mat-stepper-vertical {
@@ -42,7 +43,43 @@ mat-step {
 
 .datepicker-cancel, .datepicker-done, .lever {
   color: var(--indigo-lighten-2);
+}
+
+.datepicker-table td.is-selected, .timepicker-digital-display, .timepicker-tick:focus {
+  background-color: var(--indigo-lighten-2);
+}
+
+.datepicker-day-button:focus, button:focus {
+  background-color: var(--indigo-lighten-4) !important;
+}
+
+.datepicker-table td.is-today {
+  color: var(--indigo-lighten-2);
+}
+
+.timepicker-canvas-bearing {
+	fill: var(--indigo-lighten-2);
+}
+
+.timepicker-canvas line {
+    stroke: var(--indigo-lighten-2);
+}
+
+.timepicker-canvas-bg {
+	fill: var(--indigo-lighten-2);
+  z-index: 999;
+}
+
+.timepicker-tick:hover {
+  background-color: var(--indigo-lighten-4);
+}
+
+.timepicker-tick:active {
   background-color: var(--indigo-lighten-2) !important;
+}
+
+.timepicker-close {
+  color: var(--indigo-lighten-2);
 }
 
 .dropdown-content li > span {

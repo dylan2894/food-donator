@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SidenavService } from 'src/app/services/sidenav/sidenav.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -7,8 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent {
-
-  constructor(private router: Router){}
+  constructor(private router: Router, public sidenavService: SidenavService){}
 
   logout() {
     window.sessionStorage.removeItem("food-donator-token");

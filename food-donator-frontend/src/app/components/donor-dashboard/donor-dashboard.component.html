@@ -1,8 +1,10 @@
 <!-- Dashboard -->
+<div class="row top-nav">
+  <h3>Dashboard</h3>
+</div>
 <div class="row">
   <div class="col-12">
 
-    <h3>Dashboard</h3>
     <h4 id="subtitle">Current Donations</h4>
 
     <table class="collection">
@@ -15,6 +17,9 @@
       </thead>
 
       <tbody>
+        <tr *ngIf="donations.length === 0">
+          <td colspan="3" style="text-align: center;">No current donations</td>
+        </tr>
         <tr *ngFor="let donation of donations" >
           <td>{{ this.dateUtil.epochDateToReadable(donation.donationdate) }}</td>
           <td>{{ donation.starttime }}</td>

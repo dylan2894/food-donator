@@ -32,3 +32,12 @@ ul {
   width: 100%;
 }
 
+.top-nav {
+  margin-top: 40px;
+
+  border-bottom: 1px solid rgba(0,0,0,0.14);
+}
+
+.top-nav > h3 {
+  text-align: center;
+}

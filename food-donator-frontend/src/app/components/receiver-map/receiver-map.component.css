@@ -115,9 +115,9 @@ p {
 }
 
 #slide-out {
-  position: absolute;
+  /* position: absolute;
   top: 0px;
-  left: 0px;
+  left: 0px; */
   background-color: var(--primary);
 }
 
