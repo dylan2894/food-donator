@@ -10,4 +10,17 @@ export default class PhoneNumUtil {
 
     return internationalPhoneNum;
   }
+
+  /**
+   * Formats a phone number in the following format: (+27) XX XXX XXXX
+   * @param phoneNum a candidate phone number in the format: XXXXXXXXX
+   */
+  format(phoneNum: string): string {
+    const fPhoneNum = "(+27) ".concat(phoneNum);
+    const firstPiece = fPhoneNum.slice(0, 8);
+    const secondPiece = fPhoneNum.slice(8, 11);
+    const thirdPiece = fPhoneNum.slice(11);
+
+    return firstPiece + " " + secondPiece + " " + thirdPiece;
+  }
 }

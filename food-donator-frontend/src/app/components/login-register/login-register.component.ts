@@ -54,8 +54,6 @@ export class LoginRegisterComponent {
       $('#doneeCheckbox').on('click', () => {
         this.isDonor = false;
       });
-
-      //$('#phoneNumInp').mask('(000) 000-0000');
     });
   }
 
@@ -86,15 +84,12 @@ export class LoginRegisterComponent {
         M.toast({html: 'Incorrect details. Cannot sign in.'})
       }
 
-      //TODO redirect user accordingly if donor or donee
-      //this.router.navigateByUrl('/dashboard');
       return;
     }
     this.invalidLoginForm = true;
   }
 
   async register() {
-    console.log('hereeee')
     const phoneNumCtrl = this.registerForm.controls['phone_num'];
     const passwordCtrl = this.registerForm.controls['password'];
     const typeOfUserCtrl = this.registerForm.controls['type'];
@@ -172,10 +167,4 @@ export class LoginRegisterComponent {
       return null;
     }
   }
-
-  // handleAddressChange(address: Address) {
-  //   console.log(address.formatted_address)
-  //   console.log(address.geometry.location.lat())
-  //   console.log(address.geometry.location.lng())
-  // }
 }

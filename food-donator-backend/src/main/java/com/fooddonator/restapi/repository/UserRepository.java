@@ -1,6 +1,7 @@
 package com.fooddonator.restapi.repository;
 
 import java.util.List;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,9 +14,11 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fooddonator.restapi.constants.RequestKeys;
 import com.fooddonator.restapi.model.User;
 import com.fooddonator.restapi.utils.UserMapper;
 
@@ -24,16 +27,11 @@ import com.fooddonator.restapi.utils.UserMapper;
 public class UserRepository {
 
   private static final ResourceBundle resource = ResourceBundle.getBundle("application");
-  private final String ASTRA_DB_ID = resource.getString("astra.id");
-  private final String ASTRA_DB_REGION = resource.getString("astra.region");
+  private final String ASTRA_REST_API_URL = resource.getString("astra.url");
   private final String ASTRA_DB_TOKEN = resource.getString("astra.token");
-  private final String ASTRA_DB_KEYSPACE = resource.getString("astra.keyspace");
-  private String baseUrl;
   private RestTemplate restTemplate;
 
   UserRepository() {
-    this.baseUrl = "https://" + ASTRA_DB_ID + "-" + ASTRA_DB_REGION + ".apps.astra.datastax.com/api/rest/v2/keyspaces/" + ASTRA_DB_KEYSPACE;
-
     this.restTemplate = new RestTemplate();
     this.restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());  
   }
@@ -47,7 +45,7 @@ public class UserRepository {
   public Map createUser(User user) {
     user.id = UUID.randomUUID().toString();
 
-    var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+    URI uri = UriComponentsBuilder.fromHttpUrl(ASTRA_REST_API_URL)
       .pathSegment("/user")
       .build()
       .toUri();
@@ -71,7 +69,7 @@ public class UserRepository {
    */
   public User getUser(String id) {
     System.out.println("\n[USER REPO] getUser\n");
-    var uri =UriComponentsBuilder.fromHttpUrl(baseUrl)
+    URI uri =UriComponentsBuilder.fromHttpUrl(ASTRA_REST_API_URL)
       .pathSegment("/user/" + id)
       .build()
       .toUri();
@@ -110,13 +108,13 @@ public class UserRepository {
   public User getUserByPhoneNum(String phone_num) {
     System.out.println("\n[USER REPO] getUserByPhoneNum\n");
     String search = "{\"phone_num\":{\"$eq\":\""+phone_num+"\"}}";
-    var request = RequestEntity.get(baseUrl + "/user?where={search}")
+    var request = RequestEntity.get(ASTRA_REST_API_URL + "/user?where={search}")
       .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
       .build();
       
     ResponseEntity<Map> rateResponse =
     restTemplate.exchange(
-      baseUrl + "/user?where={search}",
+      ASTRA_REST_API_URL + "/user?where={search}",
       HttpMethod.GET,
       request,
       Map.class,
@@ -146,7 +144,7 @@ public class UserRepository {
   }
 
   public List<User> getUsers() {
-    var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+    URI uri = UriComponentsBuilder.fromHttpUrl(ASTRA_REST_API_URL)
     .pathSegment("/user/rows")
     .build()
     .toUri();
@@ -176,13 +174,13 @@ public class UserRepository {
   public List<User> getDonors() {
     System.out.println("\n[USER REPO] getDonors\n");
     String search = "{\"type\":{\"$eq\":\"donor\"}}";
-    var request = RequestEntity.get(baseUrl + "/user?where={search}")
+    var request = RequestEntity.get(ASTRA_REST_API_URL + "/user?where={search}")
       .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
       .build();
       
     ResponseEntity<Map> rateResponse =
     restTemplate.exchange(
-      baseUrl + "/user?where={search}",
+      ASTRA_REST_API_URL + "/user?where={search}",
       HttpMethod.GET,
       request,
       Map.class,
@@ -202,13 +200,39 @@ public class UserRepository {
     return response;
   }
 
+  public ResponseEntity<Map> updateUser(Map user) {
+    System.out.println("\n[USER REPO] updateUser()\n");
+
+    URI uri = UriComponentsBuilder.fromHttpUrl(ASTRA_REST_API_URL)
+      .pathSegment("/user/" + user.get("id"))
+      .build()
+      .toUri();
+
+    user.remove("id");
+    user.remove("password");
+    user.remove("salt");
+    
+    RequestEntity<Map> req = RequestEntity.put(uri)
+    .header(RequestKeys.Header.X_CASSANDRA_TOKEN, ASTRA_DB_TOKEN)
+    .body(user);
+
+    try {
+      return restTemplate.exchange(req, Map.class);
+    } catch(RestClientException e) {
+      System.out.println("[USER REPO] updateUser() error");
+      System.out.println(e.getMessage());
+    }
+
+    return null;
+  }
+
   /**
    * Deletes a {@link User} from the User table using AstraDB's REST API.
    * @param id the {@link User} ID of the user to be deleted
    * @return the result from the AstraDB REST API request
    */
   public void deleteUser(String id) {
-    var uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+    var uri = UriComponentsBuilder.fromHttpUrl(ASTRA_REST_API_URL)
       .pathSegment("/user/" + id)
       .build()
       .toUri();

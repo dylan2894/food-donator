@@ -59,18 +59,26 @@
   <li>
     <div class="user-view">
       <h5>Personal Information</h5>
-      Phone Number
-      <input type="text" placeholder="0827263872" readonly>
-      <button class="btn">Edit Phone Number</button>
+      <form [formGroup]="editDetailsForm">
+        Phone Number
+        <div>
+          <input id="phoneNumField" formControlName="phoneNumField" type="text" prefix="(+27)" mask=' 00 000 0000' [value]="this.phoneNumUtil.format(this.currentUser?.phone_num!)" [readOnly]="!this.phoneNumCheck">
+          <button id="editPhoneNumBtn" class="btn-flat waves-effect" (click)="this.toggleChangePhoneNum(this.editDetailsForm.controls.phoneNumField.getRawValue())">
+            <i *ngIf="!this.phoneNumCheck" class="material-symbols-outlined">edit</i>
+            <span *ngIf="this.phoneNumCheck">
+              Save Changes
+              <i class="material-symbols-outlined check">check</i>
+            </span>
+          </button>
+        </div>
+        <!-- <button class="btn">Edit Phone Number</button> -->
+      </form>
     </div>
   </li>
   <li id="logout">
     <i (click)="this.logout()" class="material-symbols-outlined medium">logout</i>
   </li>
 </ul>
-
-<!-- Modal Trigger -->
-<!-- <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> -->
 
 <!-- Modal Structure -->
 <div id="modal1" class="modal bottom-sheet">

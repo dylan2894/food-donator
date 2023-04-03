@@ -1,6 +1,7 @@
 com\fooddonator\restapi\model\Donation.class
 com\fooddonator\restapi\constants\RequestRouting$Donation.class
 com\fooddonator\restapi\constants\ResponseKeys.class
+com\fooddonator\restapi\utils\PhoneNumUtil.class
 com\fooddonator\restapi\service\RegistrationService.class
 com\fooddonator\restapi\repository\DonationRepository.class
 com\fooddonator\restapi\controller\DonationController.class

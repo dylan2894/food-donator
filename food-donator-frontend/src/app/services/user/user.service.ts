@@ -54,7 +54,7 @@ export class UserService {
       const resp = await req as User;
       return resp;
     } catch(e) {
-      console.error("[DONOR SERVICE] getUserByPhoneNum() error", e);
+      console.error("[USER SERVICE] getUserByPhoneNum() error", e);
     }
     return null;
   }
@@ -74,7 +74,30 @@ export class UserService {
     try {
       return await req as User[];
     } catch(e) {
-      console.error("[DONOR SERVICE] getDonors() error", e);
+      console.error("[USER SERVICE] getDonors() error", e);
+    }
+    return null;
+  }
+
+  async updateUser(user: User): Promise<Map<string,object> | null> {
+    const req = new Promise((resolve, reject) => {
+      this.http.post(this.baseUrl + "/update", user, { headers: this.headers, observe: 'response' }).subscribe({
+        next: (resp) => {
+          if(resp.status != 200) {
+            throw new HttpErrorResponse({status: resp.status});
+          }
+          resolve(resp);
+        },
+        error: (err: HttpErrorResponse) => {
+          reject(err);
+        }
+      });
+    });
+
+    try {
+      return await req as Map<string, object>;
+    } catch(e) {
+      console.error("[USER SERVICE] updateUser() error", e);
     }
     return null;
   }

@@ -9,6 +9,8 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import com.fooddonator.restapi.constants.ResponseKeys;
 import com.fooddonator.restapi.model.User;
 import com.fooddonator.restapi.repository.UserRepository;
+import com.fooddonator.restapi.utils.PhoneNumUtil;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +33,7 @@ public class UserController {
 
   @Autowired
   private UserRepository repository;
+  private PhoneNumUtil phoneNumUtil;
 
   //@PostMapping("/create")
   // public Map createUser(@RequestBody User user) {
@@ -53,12 +57,15 @@ public class UserController {
   @GetMapping("/readOneByPhoneNum")
   public ResponseEntity<User> getUserByPhoneNum(@RequestParam String phoneNum) {
     System.out.println("[USER CONTROLLER] /user/readOneByPhoneNum");
+
     User user = repository.getUserByPhoneNum(phoneNum);
+
     if(user == null) {
       HashMap<String, String> body = new HashMap<>();
       System.out.println("[USER CONTROLLER] User with phone number: " + phoneNum + " not found.");
       return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
     }
+
     user.salt = null;
     user.password = null;
     return new ResponseEntity<>(user, HttpStatus.OK);
@@ -86,11 +93,24 @@ public class UserController {
     return donors;
   }
   
-  // @PostMapping("/update")
-  // public void updateDonor(@RequestBody Donor donor) {
-  //   System.out.println("[CONTROLLER] /donor/update");
-  //   repository.updateDonor(donor);
-  // }
+  @PostMapping("/update")
+  public ResponseEntity<Map> updateUser(@RequestBody Map user) {
+    Map<String, Boolean> msg = new HashMap<>();
+
+    System.out.println("[USER CONTROLLER] /user/update");
+
+    try {
+      ResponseEntity<Map> response = repository.updateUser(user);
+      if(response != null) {
+        return response;
+      }
+    } catch(Exception e) {
+      System.out.println(e);
+    }
+
+    System.out.println("[USER CONTROLLER] Could not update user with id: " + user.get("id"));
+    return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
+  }
 
   @GetMapping("/delete")
   public ResponseEntity<Map> deleteUser(@RequestParam String id) {

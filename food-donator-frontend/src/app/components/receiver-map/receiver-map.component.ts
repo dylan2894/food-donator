@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GoogleMap } from '@angular/google-maps';
 import { Router } from '@angular/router';
 // import { GoogleMap } from '@angular/google-maps';
@@ -7,6 +8,7 @@ import M from 'materialize-css';
 import { Donation } from 'src/app/models/donation.model';
 import { CenterMapInput } from 'src/app/models/inputs/center-map-input.model';
 import { User } from 'src/app/models/user.model';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
 import { UserService } from 'src/app/services/user/user.service';
 import DateUtil from 'src/app/utils/DateUtil';
@@ -43,6 +45,9 @@ interface IMarker {
 export class ReceiverMapComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   donors: User[] = [];
+  editDetailsForm: FormGroup;
+  phoneNumCheck = false;
+  currentUser: User | null = null;
   currentDonorName = "";
   currentDonorPhoneNum = "";
   currentDonorDonations: Donation[] | null = [];
@@ -67,11 +72,28 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   yellowMarker = "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
   redMarker = "https://maps.google.com/mapfiles/ms/icons/red-dot.png";
 
-  constructor(private userService: UserService,
+  constructor(
+    public phoneNumUtil: PhoneNumUtil,
+    public dateUtil: DateUtil,
+    public phoneNumberUtil: PhoneNumUtil,
+    private userService: UserService,
     private donationService: DonationService,
     private router: Router,
-    public dateUtil: DateUtil,
-    public phoneNumberUtil: PhoneNumUtil) {
+    private fb: FormBuilder,
+    private authenticationService: AuthenticationService
+    ) {
+
+    const jwt = window.sessionStorage.getItem('food-donator-token');
+    this.authenticationService.getUserByJWT(jwt).then((user) => {
+      if(user != null) {
+        this.currentUser = user;
+      }
+    });
+
+    this.editDetailsForm = fb.group({
+      phoneNumField: new FormControl('', [Validators.required])
+    });
+
     // set the google map options
     //this.center = { lat: -25.781951024040037, lng: 28.338064949199595 };
     this.mapOptions = {
@@ -234,6 +256,49 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     //
   }
 
+  toggleChangePhoneNum(phoneNum: string) {
+    if(this.phoneNumCheck) {
+      if(!confirm("Save phone number changes?")){
+        this.phoneNumCheck = false;
+        this.editDetailsForm.controls.phoneNumField.setValue(this.currentUser?.phone_num);
+        return;
+      }
+
+      this.changePhoneNum(phoneNum);
+      this.phoneNumCheck = false;
+      return;
+    }
+
+    this.phoneNumCheck = true;
+  }
+
+  changePhoneNum(phoneNum: string) {
+    try {
+      if(this.currentUser != null) {
+
+        if(this.currentUser.phone_num == phoneNum){
+          M.toast({html: 'Successfully updated phone number.'})
+          return;
+        }
+
+        // set the current user's phone number to the new phone number
+        this.currentUser.phone_num = phoneNum;
+
+        // update the current user
+        this.userService.updateUser(this.currentUser).then((updateResponse) => {
+
+            // successfully updated user
+            M.toast({html: 'Successfully updated phone number. Please sign in again.'})
+            console.log("successfully updated phone number");
+            this.phoneNumCheck = false;
+        });
+      }
+    } catch(e) {
+      console.error(e);
+      M.toast({html: 'Failed to update phone number. Try again later.'})
+      console.log("failed to update phone number");
+    }
+  }
 
   logout(): void {
     window.sessionStorage.removeItem("food-donator-token");

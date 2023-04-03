@@ -1,8 +1,21 @@
+* {
+  --primary: #6369D1; /* Violet Blue Crayola */
+  --secondary: #C6C6C6; /* Silver */
+
+  --warning: #FDB849; /* Maximum Yellow Red */
+  --danger: #F21B3F; /* Red Munsell */
+  --success: #60B67A; /* Medium Sea Green */
+
+  --dark: #36363E; /* Jet */
+  --darkRGB: 21, 21, 24;
+  --light: #FBF5F3; /* Snow */
+}
+
 button {
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 i {
@@ -18,4 +31,13 @@ i {
 #editLocationBtn {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.material-symbols-outlined {
+  padding: 0px;
+  margin: 0px;
+}
+
+.check {
+  color: var(--success);
 }

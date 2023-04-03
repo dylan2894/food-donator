@@ -121,10 +121,9 @@ p {
   overflow-y: scroll;
 }
 
-.modal {
-  /* height: 100% !important; */
-  max-height: 100% !important;
-  overflow-y: auto;
+.modal.bottom-sheet {
+  max-height: 70%;
+  height: 70%;
 }
 
 tr, td, th {
@@ -197,6 +196,16 @@ tr, td, th {
 
 .material-symbols-outlined:hover {
   color: var(--dark);
+}
+
+#phoneNumField {
+  display: inline;
+  width: 75%;
+}
+
+#editPhoneNumBtn {
+  display: inline;
+  margin-left: 2px;
 }
 
 /* Bigger screens */

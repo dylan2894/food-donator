@@ -19,6 +19,10 @@
   background-color: var(--primary);
 }
 
+#slide-out-donor {
+  background-color: var(--primary);
+}
+
 .material-icons.md-18 { font-size: 18px; }
 .material-icons.md-24 { font-size: 24px; }
 .material-icons.md-36 { font-size: 36px; }
@@ -38,6 +42,11 @@
 .material-symbols-outlined {
   user-select: none;
   transition: all 150ms;
+}
+
+.material-symbols-outlined:hover {
+  color: var(--secondary);
+  cursor: pointer;
 }
 
 .navContainer {

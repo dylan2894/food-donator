@@ -6,8 +6,12 @@ import { Injectable } from '@angular/core';
 export class SidenavService {
   isOpen = false;
 
+  /**
+   * Toggles the sidenav for the donor flow
+   * @returns
+   */
   toggleSidenav() {
-    const elem = document.getElementById('slide-out');
+    const elem = document.getElementById('slide-out-donor');
     if(elem != null) {
       const instance = M.Sidenav.init(elem);
 
