@@ -5,6 +5,7 @@ import { GoogleMap } from '@angular/google-maps';
 import { Router } from '@angular/router';
 // import { GoogleMap } from '@angular/google-maps';
 import M from 'materialize-css';
+import { IMarker } from 'src/app/models/Imarker.model';
 import { Donation } from 'src/app/models/donation.model';
 import { CenterMapInput } from 'src/app/models/inputs/center-map-input.model';
 import { User } from 'src/app/models/user.model';
@@ -15,27 +16,6 @@ import DateUtil from 'src/app/utils/DateUtil';
 import PhoneNumUtil from 'src/app/utils/PhoneNumUtil';
 
 declare const $: any
-
-interface IMarker {
-  id: string,
-  phoneNum: string,
-  position: {
-    lat: number,
-    lng: number
-  },
-  label: {
-    color: string,
-    text: string
-  },
-  title: string,
-  info: string,
-  options: {
-    animation: google.maps.Animation,
-    icon: {
-      url: string
-    }
-  }
-}
 
 @Component({
   selector: 'app-receiver-map',
@@ -275,6 +255,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   changePhoneNum(phoneNum: string) {
     try {
       if(this.currentUser != null) {
+
+        console.log(this.currentUser.phone_num)
+        console.log(phoneNum)
 
         if(this.currentUser.phone_num == phoneNum){
           M.toast({html: 'Successfully updated phone number.'})

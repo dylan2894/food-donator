@@ -49,7 +49,7 @@ mat-step {
   background-color: var(--indigo-lighten-2);
 }
 
-.datepicker-day-button:focus, button:focus {
+.datepicker-day-button:focus {
   background-color: var(--indigo-lighten-4) !important;
 }
 

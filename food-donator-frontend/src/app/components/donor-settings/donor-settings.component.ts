@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoginInput } from 'src/app/models/inputs/login-input.model';
+import { GoogleMap } from '@angular/google-maps';
+import { IMarker } from 'src/app/models/Imarker.model';
+import { CenterMapInput } from 'src/app/models/inputs/center-map-input.model';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -12,10 +15,22 @@ import PhoneNumUtil from 'src/app/utils/PhoneNumUtil';
   styleUrls: ['./donor-settings.component.css']
 })
 export class DonorSettingsComponent {
+  @ViewChild(GoogleMap) map!: GoogleMap;
+  mapOptions: google.maps.MapOptions;
   nameCheck = false;
   phoneNumCheck = false;
   currentUser: User | null = null;
+  userMarker: IMarker | null = null;
   editDetailsForm: FormGroup;
+  // styles to hide pins (points of interest) and declutter the map
+  styles: Record<string, google.maps.MapTypeStyle[]> = {
+    hide: [
+      {
+        featureType: "poi",
+        stylers: [{ visibility: "off" }],
+      }
+    ],
+  };
 
   constructor(
     public phoneNumUtil: PhoneNumUtil,
@@ -27,6 +42,24 @@ export class DonorSettingsComponent {
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
         this.currentUser = user;
+        this.userMarker = {
+          position: {
+            lat: this.currentUser.lat!,
+            lng: this.currentUser.lon!
+          },
+          label: {
+            color: "black",
+            text: this.currentUser.name!
+          },
+          options: {
+            animation: google.maps.Animation.BOUNCE
+          }
+        }
+        const donorLocation: CenterMapInput = {
+          lat: this.currentUser.lat!,
+          lng: this.currentUser.lon!
+        }
+        this.map.googleMap?.panTo(donorLocation);
       }
     });
 
@@ -34,6 +67,16 @@ export class DonorSettingsComponent {
       phoneNumField: new FormControl('', [Validators.required]),
       nameField: new FormControl('', [Validators.required])
     });
+
+    this.mapOptions = {
+      //center: { lat: -25.781951024040037, lng: 28.338064949199595 },
+      //zoom: 16,
+      zoomControl: true,
+      mapTypeControl: false,
+      streetViewControl: true,
+      fullscreenControl: false,
+      styles: this.styles['hide']
+    };
   }
 
   changeName(name: string) {

@@ -1,15 +1,14 @@
 <div class="google-map">
-  <google-map width="100%" height="100vh"
-  [options]="mapOptions"
+  <google-map width="100%" height="100vh" [options]="mapOptions"
   >
-      <map-marker
-        *ngFor="let marker of markers"
-        [position]="marker.position"
-        [label]="marker.label"
-        [title]="marker.title"
-        [options]="marker.options"
-        (mapClick)="this.openModal(marker.id, marker.title, marker.phoneNum)"
-      ></map-marker>
+    <map-marker
+      *ngFor="let marker of markers"
+      [position]="marker.position"
+      [label]="marker.label!"
+      [title]="marker.title!"
+      [options]="marker.options!"
+      (mapClick)="this.openModal(marker.id!, marker.title!, marker.phoneNum!)"
+    ></map-marker>
   </google-map>
 </div>
 
@@ -63,7 +62,7 @@
         Phone Number
         <div>
           <input id="phoneNumField" formControlName="phoneNumField" type="text" prefix="(+27)" mask=' 00 000 0000' [value]="this.phoneNumUtil.format(this.currentUser?.phone_num!)" [readOnly]="!this.phoneNumCheck">
-          <button id="editPhoneNumBtn" class="btn-flat waves-effect" (click)="this.toggleChangePhoneNum(this.editDetailsForm.controls.phoneNumField.getRawValue())">
+          <button id="editPhoneNumBtn" class="btn-flat waves-effect" (click)="this.toggleChangePhoneNum(this.editDetailsForm.controls.phoneNumField.value)">
             <i *ngIf="!this.phoneNumCheck" class="material-symbols-outlined">edit</i>
             <span *ngIf="this.phoneNumCheck">
               Save Changes

@@ -54,6 +54,7 @@ export class LoginRegisterComponent {
       $('#doneeCheckbox').on('click', () => {
         this.isDonor = false;
       });
+
     });
   }
 
@@ -62,6 +63,9 @@ export class LoginRegisterComponent {
     const passwordCtrl = this.loginForm.controls['password']
     if(this.loginForm.valid) {
       this.invalidLoginForm = false;
+      $('.btn').addClass('button_text--loading');
+      $('.btn').addClass('button--loading');
+
       const input: LoginInput = {
         phone_num: phoneNumCtrl.value,
         password: passwordCtrl.value
@@ -82,6 +86,8 @@ export class LoginRegisterComponent {
       } catch(e) {
         console.error("Cannot login: ", e);
         M.toast({html: 'Incorrect details. Cannot sign in.'})
+        $('.btn').removeClass('button_text--loading');
+        $('.btn').removeClass('button--loading');
       }
 
       return;

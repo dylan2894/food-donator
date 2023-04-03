@@ -14,4 +14,8 @@ export class SidenavComponent {
     window.sessionStorage.removeItem("food-donator-token");
     this.router.navigateByUrl("/login");
   }
+
+  clearOverlay() {
+    $(".sidenav-overlay").trigger("click");
+  }
 }
