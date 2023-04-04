@@ -13,6 +13,7 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 import { DonationService } from 'src/app/services/donation/donation.service';
 import { UserService } from 'src/app/services/user/user.service';
 import DateUtil from 'src/app/utils/DateUtil';
+import MapUtil from 'src/app/utils/MapUtil';
 import PhoneNumUtil from 'src/app/utils/PhoneNumUtil';
 
 declare const $: any
@@ -31,31 +32,15 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   currentDonorName = "";
   currentDonorPhoneNum = "";
   currentDonorDonations: Donation[] | null = [];
-  // styles to hide pins (points of interest) and declutter the map
-  styles: Record<string, google.maps.MapTypeStyle[]> = {
-    hide: [
-      {
-        featureType: "poi",
-        stylers: [{ visibility: "off" }],
-      },
-      // {
-      //   featureType: "transit",
-      //   elementType: "labels.icon",
-      //   stylers: [{ visibility: "off" }],
-      // },
-    ],
-  };
   mapOptions: google.maps.MapOptions;
   center: CenterMapInput | null = null;
   markers: IMarker[] = [];
-  greenMarker = "https://maps.google.com/mapfiles/ms/icons/green-dot.png";
-  yellowMarker = "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
-  redMarker = "https://maps.google.com/mapfiles/ms/icons/red-dot.png";
 
   constructor(
     public phoneNumUtil: PhoneNumUtil,
     public dateUtil: DateUtil,
     public phoneNumberUtil: PhoneNumUtil,
+    private mapUtil: MapUtil,
     private userService: UserService,
     private donationService: DonationService,
     private router: Router,
@@ -70,7 +55,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       }
     });
 
-    this.editDetailsForm = fb.group({
+    this.editDetailsForm = this.fb.group({
       phoneNumField: new FormControl('', [Validators.required])
     });
 
@@ -83,40 +68,11 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       mapTypeControl: false,
       streetViewControl: true,
       fullscreenControl: false,
-      styles: this.styles['hide']
+      styles: MapUtil.STYLES['hide']
     };
 
     // initialize the donor select filter
     $('select').formSelect();
-  }
-
-  getBounds(){
-    let north = 0;
-    let south = 0;
-    let east = 0;
-    let west = 0;
-
-
-    for (const marker of this.markers){
-      // set the coordinates to marker's lat and lng on the first run.
-      // if the coordinates exist, get max or min depends on the coordinates.
-
-      const lat: number = marker.position.lat;
-      const lon: number = marker.position.lng;
-
-      north = north !== 0 ? Math.max(north, lat) : lat;
-      south = south !== 0 ? Math.min(south, lat) : lat;
-      east = east !== 0 ? Math.max(east, lon) : lon;
-      west = west !== 0 ? Math.min(west, lon) : lon;
-    }
-
-    north += 0.005;
-    south -= 0.002;
-    //east += 0.005;
-    //west += 0.01;
-
-    const bounds: google.maps.LatLngBoundsLiteral = { north: north!, south: south!, east: east!, west: west! };
-    return bounds;
   }
 
   /**
@@ -177,16 +133,16 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           const promise = new Promise<void>((resolve) => {
           // Push donors onto the markers array
           this.donationService.getDonationsByUserId(donor.id).then((donations) => {
-              let determinedColor = this.redMarker;
+              let determinedColor = MapUtil.RED_MARKER;
 
               if(donations != null && this.donationService.isUpcomingDonation(donations)) {
                 // set marker color to yellow
-                determinedColor = this.yellowMarker;
+                determinedColor = MapUtil.YELLOW_MARKER;
               }
 
               if(donations != null && this.donationService.isCurrentDonation(donations)) {
                 // set marker color to green
-                determinedColor = this.greenMarker;
+                determinedColor = MapUtil.GREEN_MARKER;
               }
 
               this.markers.push({
@@ -223,7 +179,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           }, 1000); //200
 
           // set the Map bounds to encompass all the donors
-          const bounds = this.getBounds();
+          const bounds = this.mapUtil.getBoundsByMarkers(this.markers);
           this.map.googleMap?.fitBounds(bounds);
         });
         // set the donors to be supplied in the donor select

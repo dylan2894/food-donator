@@ -28,9 +28,18 @@ i {
   gap: 20px;
 }
 
-#editLocationBtn {
+#editLocationBtn, #cancelLocationBtn, #saveLocationBtn {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+#cancelLocationBtn, #saveLocationBtn {
+  display: none;
+  width: 49%;
+}
+
+#saveLocationBtn {
+  float: right;
 }
 
 .material-symbols-outlined {

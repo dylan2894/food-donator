@@ -37,7 +37,7 @@ public class RegistrationService {
       throw e;
     }
 
-    //TODO convert hashedPassword and newSalt to Base64 encoded strings
+    // convert hashedPassword and newSalt to Base64 encoded strings
     String encodedHashedPassword = Base64.getEncoder().encodeToString(hashedPassword);
     String encodedNewSalt = Base64.getEncoder().encodeToString(newSalt);
 

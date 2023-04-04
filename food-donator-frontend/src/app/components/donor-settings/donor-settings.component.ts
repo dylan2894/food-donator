@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GoogleMap } from '@angular/google-maps';
 import { IMarker } from 'src/app/models/Imarker.model';
@@ -7,41 +7,41 @@ import { CenterMapInput } from 'src/app/models/inputs/center-map-input.model';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { UserService } from 'src/app/services/user/user.service';
+import MapUtil from 'src/app/utils/MapUtil';
 import PhoneNumUtil from 'src/app/utils/PhoneNumUtil';
+import PlacesAutocompleteUtil from 'src/app/utils/PlacesAutocompleteUtil';
 
 @Component({
   selector: 'app-donor-settings',
   templateUrl: './donor-settings.component.html',
   styleUrls: ['./donor-settings.component.css']
 })
-export class DonorSettingsComponent {
+export class DonorSettingsComponent implements AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   mapOptions: google.maps.MapOptions;
   nameCheck = false;
   phoneNumCheck = false;
   currentUser: User | null = null;
+  markers: IMarker[] = [];
   userMarker: IMarker | null = null;
+  userLocation: google.maps.LatLngLiteral | null = null;
   editDetailsForm: FormGroup;
-  // styles to hide pins (points of interest) and declutter the map
-  styles: Record<string, google.maps.MapTypeStyle[]> = {
-    hide: [
-      {
-        featureType: "poi",
-        stylers: [{ visibility: "off" }],
-      }
-    ],
-  };
 
   constructor(
     public phoneNumUtil: PhoneNumUtil,
+    private placeAutocompleteUtil: PlacesAutocompleteUtil,
     private userService: UserService,
     private authenticationService: AuthenticationService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private mapUtil: MapUtil
     ) {
     const jwt = window.sessionStorage.getItem('food-donator-token');
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
+        // Set the current user for rendering
         this.currentUser = user;
+
+        // Create a marker for the user's saved location
         this.userMarker = {
           position: {
             lat: this.currentUser.lat!,
@@ -55,6 +55,11 @@ export class DonorSettingsComponent {
             animation: google.maps.Animation.BOUNCE
           }
         }
+
+        // Push the user's saved location to the markers array for rendering
+        this.markers.push(this.userMarker);
+
+        // Pan the map to center the user's saved location
         const donorLocation: CenterMapInput = {
           lat: this.currentUser.lat!,
           lng: this.currentUser.lon!
@@ -75,8 +80,12 @@ export class DonorSettingsComponent {
       mapTypeControl: false,
       streetViewControl: true,
       fullscreenControl: false,
-      styles: this.styles['hide']
+      styles: MapUtil.STYLES["hide"]
     };
+  }
+
+  ngAfterViewInit() {
+    this.placeAutocompleteUtil.placeAutocomplete(this.map);
   }
 
   changeName(name: string) {
@@ -152,5 +161,46 @@ export class DonorSettingsComponent {
       M.toast({html: 'Failed to update phone number. Try again later.'})
       console.log("failed to update phone number");
     }
+  }
+
+  /**
+   * Triggered when the Edit Location button is clicked
+   */
+  editLocation() {
+    // hide Edit Location button
+    $('#editLocationBtn').css('display','none');
+
+    // show Click to Save Changes button and Cancel button
+    $('#cancelLocationBtn, #saveLocationBtn').css('display', 'inline-block');
+
+    //
+  }
+
+  captureLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.userLocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
+      }, null, {maximumAge:60000, timeout:5000, enableHighAccuracy: true });
+  } else {
+      alert("Geolocation is not supported by this browser. Please try a different browser.");
+   }
+  }
+
+  cancelLocationEdit() {
+    // hide Save Changes and Cancel button
+    $('#cancelLocationBtn, #saveLocationBtn').css('display', 'none');
+
+    // show Click to Capture New Location button
+    $('#editLocationBtn').css('display','inline-block');
+
+    // destroy map marker and panTo old location
+  }
+
+  saveLocationEdit() {
+    // save captured browser location
+    // reset UI
   }
 }

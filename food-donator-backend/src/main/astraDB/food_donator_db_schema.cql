@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS main_keyspace.user (
    id text PRIMARY KEY,
    name text,
    phone_num text,
+   address text,
    lat double,
    lon double,
    type text,
@@ -9,7 +10,7 @@ CREATE TABLE IF NOT EXISTS main_keyspace.user (
    salt text
 );
 
-CREATE TABLE IF NOT EXISTS donation (
+CREATE TABLE IF NOT EXISTS main_keyspace.donation (
    id text PRIMARY KEY,
    userId text,
    donationDate bigint,

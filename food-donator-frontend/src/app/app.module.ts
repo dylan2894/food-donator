@@ -26,6 +26,8 @@ import { DonationModule } from './services/donation/donation.module';
 import DateUtil from './utils/DateUtil';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import PhoneNumUtil from './utils/PhoneNumUtil';
+import MapUtil from './utils/MapUtil';
+import PlacesAutocompleteUtil from './utils/PlacesAutocompleteUtil';
 
 @NgModule({
   declarations: [
@@ -56,8 +58,16 @@ import PhoneNumUtil from './utils/PhoneNumUtil';
     NgxMaskPipe
   ],
   providers: [
+    /**
+     * Utils
+     */
     DateUtil,
     PhoneNumUtil,
+    MapUtil,
+    PlacesAutocompleteUtil,
+    /**
+     * NGX Mask - used for formatting the phone number input fields
+     */
     provideNgxMask()
   ],
   bootstrap: [AppComponent]

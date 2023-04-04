@@ -36,46 +36,4 @@ export class RegistrationService {
       console.error(e);
     }
   }
-
-  // async registerDonor(donor: RegisterDonorInput): Promise<void> {
-  //   const req = new Promise((resolve, reject) => {
-  //     this.http.post<string|null>(this.baseUrl + "donor", donor, { headers: this.headers }).subscribe({
-  //       next: (resp) => {
-  //         resolve(resp);
-  //       },
-  //       error: (err: HttpErrorResponse) => {
-  //         reject(err);
-  //       }
-  //     });
-  //   });
-
-  //   try {
-  //     const response = await req as Map<string, string>
-  //     const json = JSON.parse(JSON.stringify(response));
-  //     console.log("[REGISTRATION SERVICE] registerDonor()", json);
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // }
-
-  // async registerDonee(donee: RegisterDoneeInput): Promise<void> {
-  //   const req = new Promise((resolve, reject) => {
-  //     this.http.post<string|null>(this.baseUrl + "donee", donee, { headers: this.headers }).subscribe({
-  //       next: (resp) => {
-  //         resolve(resp);
-  //       },
-  //       error: (err: HttpErrorResponse) => {
-  //         reject(err);
-  //       }
-  //     });
-  //   });
-
-  //   try {
-  //     const response = await req as Map<string, string>
-  //     const json = JSON.parse(JSON.stringify(response));
-  //     console.log("[REGISTRATION SERVICE] registerDonee()", json);
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // }
 }

@@ -1,16 +1,15 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { GoogleMap } from '@angular/google-maps';
 import { Router } from '@angular/router';
+import { IMarker } from 'src/app/models/Imarker.model';
 import { LoginInput } from 'src/app/models/inputs/login-input.model';
 import { RegisterUserInput } from 'src/app/models/inputs/register-user-input.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { RegistrationService } from 'src/app/services/registration/registration.service';
 import { UserService } from 'src/app/services/user/user.service';
-
-export interface Coords {
-  lat: number,
-  lon: number
-}
+import MapUtil from 'src/app/utils/MapUtil';
+import PlacesAutocompleteUtil from 'src/app/utils/PlacesAutocompleteUtil';
 
 @Component({
   selector: 'app-login-register',
@@ -18,22 +17,31 @@ export interface Coords {
   styleUrls: ['./login-register.component.css']
 })
 export class LoginRegisterComponent {
+  @ViewChild(GoogleMap) map!: GoogleMap;
   isDonor = false;
-  location: Coords | null = null;
-
+  mapOptions: google.maps.MapOptions;
   loginForm: FormGroup;
   registerForm: FormGroup;
   invalidRegisterForm = false;
   invalidLoginForm = false;
+  markers: IMarker[] = [];
 
-  constructor(private fb: FormBuilder, private authService: AuthenticationService, private registrationService: RegistrationService, private router: Router, private userService: UserService) {
-    this.loginForm = fb.group({
+  constructor(
+    public placesAutocompleteUtil: PlacesAutocompleteUtil,
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthenticationService,
+    private registrationService: RegistrationService,
+    private userService: UserService
+    ) {
+    this.loginForm = this.fb.group({
       phone_num: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
     });
-    this.registerForm = fb.group({
+    this.registerForm = this.fb.group({
       name: new FormControl('', [Validators.required]),
       phone_num: new FormControl('', [Validators.required]),
+      address: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [Validators.required]),
       type: new FormControl('', [Validators.required])
@@ -42,6 +50,16 @@ export class LoginRegisterComponent {
     this.registerForm.controls['confirmPassword'].addValidators(
       this.validateConfirmedPassword(this.registerForm.controls['password'], this.registerForm.controls['confirmPassword'])
     );
+
+    this.mapOptions = {
+      //center: { lat: -25.781951024040037, lng: 28.338064949199595 },
+      zoom: 15,
+      zoomControl: true,
+      mapTypeControl: false,
+      streetViewControl: true,
+      fullscreenControl: false,
+      styles: MapUtil.STYLES['hide']
+    };
 
     $(document).ready(() => {
       $('.tabs').tabs();
@@ -56,6 +74,13 @@ export class LoginRegisterComponent {
       });
 
     });
+  }
+
+  onDonorTypeSelected() {
+    // initialize Google Places Autocomplete API
+    setTimeout(() => {
+      this.placesAutocompleteUtil.placeAutocomplete(this.map);
+    }, 1000);
   }
 
   async login() {
@@ -100,13 +125,13 @@ export class LoginRegisterComponent {
     const passwordCtrl = this.registerForm.controls['password'];
     const typeOfUserCtrl = this.registerForm.controls['type'];
     const nameCtrl = this.registerForm.controls['name'];
-    if(this.registerForm.valid && this.registerForm.controls['confirmPassword'].valid) {
+    console.log(this.placesAutocompleteUtil.currentSelectedCoords?.lat())
+    console.log(this.placesAutocompleteUtil.currentSelectedCoords?.lng())
 
-      if(typeOfUserCtrl.value == 'donor' && this.location == null){
-        this.invalidRegisterForm = true;
-        return;
-      }
-
+    if(this.registerForm.valid
+      && this.registerForm.controls['confirmPassword'].valid
+      && this.placesAutocompleteUtil.currentSelectedCoords != undefined
+      && this.placesAutocompleteUtil.currentSelectedAddress!= undefined) {
 
       this.invalidRegisterForm = false;
 
@@ -116,8 +141,9 @@ export class LoginRegisterComponent {
           type: typeOfUserCtrl.value,
           phone_num: phoneNumCtrl.value,
           password: passwordCtrl.value,
-          lat: this.location?.lat,
-          lon: this.location?.lon
+          address: this.placesAutocompleteUtil.currentSelectedAddress,
+          lat: this.placesAutocompleteUtil.currentSelectedCoords.lat(),
+          lon: this.placesAutocompleteUtil.currentSelectedCoords.lng()
         }
 
         await this.registrationService.registerUser(input);
@@ -146,23 +172,6 @@ export class LoginRegisterComponent {
     }
 
     this.invalidRegisterForm = true;
-  }
-
-  captureLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.location = {
-          lat: position.coords.latitude,
-          lon: position.coords.longitude
-        }
-
-        $('#locationBtn').addClass('successfulCapture');
-        $('#locationBtn').text('Successfully captured location');
-        $('#locationIcon').html('checkmark');
-      });
-  } else {
-      alert("Geolocation is not supported by this browser.");
-   }
   }
 
   validateConfirmedPassword(controlOne: AbstractControl, controlTwo: AbstractControl): ValidatorFn {
