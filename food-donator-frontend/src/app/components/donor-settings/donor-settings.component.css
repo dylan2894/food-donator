@@ -22,24 +22,14 @@ i {
   margin-right: 10px;
 }
 
+.invisible {
+  display: none;
+}
+
 .inlineEditControls {
   display: flex;
   flex-direction: row;
   gap: 20px;
-}
-
-#editLocationBtn, #cancelLocationBtn, #saveLocationBtn {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-#cancelLocationBtn, #saveLocationBtn {
-  display: none;
-  width: 49%;
-}
-
-#saveLocationBtn {
-  float: right;
 }
 
 .material-symbols-outlined {

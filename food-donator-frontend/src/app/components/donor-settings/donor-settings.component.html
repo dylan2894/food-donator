@@ -21,23 +21,28 @@
       <i *ngIf="this.phoneNumCheck" class="material-symbols-outlined check">check</i>
     </button>
   </span>
+
+  <h4>Donor Location</h4>
+  Address
+  <span class="inlineEditControls">
+    <input id="placesField" formControlName="locationField" [readOnly]="!this.locationCheck">
+    <button class="btn-flat waves-effect" (click)="this.toggleChangeAddress(this.placeAutocompleteUtil.currentSelectedAddress!)">
+      <i *ngIf="!this.locationCheck" class="material-symbols-outlined">edit</i>
+      <i *ngIf="this.locationCheck" class="material-symbols-outlined check">check</i>
+    </button>
+  </span>
+  <google-map width="100%" height="300px" [options]="mapOptions">
+    <map-marker
+      *ngFor="let marker of this.markers"
+      [position]="marker.position"
+      [label]="marker.label!"
+      [title]="marker.title!"
+      [options]="marker.options!"
+    ></map-marker>
+  </google-map>
 </form>
 
-<h4>Donor Location</h4>
-<google-map width="100%" height="300px" [options]="mapOptions">
-  <map-marker
-    *ngFor="let marker of this.markers"
-    [position]="marker.position"
-    [label]="marker.label!"
-    [title]="marker.title!"
-    [options]="marker.options!"
-  ></map-marker>
-</google-map>
-<button (click)="this.editLocation()" id="editLocationBtn" class="btn"><i class="material-symbols-outlined">edit</i>Click to   </button>
-<button (click)="this.cancelLocationEdit()" id="cancelLocationBtn" class="btn red lighten-2"><i class="material-symbols-outlined">close</i>Cancel</button>
-<button (click)="this.saveLocationEdit()" id="saveLocationBtn" class="btn green lighten-2"><i class="material-symbols-outlined">check</i>Save Changes</button>
-
-<input id="placesField" type="text" placeholder="Enter your address" >
+<!-- <input id="placesField" type="text" placeholder="Enter your address" > -->
 <div id="infowindow-content">
   <span id="placeName" class="title"></span><br />
   <span id="placeAddress"></span>

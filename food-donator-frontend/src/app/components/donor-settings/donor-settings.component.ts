@@ -21,6 +21,7 @@ export class DonorSettingsComponent implements AfterViewInit {
   mapOptions: google.maps.MapOptions;
   nameCheck = false;
   phoneNumCheck = false;
+  locationCheck = false;
   currentUser: User | null = null;
   markers: IMarker[] = [];
   userMarker: IMarker | null = null;
@@ -29,7 +30,7 @@ export class DonorSettingsComponent implements AfterViewInit {
 
   constructor(
     public phoneNumUtil: PhoneNumUtil,
-    private placeAutocompleteUtil: PlacesAutocompleteUtil,
+    public placeAutocompleteUtil: PlacesAutocompleteUtil,
     private userService: UserService,
     private authenticationService: AuthenticationService,
     private fb: FormBuilder,
@@ -40,6 +41,7 @@ export class DonorSettingsComponent implements AfterViewInit {
       if(user != null) {
         // Set the current user for rendering
         this.currentUser = user;
+        console.log("Address: " + this.currentUser.address)
 
         // Create a marker for the user's saved location
         this.userMarker = {
@@ -70,7 +72,8 @@ export class DonorSettingsComponent implements AfterViewInit {
 
     this.editDetailsForm = this.fb.group({
       phoneNumField: new FormControl('', [Validators.required]),
-      nameField: new FormControl('', [Validators.required])
+      nameField: new FormControl('', [Validators.required]),
+      locationField: new FormControl('', [Validators.required])
     });
 
     this.mapOptions = {
@@ -86,6 +89,12 @@ export class DonorSettingsComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.placeAutocompleteUtil.placeAutocomplete(this.map);
+    setTimeout(() => {
+      this.editDetailsForm.controls.locationField.setValue(this.currentUser?.address);
+      // document.querySelector('#placesField')?.setAttribute('value', this.currentUser!.address!);
+      document.querySelector('.pac-container')?.classList.add('invisible');
+    }, 500);
+
   }
 
   changeName(name: string) {
@@ -109,6 +118,40 @@ export class DonorSettingsComponent implements AfterViewInit {
     }
   }
 
+  changeLocation(address: string) {
+    try {
+      if(this.currentUser != null) {
+
+        if(this.placeAutocompleteUtil.currentSelectedCoords === undefined) {
+          //TODO add a small HTML text for validation
+          return;
+        }
+
+        // set the current user's address to the new address
+        this.currentUser.address = address;
+        this.currentUser.lat = this.placeAutocompleteUtil.currentSelectedCoords?.lat();
+        this,this.currentUser.lon = this.placeAutocompleteUtil.currentSelectedCoords?.lng();
+
+        // update the current user
+        this.userService.updateUser(this.currentUser).then((updateResponse) => {
+            // successfully updated user
+            M.toast({html: 'Successfully updated address.'})
+            console.log("successfully updated address.");
+            this.map.googleMap?.setCenter({
+              lat: this.placeAutocompleteUtil.currentSelectedCoords!.lat()!,
+              lng: this.placeAutocompleteUtil.currentSelectedCoords!.lng()!
+            });
+            this.locationCheck = false;
+        });
+      }
+    } catch(e) {
+      console.error(e);
+      M.toast({html: 'Failed to update address. Try again later.'})
+      console.log("failed to update address.");
+    }
+  }
+
+
   toggleChangeName(name: string) {
     if(this.nameCheck) {
       if(!confirm("Save name changes?")){
@@ -123,6 +166,26 @@ export class DonorSettingsComponent implements AfterViewInit {
     }
 
     this.nameCheck = true;
+  }
+
+  toggleChangeAddress(address: string) {
+    console.log("New address: " + address)
+
+    if(this.locationCheck) {
+      if(!confirm("Save address changes?")){
+        this.locationCheck = false;
+        this.editDetailsForm.controls.locationField.setValue(this.currentUser?.address);
+        return;
+      }
+
+      this.changeLocation(address);
+      document.querySelector('.pac-container')?.classList.add('invisible');
+      this.locationCheck = false;
+      return;
+    }
+
+    document.querySelector('.pac-container')?.classList.remove('invisible');
+    this.locationCheck = true;
   }
 
   toggleChangePhoneNum(phoneNum: string) {

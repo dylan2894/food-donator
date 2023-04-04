@@ -17,6 +17,9 @@ export class RegistrationService {
   }
 
   async registerUser(user: RegisterUserInput): Promise<void> {
+
+    console.log("Registering user:", user);
+
     const req = new Promise((resolve, reject) => {
       this.http.post<string|null>(this.baseUrl + "user", user, { headers: this.headers }).subscribe({
         next: (resp) => {

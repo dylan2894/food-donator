@@ -43,6 +43,9 @@ public class UserRepository {
    * @return the result from the AstraDB REST API request
    */
   public Map createUser(User user) {
+
+    System.out.println("Creating User with address: " + user.address);
+
     user.id = UUID.randomUUID().toString();
 
     URI uri = UriComponentsBuilder.fromHttpUrl(ASTRA_REST_API_URL)
@@ -132,6 +135,9 @@ public class UserRepository {
     user.password =target.get("password").toString();
     user.phone_num = target.get("phone_num").toString();
     user.salt = target.get("salt").toString();
+    if(target.get("address") != null) {
+      user.address = target.get("address").toString();
+    }
     Object lat = target.get("lat");
     Object lon = target.get("lon");
     if(lat != null && lon != null) {

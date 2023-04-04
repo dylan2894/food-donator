@@ -36,7 +36,7 @@ public class RegistrationController {
     Map<String, String> msg = new HashMap<>();
 
     // check if user exists already
-    User existingUser = userRepo.getUser(user.id);
+    User existingUser = userRepo.getUserByPhoneNum(user.phone_num);
     if(existingUser != null) {
       msg.put(ResponseKeys.ERROR, "this user already exists.");
       return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);

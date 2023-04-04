@@ -127,6 +127,7 @@ export class LoginRegisterComponent {
     const nameCtrl = this.registerForm.controls['name'];
     console.log(this.placesAutocompleteUtil.currentSelectedCoords?.lat())
     console.log(this.placesAutocompleteUtil.currentSelectedCoords?.lng())
+    console.log(this.placesAutocompleteUtil.currentSelectedAddress);
 
     if(this.registerForm.valid
       && this.registerForm.controls['confirmPassword'].valid
