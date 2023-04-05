@@ -110,7 +110,7 @@
               <td colspan="2" style="text-align: center;">No upcoming donations</td>
             </tr>
             <tr *ngFor="let donation of this.currentDonorDonations">
-              <td>{{ this.dateUtil.epochDateToReadable(donation.donationdate) }}</td>
+              <td>{{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate)) }}</td>
               <td>{{ donation.starttime }} - {{ donation.endtime }}</td>
             </tr>
           </tbody>
