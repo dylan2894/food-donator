@@ -16,14 +16,14 @@ body {
   height: 90% !important;
 }
 
-mat-stepper, app-donor, app-donor-donate, #donorContainer {
+/* mat-stepper, app-donor, app-donor-donate, #donorContainer {
   display: block;
   height: 95%;
 }
 
-mat-step {
-  height: 33%;
-}
+.mat-step {
+  height: 25%;
+} */
 
 #finalStepBtnContainer {
   margin-top: 25px;
