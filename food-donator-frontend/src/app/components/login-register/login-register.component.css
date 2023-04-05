@@ -9,9 +9,26 @@
   --dark: #36363E; /* Jet */
   --darkRGB: 21, 21, 24;
   --light: #FBF5F3; /* Snow */
+
+  --indigo-lighten-2: #7986cb;
+  --indigo-lighten-4: #c5cae9;
+  --indigo-lighten-5: #e8eaf6;
+
+  --label-colour: #9e9e9e;
 }
 
 /* Mobile First */
+a, .tab {
+  user-select: none;
+}
+
+small {
+  display: block;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  color: var(--danger);
+}
+
 .tabs {
   display: flex;
   flex-direction: row;
@@ -23,13 +40,6 @@
   margin-top: 15px;
   width: 100%;
   height: 50px;
-}
-
-small {
-  display: block;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  color: var(--danger);
 }
 
 #donationLabel {
@@ -73,6 +83,42 @@ small {
 
 #locationBtn:focus {
   background-color: var(--success);
+}
+
+.tabs .tab a{
+  color:var(--dark);
+} /*Black color to the text*/
+
+.tabs .tab a:hover {
+  background-color:#eee;
+  color:var(--primary);
+} /*Text color on hover*/
+
+.tabs .tab a:focus {
+  background-color: transparent;
+}
+
+.tabs .tab a.active {
+  background-color:var(--indigo-lighten-4);
+  color:var(--primary);
+} /*Background and text color when a tab is active*/
+
+.tabs .indicator {
+  background-color:var(--primary);
+} /*Color of underline*/
+
+/* label focus color */
+input:focus + label {
+  color: var(--label-colour) !important;
+}
+/* label underline focus color */
+input:focus {
+  border-bottom: 1px solid var(--indigo-lighten-2) !important;
+  box-shadow: 0 1px 0 0 var(--indigo-lighten-2) !important;
+}
+
+label:has(+ input:focus) {
+  color: var(--dark);
 }
 
 /* TODO implement media queries for larger screens */

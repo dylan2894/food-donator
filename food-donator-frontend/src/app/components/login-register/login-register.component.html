@@ -38,6 +38,7 @@
             registerForm.controls['confirmPassword'].errors?.['match_error']">
             Confirmed password does not match password
           </small>
+          <label>Account Type</label>
           <p>
             <label>
               <input (click)="this.onDonorTypeSelected()" type="radio" id="donorCheckbox" formControlName="type" value="donor" class="with-gap">

@@ -12,8 +12,13 @@
   margin-top: 16px;
 }
 
-mat-stepper {
-  height: 100%;
+body {
+  height: 90% !important;
+}
+
+mat-stepper, app-donor, app-donor-donate, #donorContainer {
+  display: block;
+  height: 95%;
 }
 
 mat-step {
@@ -93,4 +98,12 @@ mat-step {
 .input-field input[type=text]:focus, .materialize-textarea:focus:not([readonly]) {
   border-bottom: 0.5px solid var(--indigo-lighten-2) !important;
   box-shadow: 0 1px 0 0 var(--indigo-lighten-2) !important;
+}
+
+/* Bigger screens */
+@media screen and (min-width: 993px) {
+  mat-stepper, app-donor, app-donor-donate, #donorContainer {
+    display: block;
+    height: 90%;
+  }
 }
