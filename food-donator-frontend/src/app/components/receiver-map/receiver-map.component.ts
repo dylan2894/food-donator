@@ -40,9 +40,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     public phoneNumUtil: PhoneNumUtil,
     public dateUtil: DateUtil,
     public phoneNumberUtil: PhoneNumUtil,
+    public donationService: DonationService,
     private mapUtil: MapUtil,
     private userService: UserService,
-    private donationService: DonationService,
     private router: Router,
     private fb: FormBuilder,
     private authenticationService: AuthenticationService
@@ -70,9 +70,6 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       fullscreenControl: false,
       styles: MapUtil.STYLES['hide']
     };
-
-    // initialize the donor select filter
-    $('select').formSelect();
   }
 
   /**
@@ -119,7 +116,17 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       });
 
       // initialize the popup marker modal
-      $('.modal').modal();
+      $('.modal').modal({
+        onOpenEnd: () => {
+          // initialize the carousel once the modal is open
+          $('.carousel.carousel-slider').carousel({ noWrap: true, fullWidth: false, numVisible: 10, showIndicators: true });
+          $('.carousel-slider').slider({full_width: true});
+          $('.carousel.carousel-slider').carousel('set', 2);
+        }
+      });
+
+      // initialize the donor select filter
+      $('select').formSelect();
     });
   }
 
@@ -135,12 +142,12 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           this.donationService.getDonationsByUserId(donor.id).then((donations) => {
               let determinedColor = MapUtil.RED_MARKER;
 
-              if(donations != null && this.donationService.isUpcomingDonation(donations)) {
+              if(donations != null && this.donationService.isUpcomingDonationByDonationArray(donations)) {
                 // set marker color to yellow
                 determinedColor = MapUtil.YELLOW_MARKER;
               }
 
-              if(donations != null && this.donationService.isCurrentDonation(donations)) {
+              if(donations != null && this.donationService.isCurrentDonationByDonationArray(donations)) {
                 // set marker color to green
                 determinedColor = MapUtil.GREEN_MARKER;
               }
@@ -186,10 +193,6 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
         this.donors = donors;
       }
     });
-  }
-
-  getDirections() {
-    //
   }
 
   toggleChangePhoneNum(phoneNum: string) {
@@ -261,12 +264,12 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     this.currentDonorName = donorName;
     this.currentDonorPhoneNum = donorPhoneNum;
 
-    $('.modal').modal('open');
-
     // fetch donations for this clicked donor
     this.donationService.getDonationsByUserId(donorId).then((donations) => {
       // this populates the donation schedule table
       this.currentDonorDonations = donations;
+
+      $('.modal').modal('open');
     });
   }
 }

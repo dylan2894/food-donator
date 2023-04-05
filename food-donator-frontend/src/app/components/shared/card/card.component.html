@@ -1,0 +1,44 @@
+<div class="card carousel-item">
+  <div class="card-content" style="height: 100%;">
+    <span class="card-title">{{ date }}</span>
+
+    <!-- Upcoming or Current donation -->
+    <div *ngIf="this.isCurrent" class="chip current">Current Donation</div>
+    <div *ngIf="!this.isCurrent" class="chip upcoming">Upcoming Donation</div>
+
+    <!-- Chips -->
+    <div *ngFor="let tag of tags" class="chip">
+      {{ tag }}
+    </div>
+
+    <!-- Start Time & End Time -->
+    <table>
+      <thead>
+        <tr>
+          <th><label>Start Time</label></th>
+          <th><label>End Time</label></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ startTime }}</td>
+          <td>{{ endTime }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Description -->
+    <table>
+      <thead>
+        <tr>
+          <th><label>Description</label></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ description }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

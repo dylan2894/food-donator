@@ -120,7 +120,13 @@ export class DonationService {
     return null;
   }
 
-  isCurrentDonation(donations: Donation[]): boolean {
+  isCurrentDonationByDonation(donation: Donation): boolean {
+    const donationArr: Donation[] = [];
+    donationArr.push(donation);
+    return this.isCurrentDonationByDonationArray(donationArr);
+  }
+
+  isCurrentDonationByDonationArray(donations: Donation[]): boolean {
     // check if donation start time is previous to now and if end time is not yet reached
     for(const donation of donations) {
       console.log("isCurrentDonation donation start time: ", donation.starttime);
@@ -130,9 +136,9 @@ export class DonationService {
       console.log("isCurrentDonation now: ", now);
       const donationDate = new Date(donation.donationdate);
       const today = new Date();
-      if(donationDate.getFullYear() == today.getFullYear() && 
-      donationDate.getMonth() == today.getMonth() && 
-      donationDate.getDay() == today.getDay() && 
+      if(donationDate.getFullYear() == today.getFullYear() &&
+      donationDate.getMonth() == today.getMonth() &&
+      donationDate.getDay() == today.getDay() &&
       donation.starttime < now && now < donation.endtime) {
         // donation is current
         return true;
@@ -141,7 +147,13 @@ export class DonationService {
     return false;
   }
 
-  isUpcomingDonation(donations: Donation[]): boolean {
+  isUpcomingDonationByDonation(donation: Donation): boolean {
+    const donationArr: Donation[] = [];
+    donationArr.push(donation);
+    return this.isUpcomingDonationByDonationArray(donationArr);
+  }
+
+  isUpcomingDonationByDonationArray(donations: Donation[]): boolean {
     // check if donation start time is after now
     for(const donation of donations) {
       console.log("isPendingDonation donation start time: ", donation.starttime);
@@ -151,9 +163,9 @@ export class DonationService {
       console.log("isPendingDonation now: ", now);
       const donationDate = new Date(donation.donationdate);
       const today = new Date();
-      if(donationDate.getFullYear() == today.getFullYear() && 
-      donationDate.getMonth() == today.getMonth() && 
-      donationDate.getDay() == today.getDay() && 
+      if(donationDate.getFullYear() == today.getFullYear() &&
+      donationDate.getMonth() == today.getMonth() &&
+      donationDate.getDay() == today.getDay() &&
       donation.starttime > now) {
         // donationDate is today or in the future and start time is in the future
         return true;

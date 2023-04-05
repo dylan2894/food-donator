@@ -28,6 +28,7 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import PhoneNumUtil from './utils/PhoneNumUtil';
 import MapUtil from './utils/MapUtil';
 import PlacesAutocompleteUtil from './utils/PlacesAutocompleteUtil';
+import { CardComponent } from './components/shared/card/card.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import PlacesAutocompleteUtil from './utils/PlacesAutocompleteUtil';
     SidenavComponent,
     DonorSettingsComponent,
     LoginRegisterComponent,
-    DonorComponent
+    DonorComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,
