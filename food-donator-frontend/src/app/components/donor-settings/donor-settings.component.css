@@ -1,14 +1,14 @@
 * {
-  --primary: #6369D1; /* Violet Blue Crayola */
-  --secondary: #C6C6C6; /* Silver */
+  --primary: #6369d1; /* Violet Blue Crayola */
+  --secondary: #c6c6c6; /* Silver */
 
-  --warning: #FDB849; /* Maximum Yellow Red */
-  --danger: #F21B3F; /* Red Munsell */
-  --success: #60B67A; /* Medium Sea Green */
+  --warning: #fdb849; /* Maximum Yellow Red */
+  --danger: #f21b3f; /* Red Munsell */
+  --success: #60b67a; /* Medium Sea Green */
 
-  --dark: #36363E; /* Jet */
+  --dark: #36363e; /* Jet */
   --darkRGB: 21, 21, 24;
-  --light: #FBF5F3; /* Snow */
+  --light: #fbf5f3; /* Snow */
 }
 
 button {
@@ -20,6 +20,24 @@ button {
 
 i {
   margin-right: 10px;
+}
+
+/* .btn-flat {
+  max-width: 200px;
+} */
+
+.editBtnContainer {
+  display: flex;
+  min-width: 90px;
+  height: 100%;
+  font-size: xx-small;
+  text-align: center;
+  justify-content: center;
+}
+
+.check {
+  color: var(--success);
+  display: inline;
 }
 
 .invisible {
@@ -35,8 +53,4 @@ i {
 .material-symbols-outlined {
   padding: 0px;
   margin: 0px;
-}
-
-.check {
-  color: var(--success);
 }

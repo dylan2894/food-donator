@@ -9,18 +9,31 @@
     <input formControlName="nameField" [value]="this.currentUser?.name" [readOnly]="!this.nameCheck">
     <button class="btn-flat waves-effect" (click)="this.toggleChangeName(this.editDetailsForm.controls.nameField.getRawValue())">
       <i *ngIf="!this.nameCheck" class="material-symbols-outlined">edit</i>
-      <i *ngIf="this.nameCheck" class="material-symbols-outlined check">check</i>
+      <div *ngIf="this.nameCheck" class="editBtnContainer">
+        <i class="material-symbols-outlined check">check</i>
+        <div>Save Changes</div>
+      </div>
     </button>
   </span>
 
   Phone Number
   <span class="inlineEditControls">
-    <input formControlName="phoneNumField" prefix="(+27)" mask=' 00 000 0000' [value]="this.phoneNumUtil.format(this.currentUser?.phone_num!)" [readOnly]="!this.phoneNumCheck">
+    <input
+    id="phoneNum"
+    formControlName="phoneNumField"
+    prefix="(+27)"
+    mask=' 00 000 0000'
+    [readOnly]="!this.phoneNumCheck"
+    >
     <button class="btn-flat waves-effect" (click)="this.toggleChangePhoneNum(this.editDetailsForm.controls.phoneNumField.getRawValue())">
       <i *ngIf="!this.phoneNumCheck" class="material-symbols-outlined">edit</i>
-      <i *ngIf="this.phoneNumCheck" class="material-symbols-outlined check">check</i>
+      <div *ngIf="this.phoneNumCheck" class="editBtnContainer">
+        <i class="material-symbols-outlined check">check</i>
+        <div>Save Changes</div>
+      </div>
     </button>
   </span>
+  <small *ngIf="phoneNumFieldErrors && editDetailsForm.controls['phoneNumField'].errors">Please enter a valid phone number.</small>
 
   <h4>Donor Location</h4>
   Address
@@ -28,9 +41,13 @@
     <input id="placesField" formControlName="locationField" [readOnly]="!this.locationCheck">
     <button class="btn-flat waves-effect" (click)="this.toggleChangeAddress(this.placeAutocompleteUtil.currentSelectedAddress!)">
       <i *ngIf="!this.locationCheck" class="material-symbols-outlined">edit</i>
-      <i *ngIf="this.locationCheck" class="material-symbols-outlined check">check</i>
+      <div *ngIf="this.locationCheck" class="editBtnContainer">
+        <i class="material-symbols-outlined check">check</i>
+        <div>Save Changes</div>
+      </div>
     </button>
   </span>
+  <small *ngIf="locationFieldErrors">Please select a valid location.</small>
   <google-map width="100%" height="300px" [options]="mapOptions">
     <map-marker
       *ngFor="let marker of this.markers"
@@ -46,4 +63,18 @@
 <div id="infowindow-content">
   <span id="placeName" class="title"></span><br />
   <span id="placeAddress"></span>
+</div>
+
+
+<!-- Modal popups -->
+<!-- Modal save changes for phone number -->
+<div id="savePhoneNumberModal" class="modal">
+  <div class="modal-content">
+    <h4>Save New Phone Number</h4>
+    <p id="newPhoneNumber"></p>
+  </div>
+  <div class="modal-footer">
+    <a (click)="this.cancelEdit()" class="modal-action modal-close waves-effect waves-red btn-flat ">Cancel</a>
+    <a (click)="this.changePhoneNum(this.newPhoneNum!)" class="modal-action modal-close waves-effect waves-green btn-flat ">Yes</a>
+  </div>
 </div>

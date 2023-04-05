@@ -27,6 +27,9 @@ export class DonorSettingsComponent implements AfterViewInit {
   userMarker: IMarker | null = null;
   userLocation: google.maps.LatLngLiteral | null = null;
   editDetailsForm: FormGroup;
+  phoneNumFieldErrors = false;
+  locationFieldErrors = false;
+  newPhoneNum: string | null = null;
 
   constructor(
     public phoneNumUtil: PhoneNumUtil,
@@ -71,7 +74,7 @@ export class DonorSettingsComponent implements AfterViewInit {
     });
 
     this.editDetailsForm = this.fb.group({
-      phoneNumField: new FormControl('', [Validators.required]),
+      phoneNumField: new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]),
       nameField: new FormControl('', [Validators.required]),
       locationField: new FormControl('', [Validators.required])
     });
@@ -91,10 +94,18 @@ export class DonorSettingsComponent implements AfterViewInit {
     this.placeAutocompleteUtil.placeAutocomplete(this.map);
     setTimeout(() => {
       this.editDetailsForm.controls.locationField.setValue(this.currentUser?.address);
+      const phoneNumField = document.querySelector('#phoneNum') as HTMLInputElement;
+      phoneNumField.value = this.phoneNumUtil.format(this.currentUser!.phone_num!);
       // document.querySelector('#placesField')?.setAttribute('value', this.currentUser!.address!);
       document.querySelector('.pac-container')?.classList.add('invisible');
     }, 500);
 
+
+    $(document).ready(() => {
+      $('#saveNameModal').modal();
+      $('#savePhoneNumberModal').modal();
+      $('#saveAddressModal').modal();
+    });
   }
 
   changeName(name: string) {
@@ -153,13 +164,10 @@ export class DonorSettingsComponent implements AfterViewInit {
 
 
   toggleChangeName(name: string) {
-    if(this.nameCheck) {
-      if(!confirm("Save name changes?")){
-        this.nameCheck = false;
-        this.editDetailsForm.controls.nameField.setValue(this.currentUser?.name);
-        return;
-      }
 
+
+
+    if(this.nameCheck) {
       this.changeName(name);
       this.nameCheck = false;
       return;
@@ -169,14 +177,21 @@ export class DonorSettingsComponent implements AfterViewInit {
   }
 
   toggleChangeAddress(address: string) {
-    console.log("New address: " + address)
-
     if(this.locationCheck) {
-      if(!confirm("Save address changes?")){
+
+      if(address == this.currentUser?.address || address == '') {
+        M.toast({html: 'Successfully updated address.'})
         this.locationCheck = false;
-        this.editDetailsForm.controls.locationField.setValue(this.currentUser?.address);
         return;
       }
+
+      if(this.editDetailsForm.controls.locationField.errors
+        || this.placeAutocompleteUtil.currentSelectedCoords == undefined
+        || this.placeAutocompleteUtil.currentSelectedAddress == undefined) {
+        this.locationFieldErrors = true;
+        return;
+      }
+      this.locationFieldErrors = false;
 
       this.changeLocation(address);
       document.querySelector('.pac-container')?.classList.add('invisible');
@@ -190,14 +205,23 @@ export class DonorSettingsComponent implements AfterViewInit {
 
   toggleChangePhoneNum(phoneNum: string) {
     if(this.phoneNumCheck) {
-      if(!confirm("Save phone number changes?")){
+
+      if(phoneNum == this.currentUser?.phone_num || phoneNum == '') {
+        M.toast({html: 'Successfully updated phone number.'})
         this.phoneNumCheck = false;
-        this.editDetailsForm.controls.phoneNumField.setValue(this.currentUser?.phone_num);
         return;
       }
 
-      this.changePhoneNum(phoneNum);
-      this.phoneNumCheck = false;
+      if(this.editDetailsForm.controls.phoneNumField.errors) {
+        this.phoneNumFieldErrors = true;
+        return;
+      }
+      this.phoneNumFieldErrors = false;
+
+      this.newPhoneNum = phoneNum;
+      $('#newPhoneNumber').text(`New phone number: ${this.phoneNumUtil.format(phoneNum)}. Save changes?`);
+      $('#savePhoneNumberModal').modal('open');
+
       return;
     }
 
@@ -205,6 +229,8 @@ export class DonorSettingsComponent implements AfterViewInit {
   }
 
   changePhoneNum(phoneNum: string) {
+    this.phoneNumCheck = false;
+
     try {
       if(this.currentUser != null) {
         // set the current user's phone number to the new phone number
@@ -215,55 +241,21 @@ export class DonorSettingsComponent implements AfterViewInit {
 
             // successfully updated user
             M.toast({html: 'Successfully updated phone number. Please sign in again.'})
-            console.log("successfully updated phone number");
             this.phoneNumCheck = false;
         });
       }
     } catch(e) {
       console.error(e);
       M.toast({html: 'Failed to update phone number. Try again later.'})
-      console.log("failed to update phone number");
     }
   }
 
-  /**
-   * Triggered when the Edit Location button is clicked
-   */
-  editLocation() {
-    // hide Edit Location button
-    $('#editLocationBtn').css('display','none');
-
-    // show Click to Save Changes button and Cancel button
-    $('#cancelLocationBtn, #saveLocationBtn').css('display', 'inline-block');
-
-    //
-  }
-
-  captureLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.userLocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }
-      }, null, {maximumAge:60000, timeout:5000, enableHighAccuracy: true });
-  } else {
-      alert("Geolocation is not supported by this browser. Please try a different browser.");
-   }
-  }
-
-  cancelLocationEdit() {
-    // hide Save Changes and Cancel button
-    $('#cancelLocationBtn, #saveLocationBtn').css('display', 'none');
-
-    // show Click to Capture New Location button
-    $('#editLocationBtn').css('display','inline-block');
-
-    // destroy map marker and panTo old location
-  }
-
-  saveLocationEdit() {
-    // save captured browser location
-    // reset UI
+  cancelEdit() {
+    this.phoneNumCheck = false;
+    this.nameCheck = false;
+    this.locationCheck = false;
+    this.editDetailsForm.controls.phoneNumField.setValue(this.currentUser?.phone_num);
+    this.editDetailsForm.controls.nameField.setValue(this.currentUser?.name);
+    this.editDetailsForm.controls.locationField.setValue(this.currentUser?.address);
   }
 }

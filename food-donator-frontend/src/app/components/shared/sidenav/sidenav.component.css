@@ -44,7 +44,7 @@
   transition: all 150ms;
 }
 
-.material-symbols-outlined:hover {
+.sidenav > div > .material-symbols-outlined:hover {
   color: var(--secondary);
   cursor: pointer;
 }
