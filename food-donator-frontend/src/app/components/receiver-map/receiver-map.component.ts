@@ -11,6 +11,7 @@ import { CenterMapInput } from 'src/app/models/inputs/center-map-input.model';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
+import { SidenavService } from 'src/app/services/sidenav/sidenav.service';
 import { UserService } from 'src/app/services/user/user.service';
 import DateUtil from 'src/app/utils/DateUtil';
 import MapUtil from 'src/app/utils/MapUtil';
@@ -26,8 +27,6 @@ declare const $: any
 export class ReceiverMapComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   donors: User[] = [];
-  editDetailsForm: FormGroup;
-  phoneNumCheck = false;
   currentUser: User | null = null;
   currentDonorName = "";
   currentDonorPhoneNum = "";
@@ -41,6 +40,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     public dateUtil: DateUtil,
     public phoneNumberUtil: PhoneNumUtil,
     public donationService: DonationService,
+    public sidenavService: SidenavService,
     private mapUtil: MapUtil,
     private userService: UserService,
     private router: Router,
@@ -53,10 +53,6 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       if(user != null) {
         this.currentUser = user;
       }
-    });
-
-    this.editDetailsForm = this.fb.group({
-      phoneNumField: new FormControl('', [Validators.required])
     });
 
     // set the google map options
@@ -96,32 +92,39 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       $('.sidenav').sidenav();
 
       // listeners for the slide in sidenav
-      $('#hiddenMenu').mouseenter(() => {
-        this.openMenu();
-      });
-      $('#hiddenMenu').click(() => {
-        this.openMenu();
-      });
-      $('.sidenav').mouseleave(() => {
-        this.closeMenu();
-      });
+      // $('#hiddenMenu').mouseenter(() => {
+      //   this.openMenu();
+      // });
+      // $('#hiddenMenu').click(() => {
+      //   this.openMenu();
+      // });
+      // $('.sidenav').mouseleave(() => {
+      //   this.closeMenu();
+      // });
       $( "#slide-out-donee" ).on("close", () => {
         this.closeMenu();
       });
-      $('*').on('click', () => {
-        const sidenav = M.Sidenav.getInstance(document.querySelector('.sidenav') as Element);
-        if(!sidenav.isOpen){
-          $('#hiddenMenu').css('display', 'block');
-        }
-      });
+      // $('*').on('click', () => {
+      //   const sidenavElement = document.querySelector('.sidenav') as Element;
+      //   if(sidenavElement != null) {
+      //     const sidenav = M.Sidenav.getInstance(sidenavElement);
+      //     if(!sidenav.isOpen){
+      //       $('#hiddenMenu').css('display', 'block');
+      //     }
+      //   }
+      // });
 
       // initialize the popup marker modal
       $('.modal').modal({
         onOpenEnd: () => {
           // initialize the carousel once the modal is open
-          $('.carousel.carousel-slider').carousel({ noWrap: true, fullWidth: false, numVisible: 10, showIndicators: true });
-          $('.carousel-slider').slider({full_width: true});
-          $('.carousel.carousel-slider').carousel('set', 2);
+          $('.carousel.carousel-slider').carousel({
+            noWrap: true,
+            fullWidth: true,
+            numVisible: 10,
+            padding: 20
+          });
+          $('.carousel-slider').slider({ full_width: true }); //must be full_width: true for mobile
         }
       });
 
@@ -195,57 +198,11 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  toggleChangePhoneNum(phoneNum: string) {
-    if(this.phoneNumCheck) {
-      if(!confirm("Save phone number changes?")){
-        this.phoneNumCheck = false;
-        this.editDetailsForm.controls.phoneNumField.setValue(this.currentUser?.phone_num);
-        return;
-      }
-
-      this.changePhoneNum(phoneNum);
-      this.phoneNumCheck = false;
-      return;
-    }
-
-    this.phoneNumCheck = true;
-  }
-
-  changePhoneNum(phoneNum: string) {
-    try {
-      if(this.currentUser != null) {
-
-        console.log(this.currentUser.phone_num)
-        console.log(phoneNum)
-
-        if(this.currentUser.phone_num == phoneNum){
-          M.toast({html: 'Successfully updated phone number.'})
-          return;
-        }
-
-        // set the current user's phone number to the new phone number
-        this.currentUser.phone_num = phoneNum;
-
-        // update the current user
-        this.userService.updateUser(this.currentUser).then((updateResponse) => {
-
-            // successfully updated user
-            M.toast({html: 'Successfully updated phone number. Please sign in again.'})
-            console.log("successfully updated phone number");
-            this.phoneNumCheck = false;
-        });
-      }
-    } catch(e) {
-      console.error(e);
-      M.toast({html: 'Failed to update phone number. Try again later.'})
-      console.log("failed to update phone number");
-    }
-  }
-
   logout(): void {
     window.sessionStorage.removeItem("food-donator-token");
     this.closeMenu();
     this.router.navigateByUrl("/login");
+    this.sidenavService.clearOverlay();
   }
 
   openMenu(): void {

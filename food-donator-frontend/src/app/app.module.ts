@@ -29,6 +29,8 @@ import PhoneNumUtil from './utils/PhoneNumUtil';
 import MapUtil from './utils/MapUtil';
 import PlacesAutocompleteUtil from './utils/PlacesAutocompleteUtil';
 import { CardComponent } from './components/shared/card/card.component';
+import { DoneeSettingsComponent } from './components/donee-settings/donee-settings.component';
+import { DoneeComponent } from './components/donee/donee.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { CardComponent } from './components/shared/card/card.component';
     DonorSettingsComponent,
     LoginRegisterComponent,
     DonorComponent,
-    CardComponent
+    CardComponent,
+    DoneeSettingsComponent,
+    DoneeComponent
   ],
   imports: [
     BrowserModule,

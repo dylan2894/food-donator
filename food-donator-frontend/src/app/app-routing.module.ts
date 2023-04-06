@@ -5,12 +5,15 @@ import { ReceiverMapComponent } from './components/receiver-map/receiver-map.com
 import { DonorGuard } from './shared/guard/donor.guard';
 import { DoneeGuard } from './shared/guard/donee.guard';
 import { DonorComponent } from './components/donor/donor.component';
+import { DoneeSettingsComponent } from './components/donee-settings/donee-settings.component';
+import { DoneeComponent } from './components/donee/donee.component';
 
 const routes: Routes = [
-  { path: 'map', component: ReceiverMapComponent, canActivate: [DoneeGuard] },
+  { path: 'map', component: DoneeComponent, canActivate: [DoneeGuard] },
+  { path: 'donee-settings', component: DoneeComponent, canActivate: [DoneeGuard] },
   { path: 'dashboard', component: DonorComponent, canActivate: [DonorGuard] },
   { path: 'donate', component: DonorComponent, canActivate: [DonorGuard] },
-  { path: 'settings', component: DonorComponent, canActivate: [DonorGuard] },
+  { path: 'donor-settings', component: DonorComponent, canActivate: [DonorGuard] },
   { path: 'login', component: LoginRegisterComponent },
   { path: '**', component: LoginRegisterComponent }
 ];

@@ -1,19 +1,15 @@
 package com.fooddonator.restapi.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor()
+@NoArgsConstructor()
 public class Donation {
   public String id;
   public String userid;
   public Long donationdate;
   public String starttime;
   public String endtime;
-
-  public Donation() {}
-
-  public Donation(String _id, String _userid, Long _donationDate, String _starttime, String _endtime) {
-    id = _id;
-    userid = _userid;
-    donationdate = _donationDate;
-    starttime = _starttime;
-    endtime = _endtime;
-  }
+  public String description;
 }

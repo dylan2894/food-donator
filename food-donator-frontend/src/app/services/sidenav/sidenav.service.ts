@@ -4,26 +4,33 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SidenavService {
-  isOpen = false;
 
   /**
    * Toggles the sidenav for the donor flow
-   * @returns
    */
-  toggleSidenav() {
-    const elem = document.getElementById('slide-out-donor');
+  toggleSidenav(isDonor: boolean): void {
+    let elem;
+    if(isDonor) {
+      elem = document.getElementById('slide-out-donor');
+    } else {
+      elem = document.getElementById('slide-out-donee');
+    }
+
     if(elem != null) {
       const instance = M.Sidenav.init(elem);
 
-      if(this.isOpen) {
-        console.log("closing sidenav")
-        //instance.close();
-        this.isOpen = false;
+      if(instance.isOpen) {
+        instance.close();
         return;
       }
-      console.log("opening sidenav");
       instance.open();
-      this.isOpen = true;
     }
+  }
+
+  /**
+   * Clears the darkened overlay which is visible when the sidenav is open
+   */
+  clearOverlay(): void {
+    $(".sidenav-overlay").trigger("click");
   }
 }

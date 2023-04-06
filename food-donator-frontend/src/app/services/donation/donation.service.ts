@@ -129,11 +129,7 @@ export class DonationService {
   isCurrentDonationByDonationArray(donations: Donation[]): boolean {
     // check if donation start time is previous to now and if end time is not yet reached
     for(const donation of donations) {
-      console.log("isCurrentDonation donation start time: ", donation.starttime);
-      console.log("isCurrentDonation donation end time: ", donation.endtime);
-
       const now = new Date().toTimeString().split(' ')[0];
-      console.log("isCurrentDonation now: ", now);
       const donationDate = new Date(donation.donationdate);
       const today = new Date();
       if(donationDate.getFullYear() == today.getFullYear() &&
@@ -156,11 +152,7 @@ export class DonationService {
   isUpcomingDonationByDonationArray(donations: Donation[]): boolean {
     // check if donation start time is after now
     for(const donation of donations) {
-      console.log("isPendingDonation donation start time: ", donation.starttime);
-      console.log("isPendingDonation donation end time: ", donation.endtime);
-
       const now = new Date().toTimeString().split(' ')[0];
-      console.log("isPendingDonation now: ", now);
       const donationDate = new Date(donation.donationdate);
       const today = new Date();
       if(donationDate.getFullYear() == today.getFullYear() &&

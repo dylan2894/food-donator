@@ -33,51 +33,6 @@
   </label>
 </div>
 
-<div id="hiddenMenu" (click)="this.openMenu()"></div>
-
-<!-- Popout Sidenav -->
-<ul id="slide-out-donee" class="sidenav">
-  <li>
-    <div class="user-view">
-      <h3>Settings</h3>
-    </div>
-  </li>
-  <li>
-    <div class="user-view">
-      <h5>Push notifications</h5>
-      <div class="switch">
-        <label>
-          Off
-          <input type="checkbox">
-          <span class="lever"></span>
-          On
-        </label>
-      </div>
-    </div>
-  </li>
-  <li>
-    <div class="user-view">
-      <h5>Personal Information</h5>
-      <form [formGroup]="editDetailsForm">
-        Phone Number
-        <div>
-          <input id="phoneNumField" formControlName="phoneNumField" type="text" prefix="(+27)" mask=' 00 000 0000' [value]="this.phoneNumUtil.format(this.currentUser?.phone_num!)" [readOnly]="!this.phoneNumCheck">
-          <button id="editPhoneNumBtn" class="btn-flat waves-effect" (click)="this.toggleChangePhoneNum(this.editDetailsForm.controls.phoneNumField.value)">
-            <i *ngIf="!this.phoneNumCheck" class="material-symbols-outlined">edit</i>
-            <span *ngIf="this.phoneNumCheck">
-              Save Changes
-              <i class="material-symbols-outlined check">check</i>
-            </span>
-          </button>
-        </div>
-      </form>
-    </div>
-  </li>
-  <li id="logout">
-    <i (click)="this.logout()" class="material-symbols-outlined medium">logout</i>
-  </li>
-</ul>
-
 <!-- Modal Structure -->
 <div id="modal1" class="modal bottom-sheet">
   <div class="modal-content">
@@ -92,49 +47,25 @@
 
     <div id="flexContainer">
       <!-- Donation Schedule -->
-
-      <div class="carousel carousel-slider">
-        <app-card *ngFor="let donation of this.currentDonorDonations"
-        [date]="this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate))"
-        [startTime]="donation.starttime"
-        [endTime]="donation.endtime"
-        description="add donation.description"
-        [isCurrent]="this.donationService.isCurrentDonationByDonation(donation)" ></app-card>
-          <!-- <div class="card carousel-item">
-            <div class="card-image">
-              <img style="height: 100px;" src="../../../assets/images/cans.jpg">
-              <span class="card-title">Card Title</span>
-            </div>
-            <div class="card-content">
-              <p>I am a very simple card. I am good at containing small bits of information.
-              I am convenient because I require little markup to use effectively.
-            xxxxxxx xxxxxxx xxxxxxxxx xxxxxx xxxxxxx xxxxxx xxxxxxxxxx xxx xxxxxx xxxxxxxx
-          xxxxxxx xxxxx xxxxxx xxxxxxx xxxxxx xxxxxx xxxxxxxxx xxxxx xxxxxxxxx xxxxxxx xxxxxx</p>
-            </div>
-            <div class="card-action">
-              <a href="#">This is a link</a>
-            </div>
-          </div> -->
-
-          <!-- <div class="card horizontal carousel-item">
-            <div class="card-image">
-              <img style="height: 100%;" src="../../../assets/images/cans.jpg">
-            </div>
-            <div class="card-stacked">
-              <div class="card-content">
-                <p>I am a very simple card. I am good at containing small bits of information.</p>
-              </div>
-              <div class="card-action">
-                <a href="#">This is a link</a>
-              </div>
-            </div>
-          </div> -->
-
-        <a class="carousel-item"><img src="https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg"></a>
-        <a class="carousel-item"><img src="https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg"></a>
-        <a class="carousel-item"><img src="https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg"></a>
-        <a class="carousel-item"><img src="https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg"></a>
+      <div *ngIf="this.currentDonorDonations === null || this.currentDonorDonations?.length === 0; else loadCarousel">
+        <table>
+          <thead>
+            <tr><td style="text-align: center;">No upcoming donations</td></tr>
+          </thead>
+        </table>
       </div>
+
+      <ng-template #loadCarousel>
+        <div class="carousel carousel-slider">
+          <app-card *ngFor="let donation of this.currentDonorDonations"
+          [date]="this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate))"
+          [startTime]="donation.starttime"
+          [endTime]="donation.endtime"
+          [description]="donation.description"
+          [isCurrent]="this.donationService.isCurrentDonationByDonation(donation)"
+          ></app-card>
+        </div>
+      </ng-template>
       <!-- <div id="scheduleContainer">
         <table >
           <thead>

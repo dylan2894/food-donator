@@ -15,11 +15,10 @@ CREATE TABLE IF NOT EXISTS main_keyspace.donation (
    userId text,
    donationDate bigint,
    startTime time,
-   endTime time
+   endTime time,
+   description text
 );
 
 CREATE INDEX IF NOT EXISTS ON main_keyspace.user(phone_num);
 CREATE INDEX IF NOT EXISTS ON main_keyspace.user(type);
 CREATE INDEX IF NOT EXISTS ON main_keyspace.donation(userId);
-
-INSERT INTO main_keyspace.donation (id, userId, donationDate, startTime, endTime) VALUES ('someDonationId', 'f9f60df3-2e15-4b9d-9501-bf02a1537c07', 738945, '17:00:00', '19:00:00');

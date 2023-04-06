@@ -12,10 +12,6 @@
 }
 
 #slide-out-donee {
-  display: inline-block;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
   background-color: var(--primary);
 }
 
@@ -62,7 +58,7 @@
   position: absolute;
   top: 40px;
   left: 25px;
-  /* z-index: 999999; */
+  z-index: 99;
 }
 
 /* Bigger screens */

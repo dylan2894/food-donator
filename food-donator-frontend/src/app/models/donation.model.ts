@@ -3,5 +3,6 @@ export interface Donation {
   userid: string,
   donationdate: number,
   starttime: string,
-  endtime: string
+  endtime: string,
+  description: string
 }

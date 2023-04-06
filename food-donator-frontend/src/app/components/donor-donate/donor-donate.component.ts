@@ -19,10 +19,12 @@ export class DonorDonateComponent implements OnInit{
   isDateFormSubmitted = false;
   isStartTimeFormSubmitted = false;
   isEndTimeFormSubmitted = false;
+  isDescriptionFormSubmitted = false;
 
   date = new Date();
   startTime = "";
   endTime = "";
+  description = "";
 
   dateForm = this.fb.group({
     dateCtrl: ['', Validators.required]
@@ -32,6 +34,9 @@ export class DonorDonateComponent implements OnInit{
   });
   endTimeForm = this.fb.group({
     endTimeCtrl: ['', Validators.required]
+  });
+  descriptionForm = this.fb.group({
+    descriptionCtrl: ['', Validators.required]
   });
 
   constructor(
@@ -117,6 +122,19 @@ export class DonorDonateComponent implements OnInit{
     this.endTimeForm.controls.endTimeCtrl.setErrors({ required: true });
   }
 
+  isDescriptionSelected(stepper: MatStepper): void {
+    this.isDescriptionFormSubmitted = true;
+
+    if(this.descriptionForm.errors) {
+      return;
+    }
+
+    if(this.descriptionForm.controls.descriptionCtrl.value) {
+      this.description = this.descriptionForm.controls.descriptionCtrl.value;
+      stepper.next();
+    }
+  }
+
   onSubmitDonation() {
     const jwt = window.sessionStorage.getItem('food-donator-token');
     this.authenticationService.getUserByJWT(jwt).then((user: User | null) => {
@@ -126,7 +144,8 @@ export class DonorDonateComponent implements OnInit{
           userid: user.id,
           donationdate: this.date.valueOf(),
           starttime: this.startTime,
-          endtime: this.endTime
+          endtime: this.endTime,
+          description: this.description
         }
 
         this.donationService.createDonation(donation).then((resp: CreateDonationOutput) => {
