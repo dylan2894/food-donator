@@ -4,14 +4,13 @@
 
 <ul id="slide-out-donor" class="sidenav sidenav-fixed">
   <div *ngIf="this.isDonor" id="navBtnWrapper">
-    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/donate']">Donate</a></li>
-    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/alerts']">Alerts</a></li>
-    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/map']">Map</a></li>
     <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/dashboard']">Dashboard</a></li>
+    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/donate']">Donate</a></li>
+    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/donor-donations']">Donations</a></li>
   </div>
   <div *ngIf="!this.isDonor" id="navBtnWrapper">
     <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/map']">Map</a></li>
-    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/donations']">Donations</a></li>
+    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/donee-donations']">Donations</a></li>
   </div>
 
   <div id="logoutWrapper">

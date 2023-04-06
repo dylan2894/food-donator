@@ -31,6 +31,7 @@ import PlacesAutocompleteUtil from './utils/PlacesAutocompleteUtil';
 import { CardComponent } from './components/shared/card/card.component';
 import { DoneeSettingsComponent } from './components/donee-settings/donee-settings.component';
 import { DoneeComponent } from './components/donee/donee.component';
+import { DonationsComponent } from './components/donations/donations.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { DoneeComponent } from './components/donee/donee.component';
     DonorComponent,
     CardComponent,
     DoneeSettingsComponent,
-    DoneeComponent
+    DoneeComponent,
+    DonationsComponent
   ],
   imports: [
     BrowserModule,
