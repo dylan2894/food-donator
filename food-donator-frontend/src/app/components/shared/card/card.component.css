@@ -37,11 +37,15 @@ th {
 .carousel-item {
   background-color: transparent;
   padding: 10px;
-  width: 95% !important;
+  width: 100% !important;
 }
 
 .chip {
   text-overflow: ellipsis;
   word-break: break-all;
   overflow: hidden;
+}
+
+.card, .carousel-item {
+  margin: 0px !important;
 }
