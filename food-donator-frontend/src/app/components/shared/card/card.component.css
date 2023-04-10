@@ -37,7 +37,7 @@ th {
 .carousel-item {
   background-color: transparent;
   padding: 10px;
-  width: 400px !important;
+  width: 90%;
 }
 
 .chip {
@@ -48,4 +48,11 @@ th {
 
 .card, .carousel-item {
   margin: 0px !important;
+}
+
+/* Bigger screens */
+@media only screen and (min-width: 993px) {
+  .carousel-item {
+    width: 400px !important;
+  }
 }

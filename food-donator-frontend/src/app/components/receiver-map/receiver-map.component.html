@@ -57,18 +57,12 @@
 
       <ng-template #loadCarousel>
         <div class="carousel carousel-slider">
-          <!-- TODO add arrows to carousel -->
-          <!-- <div class="carousel-fixed-item center middle-indicator">
-            <div class="left">
-                <a href="#carouselContainer" onclick="movePrevCarousel()" class="middle-indicator-text waves-effect waves-light content-indicator"><i
-                        class="material-icons left  middle-indicator-text">chevron_left</i></a>
-            </div>
-
-            <div class="right">
-                <a href="#carouselContainer" onclick="moveNextCarousel()" class="middle-indicator-text waves-effect waves-light content-indicator"><i
-                        class="material-icons right middle-indicator-text">chevron_right</i></a>
-            </div>
-          </div> -->
+          <div (click)="this.carouselPrev($event)" class="carousel-left-chevron">
+            <i class="material-symbols-outlined">chevron_left</i>
+          </div>
+          <div (click)="this.carouselNext($event)" class="carousel-right-chevron">
+            <i class="material-symbols-outlined">chevron_right</i>
+          </div>
           <app-card *ngFor="let donation of this.currentDonorDonations"
           [forCarousel]="true"
           [date]="this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate))"

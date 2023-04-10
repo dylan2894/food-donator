@@ -229,4 +229,14 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       $('.modal').modal('open');
     });
   }
+
+  carouselPrev(e: Event) {
+    e.stopPropagation();
+    $('.carousel').carousel('prev');
+  }
+
+  carouselNext(e: Event) {
+    e.stopPropagation();
+    $('.carousel').carousel('next');
+  }
 }

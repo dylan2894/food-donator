@@ -13,7 +13,7 @@ import { DonationService } from 'src/app/services/donation/donation.service';
   templateUrl: './donor-donate.component.html',
   styleUrls: ['./donor-donate.component.css']
 })
-export class DonorDonateComponent implements OnInit{
+export class DonorDonateComponent implements OnInit {
   months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   isDateFormSubmitted = false;
@@ -46,7 +46,7 @@ export class DonorDonateComponent implements OnInit{
     private router: Router) {}
 
   ngOnInit() {
-    $(document).ready(() => {
+    $(() => {
       const dateOptions = {
         defaultDate: new Date()
       }

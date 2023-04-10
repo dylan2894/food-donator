@@ -65,10 +65,24 @@ p {
 }
 
 .carousel-item.card {
-  width: 400px !important;
+  /* width: 400px !important; */
   max-height: 40vh !important;
   min-height: 40vh !important;
   height: 40vh !important;
+}
+
+.carousel-left-chevron {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  z-index: 999;
+}
+
+.carousel-right-chevron {
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  z-index: 999;
 }
 
 .card-content {
