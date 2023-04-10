@@ -12,6 +12,7 @@ export class CardComponent {
   @Input() description = '';
   @Input() tags: string[] = [];
   @Input() isCurrent = false;
+  @Input() forCarousel = false;
 
   constructor() {
     $(document).ready(() => {

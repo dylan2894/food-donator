@@ -120,7 +120,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           // initialize the carousel once the modal is open
           $('.carousel.carousel-slider').carousel({
             noWrap: true,
-            fullWidth: true,
+            fullWidth: false,
             numVisible: 10,
             padding: 20
           });

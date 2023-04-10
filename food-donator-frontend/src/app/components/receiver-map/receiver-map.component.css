@@ -173,11 +173,11 @@ tr, td, th {
   margin-right: 10px;
 }
 
-#flexContainer {
+/* #flexContainer {
   display: flex;
   flex-direction: column;
   justify-content: start;
-}
+} */
 
 #modalHeading {
   display: inline;

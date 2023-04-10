@@ -36,20 +36,34 @@
       <small *ngIf="isEndTimeFormSubmitted && endTimeForm.controls.endTimeCtrl.errors">Please select an end time</small>
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="this.isEndTimeSelected(stepper)">Create Donation</button>
+        <button mat-button (click)="this.isEndTimeSelected(stepper)">Next</button>
       </div>
     </form>
   </mat-step>
 
   <mat-step [stepControl]="descriptionForm">
     <form [formGroup]="descriptionForm">
-      <ng-template matStepLabel>Description</ng-template>
-      <mat-label>Provide a description of the donation contents</mat-label>
-      <input id="descriptionField" formControlName="descriptionCtrl" class="input" type="text">
-      <small *ngIf="isDescriptionFormSubmitted && descriptionForm.controls.descriptionCtrl.errors">Please provide a short description of the donation contents</small>
+
+
+      <ng-template matStepLabel>Description and Tags</ng-template>
+      <mat-label>Select tags which correspond to the donation contents.</mat-label>
+
+      <!-- TODO Add tag capture to this step -->
+      <div>
+        <div class="chip">Canned Food</div>
+        <div class="chip">Blankets<i class="close material-icons">close</i></div>
+        <div class="chip">Grains</div>
+      </div>
+
+      <div>
+        <mat-label>Provide a description of the donation contents.</mat-label>
+        <input id="descriptionField" formControlName="descriptionCtrl" class="input" type="text">
+        <small *ngIf="isDescriptionFormSubmitted && descriptionForm.controls.descriptionCtrl.errors">Please provide a short description of the donation contents</small>
+      </div>
+
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="this.isDescriptionSelected(stepper)">Create Donation</button>
+        <button mat-button (click)="this.isDescriptionSelected(stepper)">Next</button>
       </div>
     </form>
   </mat-step>
