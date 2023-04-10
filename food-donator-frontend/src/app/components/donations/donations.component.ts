@@ -12,7 +12,7 @@ import DateUtil from 'src/app/utils/DateUtil';
 })
 export class DonationsComponent {
   currentUser: User|null = null;
-  currentDonorDonations: Donation[] | null = [];
+  currentDonations: Donation[] | null = [];
 
   constructor(
     public donationService: DonationService,
@@ -23,9 +23,9 @@ export class DonationsComponent {
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
         this.currentUser = user;
-        this.donationService.getDonationsByUserId(this.currentUser.id).then((donations) => {
-          this.currentDonorDonations = donations;
-          console.log("DONATIONS: ", this.currentDonorDonations);
+        this.donationService.getDonations().then((donations) => {
+          this.currentDonations = donations;
+          console.log("DONATIONS: ", this.currentDonations);
         });
       }
     });

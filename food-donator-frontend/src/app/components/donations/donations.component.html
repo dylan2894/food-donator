@@ -1,10 +1,10 @@
-<div class="row top-nav">
-  <h3>Donations</h3>
-</div>
-
 <div class="container">
+  <div class="row top-nav">
+    <h3>Donations</h3>
+  </div>
+
   <div id="donationContainer" class="row">
-    <app-card class="col s12 m6 l6 " *ngFor="let donation of this.currentDonorDonations"
+    <app-card class="col s12 m6 l6 " *ngFor="let donation of this.currentDonations"
       [forCarousel]="false"
       [donorId]="donation.userid"
       [date]="this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate))"
