@@ -25,8 +25,8 @@ public final class DonationMapper {
     if(map.get("endtime") != null){
       donation.endtime = map.get("endtime").toString();    
     }
-    if(map.get("donation") != null){
-      donation.description = map.get("donation").toString();
+    if(map.get("description") != null){
+      donation.description = map.get("description").toString();
     }
   
     return donation;
