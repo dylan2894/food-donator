@@ -7,6 +7,7 @@ import { CenterMapInput } from 'src/app/models/inputs/center-map-input.model';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { Constants } from 'src/app/shared/constants/constants';
 import MapUtil from 'src/app/utils/MapUtil';
 import PhoneNumUtil from 'src/app/utils/PhoneNumUtil';
 import PlacesAutocompleteUtil from 'src/app/utils/PlacesAutocompleteUtil';
@@ -39,7 +40,7 @@ export class DonorSettingsComponent implements AfterViewInit {
     private fb: FormBuilder,
     private mapUtil: MapUtil
     ) {
-    const jwt = window.sessionStorage.getItem('food-donator-token');
+    const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
         // Set the current user for rendering

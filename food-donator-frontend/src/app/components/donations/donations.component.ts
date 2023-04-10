@@ -3,6 +3,7 @@ import { Donation } from 'src/app/models/donation.model';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
+import { Constants } from 'src/app/shared/constants/constants';
 import DateUtil from 'src/app/utils/DateUtil';
 
 @Component({
@@ -19,7 +20,7 @@ export class DonationsComponent {
     public dateUtil: DateUtil,
     private authenticationService: AuthenticationService,
   ) {
-    const jwt = window.sessionStorage.getItem('food-donator-token');
+    const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
         this.currentUser = user;

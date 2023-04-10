@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { Constants } from 'src/app/shared/constants/constants';
 import PhoneNumUtil from 'src/app/utils/PhoneNumUtil';
 
 @Component({
@@ -25,7 +26,7 @@ export class DoneeSettingsComponent {
       phoneNumField: new FormControl('', [Validators.required])
     });
 
-    const jwt = window.sessionStorage.getItem('food-donator-token');
+    const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
         this.currentUser = user;

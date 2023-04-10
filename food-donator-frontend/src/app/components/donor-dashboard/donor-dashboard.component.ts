@@ -3,6 +3,7 @@ import { Donation } from 'src/app/models/donation.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
 import { SidenavService } from 'src/app/services/sidenav/sidenav.service';
+import { Constants } from 'src/app/shared/constants/constants';
 import DateUtil from 'src/app/utils/DateUtil';
 
 @Component({
@@ -18,7 +19,7 @@ export class DonorDashboardComponent {
     private authenticationService: AuthenticationService,
     public dateUtil: DateUtil,
     public sidenavService: SidenavService){
-    const jwt = window.sessionStorage.getItem('food-donator-token');
+    const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
         this.donationService.getDonationsByUserId(user.id).then((_donations) => {

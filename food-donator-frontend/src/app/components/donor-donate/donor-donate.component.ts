@@ -7,6 +7,7 @@ import { CreateDonationOutput } from 'src/app/models/outputs/create-donation-out
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
+import { Constants } from 'src/app/shared/constants/constants';
 
 @Component({
   selector: 'app-donor-donate',
@@ -136,7 +137,7 @@ export class DonorDonateComponent implements OnInit {
   }
 
   onSubmitDonation() {
-    const jwt = window.sessionStorage.getItem('food-donator-token');
+    const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user: User | null) => {
       if(user != null){
         const donation: Donation = {

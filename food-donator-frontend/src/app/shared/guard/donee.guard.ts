@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { Constants } from '../constants/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class DoneeGuard implements CanActivate {
 
   async isLoggedInDonee(): Promise<boolean> {
     // get stored JWT
-    const jwt = window.sessionStorage.getItem('food-donator-token');
+    const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
 
     if(jwt !== null && jwt !== '') {
       // validate the JWT on the server-side

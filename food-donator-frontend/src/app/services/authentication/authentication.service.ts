@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { LoginInput } from 'src/app/models/inputs/login-input.model';
 import { ValidateJwtInput } from 'src/app/models/inputs/validate-jwt-input.model';
 import { User } from 'src/app/models/user.model';
+import { Constants } from 'src/app/shared/constants/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,7 @@ export class AuthenticationService {
       const json = JSON.parse(JSON.stringify(response));
       if(json != null && json.token !== undefined && json.token !== ''){
         // store token
-        window.sessionStorage.setItem('food-donator-token', json.token);
+        window.sessionStorage.setItem(Constants.FOOD_DONATOR_TOKEN, json.token);
         return;
       }
       console.log("[AUTH SERVICE] json response does not contain token");

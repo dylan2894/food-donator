@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user/user.service';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { Constants } from '../constants/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class DonorGuard implements CanActivate {
 
   async isLoggedInDonor(): Promise<boolean> {
     // get stored JWT
-    const jwt = window.sessionStorage.getItem('food-donator-token');
+    const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
 
     if(jwt !== null && jwt !== '') {
       // validate the JWT on the server-side

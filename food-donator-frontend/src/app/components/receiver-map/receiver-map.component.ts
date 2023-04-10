@@ -13,6 +13,7 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 import { DonationService } from 'src/app/services/donation/donation.service';
 import { SidenavService } from 'src/app/services/sidenav/sidenav.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { Constants } from 'src/app/shared/constants/constants';
 import DateUtil from 'src/app/utils/DateUtil';
 import MapUtil from 'src/app/utils/MapUtil';
 import PhoneNumUtil from 'src/app/utils/PhoneNumUtil';
@@ -48,7 +49,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     private authenticationService: AuthenticationService
     ) {
 
-    const jwt = window.sessionStorage.getItem('food-donator-token');
+    const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
         this.currentUser = user;
@@ -199,7 +200,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   }
 
   logout(): void {
-    window.sessionStorage.removeItem("food-donator-token");
+    window.sessionStorage.removeItem(Constants.FOOD_DONATOR_TOKEN);
     this.closeMenu();
     this.router.navigateByUrl("/login");
     this.sidenavService.clearOverlay();
