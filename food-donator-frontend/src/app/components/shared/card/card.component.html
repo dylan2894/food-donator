@@ -1,6 +1,8 @@
 <div *ngIf="!this.forCarousel" class="card">
   <div class="card-content" style="height: 100%;">
-    <span class="card-title">{{ date }}</span>
+    <span class="card-title">{{ this.correspondingDonor?.name }}<i class="activator material-icons right">more_vert</i></span>
+    <div class="subtitle">{{ date }}</div>
+
 
     <!-- Upcoming or Current donation -->
     <div *ngIf="this.isCurrent" class="chip current">Current Donation</div>
@@ -41,6 +43,13 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Slide up revealed info -->
+  <div class="card-reveal">
+    <span class="card-title grey-text text-darken-4">{{ this.correspondingDonor?.name }}<i class="material-icons right">close</i></span>
+    <p>Here is some more information about this product that is only revealed once clicked on.</p>
+  </div>
+
 </div>
 
 <div *ngIf="this.forCarousel" class="card carousel-item ">

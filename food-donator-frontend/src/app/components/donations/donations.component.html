@@ -6,6 +6,7 @@
   <div id="donationContainer" class="row">
     <app-card class="col s12 m6 l6 " *ngFor="let donation of this.currentDonorDonations"
       [forCarousel]="false"
+      [donorId]="donation.userid"
       [date]="this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate))"
       [startTime]="donation.starttime"
       [endTime]="donation.endtime"

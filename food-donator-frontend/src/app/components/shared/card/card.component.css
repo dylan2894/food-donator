@@ -50,6 +50,10 @@ th {
   margin: 0px !important;
 }
 
+.subtitle {
+  margin-bottom: 8px;
+}
+
 /* Bigger screens */
 @media only screen and (min-width: 993px) {
   .carousel-item {
