@@ -4,6 +4,8 @@ import { LoginInput } from 'src/app/models/inputs/login-input.model';
 import { ValidateJwtInput } from 'src/app/models/inputs/validate-jwt-input.model';
 import { User } from 'src/app/models/user.model';
 import { Constants } from 'src/app/shared/constants/constants';
+import { RequestRouting } from 'src/app/shared/constants/request-routing';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) {
     //TODO update url to point to backend
-    this.baseUrl = "http://localhost:8080/authenticate/";
+    this.baseUrl = environment.link + RequestRouting.Services.Authentication.AUTHENTICATE;
     this.headers.set("Origin", "http://localhost:4200");
     this.headers.set("Host", "http://localhost:4200");
   }

@@ -1,6 +1,8 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RegisterUserInput } from 'src/app/models/inputs/register-user-input.model';
+import { RequestRouting } from 'src/app/shared/constants/request-routing';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +13,12 @@ export class RegistrationService {
 
   constructor(private http: HttpClient) {
     //TODO update url to point to backend
-    this.baseUrl = "http://localhost:8080/register/";
+    this.baseUrl = environment.link + RequestRouting.Services.Registration.REGISTRATION;
     this.headers.set("Origin", "http://localhost:4200");
     this.headers.set("Host", "http://localhost:4200");
   }
 
   async registerUser(user: RegisterUserInput): Promise<void> {
-
-    console.log("Registering user:", user);
-
     const req = new Promise((resolve, reject) => {
       this.http.post<string|null>(this.baseUrl + "user", user, { headers: this.headers }).subscribe({
         next: (resp) => {

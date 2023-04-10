@@ -1,6 +1,8 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Donation } from 'src/app/models/donation.model';
+import { RequestRouting } from 'src/app/shared/constants/request-routing';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +12,14 @@ export class DonationService {
   headers: HttpHeaders = new HttpHeaders();
 
   constructor(private http: HttpClient) {
-   //TODO inject base url
-   this.baseUrl = "http://localhost:8080/donation";
+   this.baseUrl = environment.link + RequestRouting.Services.Donation.DONATION;
    this.headers.set("Origin", "http://localhost:4200");
    this.headers.set("Host", "http://localhost:4200");
   }
 
   async createDonation(donation: Donation): Promise<any> {
     const req = new Promise((resolve, reject) => {
-      this.http.post(this.baseUrl + "/create", donation, { headers: this.headers }).subscribe({
+      this.http.post(this.baseUrl + "create", donation, { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
@@ -39,7 +40,7 @@ export class DonationService {
 
   async getDonation(id: string): Promise<Donation | null> {
     const req = new Promise((resolve, reject) => {
-      this.http.get(this.baseUrl + "/readOne?id=" + id, { headers: this.headers }).subscribe({
+      this.http.get(this.baseUrl + "readOne?id=" + id, { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
@@ -60,7 +61,7 @@ export class DonationService {
 
   async getDonations(): Promise<Donation[] | null> {
     const req = new Promise((resolve, reject) => {
-      this.http.get(this.baseUrl + "/readAll", { headers: this.headers }).subscribe({
+      this.http.get(this.baseUrl + "readAll", { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
@@ -80,7 +81,7 @@ export class DonationService {
 
   async getDonationsByUserId(userId: string): Promise<Donation[] | null> {
     const req = new Promise((resolve, reject) => {
-      this.http.get(this.baseUrl + "/readAllByUserId?userId=" + userId, { headers: this.headers }).subscribe({
+      this.http.get(this.baseUrl + "readAllByUserId?userId=" + userId, { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
@@ -101,7 +102,7 @@ export class DonationService {
 
   async deleteDonation(donationId: string) {
     const req = new Promise((resolve, reject) => {
-      this.http.get(this.baseUrl + "/delete?id=" + donationId, { headers: this.headers }).subscribe({
+      this.http.get(this.baseUrl + "delete?id=" + donationId, { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
