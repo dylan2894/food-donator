@@ -25,26 +25,12 @@ export class DonationsComponent {
         this.currentUser = user;
         this.donationService.getDonations().then((donations) => {
           this.currentDonations = donations;
-          console.log("DONATIONS: ", this.currentDonations);
         });
       }
     });
 
-    $(document).ready(() => {
+    $(() => {
       $('#doneeContainer').addClass('pushSidenav');
-
-      // window.addEventListener('scroll', this.stickynavbar);
     });
   }
-
-  // private stickynavbar() {
-  //   const navbar = document.querySelector('.top-nav') as HTMLElement;
-  //   const top = navbar.offsetTop;
-
-  //   if (window.scrollY >= top) {
-  //     navbar.classList.add('sticky');
-  //   } else {
-  //     navbar.classList.remove('sticky');
-  //   }
-  // }
 }
