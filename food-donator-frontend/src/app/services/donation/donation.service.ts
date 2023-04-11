@@ -121,6 +121,27 @@ export class DonationService {
     return null;
   }
 
+  async getCurrentAndUpcomingDonations() {
+    const req = new Promise((resolve, reject) => {
+      this.http.get(this.baseUrl + "readAllCurrentAndUpcoming", { headers: this.headers }).subscribe({
+        next: (resp) => {
+          resolve(resp);
+        },
+        error: (err: HttpErrorResponse) => {
+          reject(err);
+        }
+      });
+    });
+
+    try {
+      const resp = await req as Donation[];
+      return resp;
+    } catch(e) {
+      console.error("[DONATION SERVICE] getCurrentAndUpcomingDonations() error", e);
+    }
+    return null;
+  }
+
   async getPastDonationsByUserId(id: string): Promise<Donation[] | null> {
     try {
       const donations = await this.getDonationsByUserId(id) as Donation[];

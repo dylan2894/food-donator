@@ -24,7 +24,7 @@ export class DonationsComponent {
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
         this.currentUser = user;
-        this.donationService.getDonations().then((donations) => {
+        this.donationService.getCurrentAndUpcomingDonations().then((donations) => {
           this.currentDonations = donations;
         });
       }
