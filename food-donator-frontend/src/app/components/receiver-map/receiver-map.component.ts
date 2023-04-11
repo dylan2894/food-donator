@@ -242,11 +242,6 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       this.currentDonorDonations = donations;
       $('.modal').modal('open');
     });
-
-    // this.donationService.getDonationsByUserId(donorId).then((donations) => {
-    //   this.currentDonorDonations = donations;
-    //   $('.modal').modal('open');
-    // });
   }
 
   carouselPrev(e: Event) {

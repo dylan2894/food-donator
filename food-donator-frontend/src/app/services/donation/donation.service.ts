@@ -142,22 +142,33 @@ export class DonationService {
     return null;
   }
 
+  /**
+   * Wraps a single {@link Donation} in an array before invoking isCurrentDonationByDonationArray method.
+   * @param donation A single {@link Donation}.
+   * @returns True, if the donation is current. False otherwise.
+   */
   isCurrentDonationByDonation(donation: Donation): boolean {
     const donationArr: Donation[] = [];
     donationArr.push(donation);
     return this.isCurrentDonationByDonationArray(donationArr);
   }
 
+  /**
+   * Checks if a {@link Donation} which has started and is current is within the supplied array.
+   * @param donations An array of {@link Donation}'s
+   * @returns True, if there is a currently active donation. False, if no currently active donations exist.
+   */
   isCurrentDonationByDonationArray(donations: Donation[]): boolean {
-    // check if donation start time is previous to now and if end time is not yet reached
     for(const donation of donations) {
+      const today = new Date();
       const now = new Date().toTimeString().split(' ')[0];
       const donationDate = new Date(donation.donationdate);
-      const today = new Date();
+
+      // if donation is today, start time is previous to now and end time is not yet reached.
       if(donationDate.getFullYear() == today.getFullYear() &&
       donationDate.getMonth() == today.getMonth() &&
-      donationDate.getDay() == today.getDay() &&
-      donation.starttime < now && now < donation.endtime) {
+      donationDate.getDate() == today.getDate() &&
+      donation.starttime <= now && now <= donation.endtime) {
         // donation is current
         return true;
       }
@@ -165,25 +176,46 @@ export class DonationService {
     return false;
   }
 
+
+  /**
+   * Wraps a single {@link Donation} in an array before invoking isUpcomingDonationByDonationArray method.
+   * @param donation A single {@link Donation}.
+   * @returns True, if the donation is upcoming. False otherwise.
+   */
   isUpcomingDonationByDonation(donation: Donation): boolean {
     const donationArr: Donation[] = [];
     donationArr.push(donation);
     return this.isUpcomingDonationByDonationArray(donationArr);
   }
 
+  /**
+   * Checks if a {@link Donation} which is in the future or today but has not yet started is present within the supplied array.
+   * @param donations An array of {@link Donation}'s
+   * @returns True, if there is an upcoming donation in the future which has not started yet. False, if no donations upcoming donations exist.
+   */
   isUpcomingDonationByDonationArray(donations: Donation[]): boolean {
-    // check if donation start time is after now
     for(const donation of donations) {
+      const today = new Date();
       const now = new Date().toTimeString().split(' ')[0];
       const donationDate = new Date(donation.donationdate);
-      const today = new Date();
-      if(donationDate.getFullYear() == today.getFullYear() &&
-      donationDate.getMonth() == today.getMonth() &&
-      donationDate.getDay() == today.getDay() &&
-      donation.starttime > now) {
-        // donationDate is today or in the future and start time is in the future
+      today.setHours(0);
+      today.setMinutes(0);
+      today.setSeconds(0);
+      today.setMilliseconds(0);
+
+      if(donation.donationdate > today.getTime()) { // if day is in the future
         return true;
       }
+
+      if(
+        donationDate.getFullYear() == today.getFullYear() &&
+        donationDate.getMonth() == today.getMonth() &&
+        donationDate.getDate() == today.getDate() &&
+        donation.starttime > now
+        ) { // if today and not yet passed
+        return true;
+      }
+
     }
     return false;
   }
