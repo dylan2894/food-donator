@@ -238,10 +238,15 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     });
 
     // fetch donations for this donor
-    this.donationService.getDonationsByUserId(donorId).then((donations) => {
+    this.donationService.getCurrentAndUpcomingDonationsByUserId(donorId).then((donations) => {
       this.currentDonorDonations = donations;
       $('.modal').modal('open');
     });
+
+    // this.donationService.getDonationsByUserId(donorId).then((donations) => {
+    //   this.currentDonorDonations = donations;
+    //   $('.modal').modal('open');
+    // });
   }
 
   carouselPrev(e: Event) {

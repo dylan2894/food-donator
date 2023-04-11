@@ -1,8 +1,15 @@
 package com.fooddonator.restapi.controller;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,6 +76,32 @@ public class DonationController {
     System.out.println("[DONATION CONTROLLER] /donation/readAllByUserId");
     List<Donation> donations = repository.getDonationsByUserId(userId);
     return new ResponseEntity<>(donations, null, HttpStatus.OK);
+  }
+
+  @GetMapping("/readCurrentAndUpcomingByUserId")
+  public ResponseEntity<List<Donation>> getCurrentAndUpcomingDonationsByUserId(@RequestParam String userId) {
+    System.out.println("[DONATION CONTROLLER] /donation/readCurrentAndUpcomingByUserId");
+
+    Calendar now = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+    int year = now.get(Calendar.YEAR);
+    int month = now.get(Calendar.MONTH);
+    int day = now.get(Calendar.DAY_OF_MONTH);
+    now.setTimeInMillis(0);
+    now.set(year, month, day);
+    now.setTimeInMillis(now.getTimeInMillis() - 7200000);
+
+    List<Donation> donations = repository.getDonationsByUserId(userId);
+
+    List<Donation> currentAndUpcomingDonations = null;
+    if(donations != null) {
+      // filter donations to obtain upcoming and current donations
+      currentAndUpcomingDonations = donations
+      .stream()
+      .filter(donation -> donation.donationdate >= now.getTime().getTime())
+      .collect(Collectors.toList());
+    }
+  
+    return new ResponseEntity<>(currentAndUpcomingDonations, null, HttpStatus.OK);
   }
 
   @GetMapping("/delete")

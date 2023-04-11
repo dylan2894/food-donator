@@ -100,6 +100,27 @@ export class DonationService {
     return null;
   }
 
+  async getCurrentAndUpcomingDonationsByUserId(id: string): Promise<Donation[] | null> {
+    const req = new Promise((resolve, reject) => {
+      this.http.get(this.baseUrl + "readCurrentAndUpcomingByUserId?userId=" + id, { headers: this.headers }).subscribe({
+        next: (resp) => {
+          resolve(resp);
+        },
+        error: (err: HttpErrorResponse) => {
+          reject(err);
+        }
+      });
+    });
+
+    try {
+      const resp = await req as Donation[];
+      return resp;
+    } catch(e) {
+      console.error("[DONATION SERVICE] getCurrentAndUpcomingDonationsByUserId() error", e);
+    }
+    return null;
+  }
+
   async deleteDonation(donationId: string) {
     const req = new Promise((resolve, reject) => {
       this.http.get(this.baseUrl + "delete?id=" + donationId, { headers: this.headers }).subscribe({
