@@ -232,9 +232,6 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
 
     // fetch this donor's location
     this.userService.getUser(donorId).then((user) => {
-
-      alert("Destination: " + user?.lat + ", " + user?.lon);
-
       this.currentDonor = user;
       this.googleMapsDirectionsLink = this.baseGoogleMapsDirectionsLink
         .concat("&destination=", user!.lat!.toString(), ",", user!.lon!.toString());
