@@ -121,6 +121,44 @@ export class DonationService {
     return null;
   }
 
+  async getPastDonationsByUserId(id: string): Promise<Donation[] | null> {
+    try {
+      const donations = await this.getDonationsByUserId(id) as Donation[];
+      const pastDonations: Donation[] = [];
+      return donations.filter((donation) => {
+
+        const today = new Date();
+        const now = new Date().toTimeString().split(' ')[0];
+        const donationDate = new Date(donation.donationdate);
+        today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0);
+        today.setMilliseconds(0);
+
+        // if today, endtime must be before now
+        if(donationDate.getFullYear() == today.getFullYear() &&
+        donationDate.getMonth() == today.getMonth() &&
+        donationDate.getDate() == today.getDate()) {
+          if(donation.endtime < now) {
+            return true;
+          }
+          // if today, but not yet over
+          return false;
+        }
+
+        // if day is in the past or today
+        if(donation.donationdate < today.getTime()) {
+          return true;
+        }
+        return false;
+      });
+    } catch(e) {
+      console.error("[DONATION SERVICE] getPastDonationsByUserId() error", e);
+    }
+
+    return null;
+  }
+
   async deleteDonation(donationId: string) {
     const req = new Promise((resolve, reject) => {
       this.http.get(this.baseUrl + "delete?id=" + donationId, { headers: this.headers }).subscribe({

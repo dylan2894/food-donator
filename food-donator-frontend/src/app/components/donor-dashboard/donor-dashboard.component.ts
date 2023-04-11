@@ -13,7 +13,8 @@ import DateUtil from 'src/app/utils/DateUtil';
 })
 export class DonorDashboardComponent {
 
-  donations: Donation[] = [];
+  currentAndUpcomingDonations: Donation[] = [];
+  pastDonations: Donation[] = [];
 
   constructor(private donationService: DonationService,
     private authenticationService: AuthenticationService,
@@ -22,9 +23,15 @@ export class DonorDashboardComponent {
     const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
-        this.donationService.getDonationsByUserId(user.id).then((_donations) => {
-          if(_donations != null) {
-            this.donations = _donations;
+        this.donationService.getCurrentAndUpcomingDonationsByUserId(user.id).then((donations) => {
+          if(donations != null) {
+            this.currentAndUpcomingDonations = donations;
+          }
+        });
+
+        this.donationService.getPastDonationsByUserId(user.id).then((donations) => {
+          if(donations != null) {
+            this.pastDonations = donations;
           }
         });
       }
@@ -34,7 +41,11 @@ export class DonorDashboardComponent {
   async deleteDonation(donationId: string) {
     try {
       await this.donationService.deleteDonation(donationId);
-      this.donations = this.donations.filter((donation) => {
+      this.currentAndUpcomingDonations = this.currentAndUpcomingDonations.filter((donation) => {
+        return donation.id != donationId;
+      });
+
+      this.pastDonations = this.pastDonations.filter((donation) => {
         return donation.id != donationId;
       });
     } catch(e) {
