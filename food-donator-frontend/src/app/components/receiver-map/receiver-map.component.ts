@@ -29,9 +29,12 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   donors: User[] = [];
   currentUser: User | null = null;
+  currentDonor: User | null = null;
   currentDonorName = "";
   currentDonorPhoneNum = "";
   currentDonorDonations: Donation[] | null = [];
+  baseGoogleMapsDirectionsLink = "https://www.google.com/maps/dir/?api=1&travelmode=walking";
+  googleMapsDirectionsLink = "";
   mapOptions: google.maps.MapOptions;
   center: CenterMapInput | null = null;
   markers: IMarker[] = [];
@@ -187,7 +190,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           // rerender donor select with list of fetched donors
           setTimeout(() => {
             $('select').formSelect();
-          }, 1000); //200
+          }, 200); //200
 
           // set the Map bounds to encompass all the donors
           const bounds = this.mapUtil.getBoundsByMarkers(this.markers);
@@ -222,11 +225,19 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     this.currentDonorName = donorName;
     this.currentDonorPhoneNum = donorPhoneNum;
 
-    // fetch donations for this clicked donor
-    this.donationService.getDonationsByUserId(donorId).then((donations) => {
-      // this populates the donation schedule table
-      this.currentDonorDonations = donations;
+    // fetch this donor's location
+    this.userService.getUser(donorId).then((user) => {
 
+      alert("Destination: " + user?.lat + ", " + user?.lon);
+
+      this.currentDonor = user;
+      this.googleMapsDirectionsLink = this.baseGoogleMapsDirectionsLink
+        .concat("&destination=", user!.lat!.toString(), ",", user!.lon!.toString());
+    });
+
+    // fetch donations for this donor
+    this.donationService.getDonationsByUserId(donorId).then((donations) => {
+      this.currentDonorDonations = donations;
       $('.modal').modal('open');
     });
   }

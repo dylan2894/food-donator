@@ -73,35 +73,12 @@
           ></app-card>
         </div>
       </ng-template>
-      <!-- <div id="scheduleContainer">
-        <table >
-          <thead>
-            <tr style="border: none;">
-              <th scope="colgroup">Donation Schedule</th>
-            </tr>
-            <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Time</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr *ngIf="this.currentDonorDonations === null || this.currentDonorDonations?.length === 0">
-              <td colspan="2" style="text-align: center;">No upcoming donations</td>
-            </tr>
-            <tr *ngFor="let donation of this.currentDonorDonations">
-              <td>{{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate)) }}</td>
-              <td>{{ donation.starttime }} - {{ donation.endtime }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div> -->
 
       <!-- WhatsApp and Maps Directions -->
       <div id="actionButtonsContainer">
         <p>Need directions?</p>
 
-        <a href="https://www.google.com/maps/dir/?api=1&origin=41.43206,-81.38992&destination=41.43206,-81.48992&travelmode=walking" target="_blank"><button class="btn">Google Maps</button></a>
+        <a [href]="this.googleMapsDirectionsLink" target="_blank"><button class="btn">Google Maps</button></a>
         <p>Arrived? Notify the Donor</p>
         <a aria-label="Chat on WhatsApp" [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.currentDonorPhoneNum)" target="_blank">
           <img alt="Chat on WhatsApp" src="../../../assets/images/WhatsAppButtonGreenLarge.svg"/>

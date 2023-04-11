@@ -209,7 +209,7 @@ tr, td, th {
   display: inline-block;
 }
 
-#scheduleContainer {
+/* #scheduleContainer {
   margin: 0;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -222,7 +222,7 @@ tr, td, th {
   width: 100%;
   overflow-y: scroll;
   scrollbar-width: 0px;
-}
+} */
 
 #actionButtonsContainer {
   margin: 0;
