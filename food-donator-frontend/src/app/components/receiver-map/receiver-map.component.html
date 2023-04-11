@@ -80,7 +80,7 @@
 
         <a [href]="this.googleMapsDirectionsLink" target="_blank"><button class="btn">Google Maps</button></a>
         <p>Arrived? Notify the Donor</p>
-        <a aria-label="Chat on WhatsApp" [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.currentDonorPhoneNum)" target="_blank">
+        <a aria-label="Chat on WhatsApp" [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.currentDonorPhoneNum) + '?text=' + myEncodeURIComponent(this.prefilledText)" target="_blank">
           <img alt="Chat on WhatsApp" src="../../../assets/images/WhatsAppButtonGreenLarge.svg"/>
         </a>
       </div>

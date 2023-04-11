@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { HttpParameterCodec, HttpParams } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GoogleMap } from '@angular/google-maps';
@@ -35,6 +36,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   currentDonorDonations: Donation[] | null = [];
   baseGoogleMapsDirectionsLink = "https://www.google.com/maps/dir/?api=1&travelmode=walking";
   googleMapsDirectionsLink = "";
+  prefilledText = "Hi, I am contacting you from the Food Donator app.";
   mapOptions: google.maps.MapOptions;
   center: CenterMapInput | null = null;
   markers: IMarker[] = [];
@@ -51,7 +53,6 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private authenticationService: AuthenticationService
     ) {
-
     const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
@@ -219,6 +220,10 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     const sidenav = M.Sidenav.getInstance(document.querySelector('.sidenav') as Element);
     sidenav.close();
     $('#hiddenMenu').css('display', 'block');
+  }
+
+  myEncodeURIComponent(text: string): string {
+    return encodeURIComponent(text);
   }
 
   openModal(donorId: string, donorName: string, donorPhoneNum: string): void {
