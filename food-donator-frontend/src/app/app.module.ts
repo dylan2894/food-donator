@@ -32,6 +32,7 @@ import { CardComponent } from './components/shared/card/card.component';
 import { DoneeSettingsComponent } from './components/donee-settings/donee-settings.component';
 import { DoneeComponent } from './components/donee/donee.component';
 import { DonationsComponent } from './components/donations/donations.component';
+import { ChipSelectorComponent } from './components/shared/chip-selector/chip-selector.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { DonationsComponent } from './components/donations/donations.component';
     CardComponent,
     DoneeSettingsComponent,
     DoneeComponent,
-    DonationsComponent
+    DonationsComponent,
+    ChipSelectorComponent
   ],
   imports: [
     BrowserModule,

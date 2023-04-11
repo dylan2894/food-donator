@@ -1,0 +1,8 @@
+.selected {
+  border: 1px solid green !important;
+}
+
+.chip {
+  user-select: none;
+  cursor: pointer;
+}
