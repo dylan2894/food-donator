@@ -11,7 +11,7 @@
             <ng-template matStepLabel>Donation Date</ng-template>
             <mat-label>Select the donation date</mat-label>
             <input formControlName="dateCtrl" type="text" class="datepicker" readonly>
-            <small *ngIf="isDateFormSubmitted && dateForm.controls.dateCtrl.errors">Please select a donation date</small>
+            <small *ngIf="isDateFormSubmitted && dateForm.controls.dateCtrl.errors">Please select a donation date.</small>
             <div>
               <button mat-button (click)="this.isDateSelected(stepper)">Next</button>
             </div>
@@ -23,7 +23,7 @@
             <ng-template matStepLabel>Start Time</ng-template>
             <mat-label>Specify the time when the donation window starts</mat-label>
             <input formControlName="startTimeCtrl" type="text" class="timepicker" id="startTime" required readonly>
-            <small *ngIf="isStartTimeFormSubmitted && startTimeForm.controls.startTimeCtrl.errors">Please select a start time</small>
+            <small *ngIf="isStartTimeFormSubmitted && startTimeForm.controls.startTimeCtrl.errors">Please select a start time.</small>
             <div>
               <button mat-button matStepperPrevious>Back</button>
               <button mat-button (click)="this.isStartTimeSelected(stepper)">Next</button>
@@ -36,7 +36,8 @@
             <ng-template matStepLabel>End Time</ng-template>
             <mat-label>Specify the time when the donation window ends</mat-label>
             <input formControlName="endTimeCtrl" type="text" class="timepicker" id="endTime" readonly>
-            <small *ngIf="isEndTimeFormSubmitted && endTimeForm.controls.endTimeCtrl.errors">Please select an end time</small>
+            <small *ngIf="isEndTimeFormSubmitted && endTimeForm.controls.endTimeCtrl.hasError('required')">Please select an end time.</small>
+            <small *ngIf="isEndTimeFormSubmitted && endTimeForm.controls.endTimeCtrl.hasError('endTimeBeforeStartTime')">Please select an end time which is after the selected start time.</small>
             <div>
               <button mat-button matStepperPrevious>Back</button>
               <button mat-button (click)="this.isEndTimeSelected(stepper)">Next</button>
@@ -62,7 +63,7 @@
             <div>
               <mat-label>Provide a description of the donation contents.</mat-label>
               <input id="descriptionField" formControlName="descriptionCtrl" class="input" type="text">
-              <small *ngIf="isDescriptionFormSubmitted && descriptionForm.controls.descriptionCtrl.errors">Please provide a short description of the donation contents</small>
+              <small *ngIf="isDescriptionFormSubmitted && descriptionForm.controls.descriptionCtrl.errors">Please provide a short description of the donation contents.</small>
             </div>
 
             <div>

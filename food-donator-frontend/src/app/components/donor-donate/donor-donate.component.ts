@@ -116,6 +116,12 @@ export class DonorDonateComponent implements OnInit {
     if(instance.time != null) {
       this.endTime = instance.time;
 
+      // check if end time is after start time
+      if(this.endTime <= this.startTime) {
+        this.endTimeForm.controls.endTimeCtrl.setErrors({ endTimeBeforeStartTime: true });
+        return;
+      }
+
       this.endTimeForm.controls.endTimeCtrl.setErrors(null);
       stepper.next();
       return;
