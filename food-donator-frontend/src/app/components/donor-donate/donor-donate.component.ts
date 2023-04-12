@@ -4,9 +4,13 @@ import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { Donation } from 'src/app/models/donation.model';
 import { CreateDonationOutput } from 'src/app/models/outputs/create-donation-output.model';
+import { CreateTagOutput } from 'src/app/models/outputs/create-tag-output.model';
+import { Tag } from 'src/app/models/tag.model';
+import { UserTag } from 'src/app/models/user-tag.model';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
+import { UserTagService } from 'src/app/services/user-tag/user-tag.service';
 import { Constants } from 'src/app/shared/constants/constants';
 
 @Component({
@@ -22,7 +26,7 @@ export class DonorDonateComponent implements OnInit {
   isEndTimeFormSubmitted = false;
   isDescriptionFormSubmitted = false;
   isTagsSelected = false;
-  tags: string[] = [];
+  tags: Tag[] = [];
 
   date = new Date();
   startTime = "";
@@ -43,6 +47,7 @@ export class DonorDonateComponent implements OnInit {
   });
 
   constructor(
+    private userTagService: UserTagService,
     private fb: FormBuilder,
     private donationService: DonationService,
     private authenticationService: AuthenticationService,
@@ -131,7 +136,7 @@ export class DonorDonateComponent implements OnInit {
     this.endTimeForm.controls.endTimeCtrl.setErrors({ required: true });
   }
 
-  updateChipSelectorState(selected: string[]){
+  updateChipSelectorState(selected: Tag[]){
     if(selected.length > 0) {
       this.isTagsSelected = true;
       this.tags = selected;
@@ -170,12 +175,30 @@ export class DonorDonateComponent implements OnInit {
 
         this.donationService.createDonation(donation).then((resp: CreateDonationOutput) => {
           if(resp.id != null){
+            // create tags
+            const promises: Promise<void>[] = [];
 
-            //TODO create tags
-            
+            for(const tag of this.tags){
+              const createUserTagInput: UserTag = {
+                tagid: tag.id,
+                donationid: resp.id
+              }
+              promises.push(
+                this.userTagService.createUserTag(createUserTagInput).then((createTagOutput: CreateTagOutput) => {
+                  //
+                })
+              );
+            }
 
-            this.router.navigateByUrl('/dashboard');
-            M.toast({html: 'New donation successfully created!' })
+            // wait for all tags to be created
+            Promise.all(promises).then(() => {
+              this.router.navigateByUrl('/dashboard');
+              M.toast({html: 'New donation successfully created!' })
+            }).catch(() => {
+              console.error("Could not create all tags.");
+              M.toast({html: "Failed to create donation, please try again." });
+            });
+
             return;
           }
 

@@ -4,7 +4,7 @@
   </div>
   <div class="row">
     <div class="col s12 m12 l12">
-      <mat-stepper orientation="vertical" [linear]="true" #stepper>
+      <mat-stepper orientation="vertical" [linear]="false" #stepper>
 
         <mat-step [stepControl]="dateForm">
           <form [formGroup]="dateForm">
@@ -88,7 +88,7 @@
                 <td>{{ this.endTime }}</td>
                 <td>{{ this.description }}</td>
                 <td>
-                  <div *ngFor="let tag of tags" class="chip">{{ tag }}</div>
+                  <div *ngFor="let tag of tags" class="chip">{{ tag.name }}</div>
                 </td>
               </tr>
             </tbody>
