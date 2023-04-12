@@ -22,6 +22,7 @@ export class DonorDonateComponent implements OnInit {
   isEndTimeFormSubmitted = false;
   isDescriptionFormSubmitted = false;
   isTagsSelected = false;
+  tags: string[] = [];
 
   date = new Date();
   startTime = "";
@@ -133,10 +134,12 @@ export class DonorDonateComponent implements OnInit {
   updateChipSelectorState(selected: string[]){
     if(selected.length > 0) {
       this.isTagsSelected = true;
+      this.tags = selected;
       return;
     }
 
     this.isTagsSelected = false;
+    this.tags = selected;
   }
 
   isDescriptionSelected(stepper: MatStepper): void {
@@ -167,6 +170,10 @@ export class DonorDonateComponent implements OnInit {
 
         this.donationService.createDonation(donation).then((resp: CreateDonationOutput) => {
           if(resp.id != null){
+
+            //TODO create tags
+            
+
             this.router.navigateByUrl('/dashboard');
             M.toast({html: 'New donation successfully created!' })
             return;

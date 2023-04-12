@@ -78,6 +78,7 @@
                   <th>Start Time</th>
                   <th>End Time</th>
                   <th>Description</th>
+                  <th>Tags</th>
               </tr>
             </thead>
             <tbody>
@@ -86,6 +87,9 @@
                 <td>{{ this.startTime }}</td>
                 <td>{{ this.endTime }}</td>
                 <td>{{ this.description }}</td>
+                <td>
+                  <div *ngFor="let tag of tags" class="chip">{{ tag }}</div>
+                </td>
               </tr>
             </tbody>
           </table>
