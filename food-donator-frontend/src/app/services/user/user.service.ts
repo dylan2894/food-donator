@@ -13,7 +13,6 @@ export class UserService {
   headers: HttpHeaders = new HttpHeaders();
 
   constructor(private http: HttpClient) {
-    //TODO inject base url
     this.baseUrl = environment.link + RequestRouting.Services.User.USER;
     this.headers.set("Origin", "http://localhost:4200");
     this.headers.set("Host", "http://localhost:4200");

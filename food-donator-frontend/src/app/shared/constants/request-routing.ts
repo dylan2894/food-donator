@@ -1,4 +1,6 @@
 
+const READ_ALL = "readAll";
+
 /**
  * Authentication Service
  */
@@ -31,13 +33,34 @@ const User = {
   USER
 }
 
+/**
+ * Tag Service
+ */
+const TAG = "tags/";
+const Tag = {
+  TAG,
+  READ_ALL
+}
+
+/**
+ * User Tag Service
+ */
+const USER_TAG = "usertags/";
+const UserTag = {
+  USER_TAG,
+  READ_ALL
+}
+
 const Services = {
   Authentication,
   Donation,
   Registration,
-  User
+  User,
+  Tag,
+  UserTag
 }
 
 export const RequestRouting = {
+  READ_ALL,
   Services
 }
