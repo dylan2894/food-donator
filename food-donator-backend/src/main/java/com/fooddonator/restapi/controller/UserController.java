@@ -2,9 +2,6 @@ package com.fooddonator.restapi.controller;
 
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nullable;
-
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;

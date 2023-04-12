@@ -10,6 +10,13 @@ export class ChipSelectorComponent {
   selectedArray: string[] = [];
   @Output() selectedEvent = new EventEmitter<string[]>();
 
+  constructor() {
+    //TODO fetch tags from Tag table
+    this.tagService.getTags() {
+
+    }
+  }
+
   toggleChipSelect(chip: string) {
     if(this.selectedArray.includes(chip)) {
       this.selectedArray = this.removeSelection(chip);
