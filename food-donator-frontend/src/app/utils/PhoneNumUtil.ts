@@ -5,8 +5,11 @@ export default class PhoneNumUtil {
    */
   toInternationalCode(phoneNum: string): string {
     let internationalPhoneNum = "";
-    phoneNum = phoneNum.trim().replace(" ", "");
-    internationalPhoneNum = "+27".concat(phoneNum);
+
+    if(phoneNum != '' && phoneNum != null) {
+      phoneNum = phoneNum.trim().replace(" ", "");
+      internationalPhoneNum = "+27".concat(phoneNum);
+    }
 
     return internationalPhoneNum;
   }
