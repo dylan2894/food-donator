@@ -34,9 +34,6 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   currentDonorName = "";
   currentDonorPhoneNum = "";
   currentDonorDonations: Donation[] | null = [];
-  baseGoogleMapsDirectionsLink = "https://www.google.com/maps/dir/?api=1&travelmode=walking";
-  googleMapsDirectionsLink = "";
-  prefilledText = "Hi, I am contacting you from the Food Donator app.";
   mapOptions: google.maps.MapOptions;
   center: CenterMapInput | null = null;
   markers: IMarker[] = [];
@@ -222,20 +219,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     $('#hiddenMenu').css('display', 'block');
   }
 
-  myEncodeURIComponent(text: string): string {
-    return encodeURIComponent(text);
-  }
-
   openModal(donorId: string, donorName: string, donorPhoneNum: string): void {
     this.currentDonorName = donorName;
     this.currentDonorPhoneNum = donorPhoneNum;
-
-    // fetch this donor's location
-    this.userService.getUser(donorId).then((user) => {
-      this.currentDonor = user;
-      this.googleMapsDirectionsLink = this.baseGoogleMapsDirectionsLink
-        .concat("&destination=", user!.lat!.toString(), ",", user!.lon!.toString());
-    });
 
     // fetch donations for this donor
     this.donationService.getCurrentAndUpcomingDonationsByUserId(donorId).then((donations) => {

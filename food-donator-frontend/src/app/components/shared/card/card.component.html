@@ -54,7 +54,7 @@
 
 <div *ngIf="this.forCarousel" class="card carousel-item ">
   <div class="card-content" style="height: 100%;">
-    <span class="card-title">{{ date }}</span>
+    <span class="card-title">{{ date }}<i class="activator material-icons right">more_vert</i></span>
 
     <!-- Upcoming or Current donation -->
     <div *ngIf="this.isCurrent" class="chip current">Current Donation</div>
@@ -94,5 +94,18 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- Slide up revealed info -->
+  <div class="card-reveal">
+    <span class="card-title grey-text text-darken-4">{{ this.correspondingDonor?.name }}<i class="material-icons right">close</i></span>
+    <div id="actionButtonsContainer">
+      <p>Need directions?</p>
+      <a [href]="this.googleMapsDirectionsLink" target="_blank"><button class="btn">Google Maps</button></a>
+      <p>Arrived? Notify the Donor</p>
+      <a aria-label="Chat on WhatsApp" [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.correspondingDonor?.phone_num!) + '?text=' + myEncodeURIComponent(this.prefilledText)" target="_blank">
+        <img alt="Chat on WhatsApp" src="../../../assets/images/WhatsAppButtonGreenLarge.svg"/>
+      </a>
+    </div>
   </div>
 </div>

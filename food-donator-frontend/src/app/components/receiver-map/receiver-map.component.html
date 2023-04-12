@@ -65,6 +65,8 @@
           </div>
           <app-card *ngFor="let donation of this.currentDonorDonations"
           [forCarousel]="true"
+          [donorId]="donation.userid"
+          [donationId]="donation.id"
           [date]="this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate))"
           [startTime]="donation.starttime"
           [endTime]="donation.endtime"
@@ -74,16 +76,6 @@
         </div>
       </ng-template>
 
-      <!-- WhatsApp and Maps Directions -->
-      <div id="actionButtonsContainer">
-        <p>Need directions?</p>
-
-        <a [href]="this.googleMapsDirectionsLink" target="_blank"><button class="btn">Google Maps</button></a>
-        <p>Arrived? Notify the Donor</p>
-        <a aria-label="Chat on WhatsApp" [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.currentDonorPhoneNum) + '?text=' + myEncodeURIComponent(this.prefilledText)" target="_blank">
-          <img alt="Chat on WhatsApp" src="../../../assets/images/WhatsAppButtonGreenLarge.svg"/>
-        </a>
-      </div>
 
     </div>
   </div>
