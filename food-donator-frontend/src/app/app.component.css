@@ -67,9 +67,9 @@ app-sidenav {
 }
 
 .container {
-  display: inline;
+  /* display: inline;
   height: 96%;
-  left: 25%;
+  left: 25%; */
 
   margin: 0%;
   padding: 0%;

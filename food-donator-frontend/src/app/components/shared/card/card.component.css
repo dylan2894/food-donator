@@ -36,14 +36,26 @@ th {
 
 .carousel-item {
   background-color: transparent;
-  padding: 10px;
+  /* padding: 10px; */
   width: 90%;
+}
+
+.container {
+  width: 100%;
 }
 
 .chip {
   text-overflow: ellipsis;
   word-break: break-all;
   overflow: hidden;
+}
+
+.card {
+  border: 1px solid black;
+}
+
+.card, .card-content {
+  border-radius: 10px;
 }
 
 .card, .carousel-item {
@@ -54,9 +66,11 @@ th {
   margin-bottom: 8px;
 }
 
+
+
 /* Bigger screens */
 @media only screen and (min-width: 993px) {
-  .carousel-item {
+  .carousel-item, .carousel-reveal {
     width: 400px !important;
   }
 }
