@@ -50,14 +50,10 @@
 
 
             <ng-template matStepLabel>Description and Tags</ng-template>
-            <mat-label>Select tags which correspond to the donation contents.</mat-label>
-
-            <!-- TODO Add tag capture to this step -->
             <div>
-              <div class="chip">Canned Food</div>
-              <div class="chip">Blankets<i class="close material-icons">close</i></div>
-              <div class="chip">Grains</div>
-              <div class="chip">Pasta</div>
+              <mat-label>Select tags which correspond to the donation contents:</mat-label>
+              <app-chip-selector (selectedEvent)="updateChipSelectorState($event)"></app-chip-selector>
+              <small *ngIf="isDescriptionFormSubmitted && !isTagsSelected">Please select at least one tag.</small>
             </div>
 
             <div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-chip-selector',
@@ -6,23 +6,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chip-selector.component.css']
 })
 export class ChipSelectorComponent {
-  chips: string[] = ["Canned Food", "Grains", "Blankets", "Clothes"];
-  selected: string[] = [];
+  chips: string[] = ["Canned Food", "Grains", "Long Life Milk", "Blankets", "Clothes","Clothes","Clothes","Clothes","Clothes","Clothes"];
+  selectedArray: string[] = [];
+  @Output() selectedEvent = new EventEmitter<string[]>();
 
   toggleChipSelect(chip: string) {
-    if(this.selected.includes(chip)) {
-      this.selected = this.removeSelection(chip);
+    if(this.selectedArray.includes(chip)) {
+      this.selectedArray = this.removeSelection(chip);
       $('.chip:contains("'+chip+'")').removeClass("selected");
       $('.chip:contains("'+chip+'")').html(chip);
+
+      this.selectedEvent.emit(this.selectedArray);
       return;
     }
 
-    this.selected.push(chip);
+    this.selectedArray.push(chip);
     $('.chip:contains("'+chip+'")').addClass("selected");
     $('.chip:contains("'+chip+'")').html(chip + "<i class='close material-icons'>close</i>");
+    this.selectedEvent.emit(this.selectedArray);
   }
 
   private removeSelection(chip: string) {
-    return this.selected.filter(selection => selection != chip);
+    return this.selectedArray.filter(selection => selection != chip);
   }
 }

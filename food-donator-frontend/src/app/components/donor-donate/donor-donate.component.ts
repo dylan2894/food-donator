@@ -21,6 +21,7 @@ export class DonorDonateComponent implements OnInit {
   isStartTimeFormSubmitted = false;
   isEndTimeFormSubmitted = false;
   isDescriptionFormSubmitted = false;
+  isTagsSelected = false;
 
   date = new Date();
   startTime = "";
@@ -129,10 +130,19 @@ export class DonorDonateComponent implements OnInit {
     this.endTimeForm.controls.endTimeCtrl.setErrors({ required: true });
   }
 
+  updateChipSelectorState(selected: string[]){
+    if(selected.length > 0) {
+      this.isTagsSelected = true;
+      return;
+    }
+
+    this.isTagsSelected = false;
+  }
+
   isDescriptionSelected(stepper: MatStepper): void {
     this.isDescriptionFormSubmitted = true;
 
-    if(this.descriptionForm.errors) {
+    if(this.descriptionForm.errors || !this.isTagsSelected) {
       return;
     }
 

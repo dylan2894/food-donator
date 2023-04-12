@@ -5,7 +5,6 @@ import { DonorGuard } from './shared/guard/donor.guard';
 import { DoneeGuard } from './shared/guard/donee.guard';
 import { DonorComponent } from './components/donor/donor.component';
 import { DoneeComponent } from './components/donee/donee.component';
-import { ChipSelectorComponent } from './components/shared/chip-selector/chip-selector.component';
 
 const routes: Routes = [
   { path: 'map', component: DoneeComponent, canActivate: [DoneeGuard] },
@@ -16,7 +15,6 @@ const routes: Routes = [
   { path: 'donate', component: DonorComponent, canActivate: [DonorGuard] },
   { path: 'donor-settings', component: DonorComponent, canActivate: [DonorGuard] },
   { path: 'login', component: LoginRegisterComponent },
-  { path: 'chips', component: ChipSelectorComponent },
   { path: '**', component: LoginRegisterComponent }
 ];
 
