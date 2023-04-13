@@ -123,10 +123,12 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           $('.carousel.carousel-slider').carousel({
             noWrap: true,
             fullWidth: false,
-            numVisible: 10,
-            padding: 20
+            padding: 20,
+            dist: 0
           });
-          $('.carousel-slider').slider({ full_width: true }); //must be full_width: true for mobile
+          $('.carousel-slider').slider({
+            full_width: true
+          }); //must be full_width: true for mobile
         }
       });
 
