@@ -1,60 +1,58 @@
 <!-- Dashboard -->
-<div class="container">
-  <div class="row top-nav">
-    <h3>Dashboard</h3>
+<div class="row top-nav">
+  <h3>Dashboard</h3>
+</div>
+<div class="row">
+  <div class="col s12 m12 l12">
+    <h4 class="subtitle">My Current and Upcoming Donations</h4>
+    <table class="collection highlight">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngIf="currentAndUpcomingDonations.length === 0">
+          <td colspan="4" style="text-align: center;">No current or upcoming donations.</td>
+        </tr>
+        <tr *ngFor="let donation of currentAndUpcomingDonations">
+          <td>{{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate)) }}</td>
+          <td>{{ donation.starttime }}</td>
+          <td>{{ donation.endtime }}</td>
+          <td>{{ donation.description }}</td>
+          <span class="material-symbols-outlined" (click)="this.deleteDonation(donation.id)">delete</span>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div class="row">
-    <div class="col s12 m12 l12">
-      <h4 class="subtitle">My Current and Upcoming Donations</h4>
-      <table class="collection highlight">
-        <thead>
-          <tr>
-              <th>Date</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Description</th>
-          </tr>
-        </thead>
+  <div class="col s12 m12 l12">
+    <h4 class="subtitle">My Past Donations</h4>
+    <table class="collection highlight">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Description</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <tr *ngIf="currentAndUpcomingDonations.length === 0">
-            <td colspan="4" style="text-align: center;">No current or upcoming donations.</td>
-          </tr>
-          <tr *ngFor="let donation of currentAndUpcomingDonations" >
-            <td>{{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate)) }}</td>
-            <td>{{ donation.starttime }}</td>
-            <td>{{ donation.endtime }}</td>
-            <td>{{ donation.description }}</td>
-            <span class="material-symbols-outlined" (click)="this.deleteDonation(donation.id)">delete</span>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col s12 m12 l12">
-      <h4 class="subtitle">My Past Donations</h4>
-      <table class="collection highlight">
-        <thead>
-          <tr>
-              <th>Date</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Description</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngIf="pastDonations.length === 0">
-            <td colspan="4" style="text-align: center;">No past donations.</td>
-          </tr>
-          <tr *ngFor="let donation of pastDonations" >
-            <td>{{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate)) }}</td>
-            <td>{{ donation.starttime }}</td>
-            <td>{{ donation.endtime }}</td>
-            <td>{{ donation.description }}</td>
-            <span class="material-symbols-outlined" (click)="this.deleteDonation(donation.id)">delete</span>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <tbody>
+        <tr *ngIf="pastDonations.length === 0">
+          <td colspan="4" style="text-align: center;">No past donations.</td>
+        </tr>
+        <tr *ngFor="let donation of pastDonations">
+          <td>{{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate)) }}</td>
+          <td>{{ donation.starttime }}</td>
+          <td>{{ donation.endtime }}</td>
+          <td>{{ donation.description }}</td>
+          <span class="material-symbols-outlined" (click)="this.deleteDonation(donation.id)">delete</span>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

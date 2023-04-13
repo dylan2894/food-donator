@@ -1,25 +1,18 @@
-<div class="container">
-  <div class="row top-nav">
-    <h3>Donations</h3>
-  </div>
+<div class="row top-nav">
+  <h3>Donations</h3>
+</div>
 
-  <div id="donationContainer" class="row">
-    <table *ngIf="this.currentDonations?.length === 0">
-      <tbody>
-        <tr>
-          <td colspan="4" style="text-align: center;">No current or upcoming donations.</td>
-        </tr>
-      </tbody>
-    </table>
-    <app-card class="col s12 m6 l4 " *ngFor="let donation of this.currentDonations"
-      [forCarousel]="false"
-      [donationId]="donation.id"
-      [donorId]="donation.userid"
-      [date]="this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate))"
-      [startTime]="donation.starttime"
-      [endTime]="donation.endtime"
-      [description]="donation.description"
-      [isCurrent]="this.donationService.isCurrentDonationByDonation(donation)"
-    ></app-card>
-  </div>
+<div id="donationContainer" class="row">
+  <table *ngIf="this.currentDonations?.length === 0">
+    <tbody>
+      <tr>
+        <td colspan="4" style="text-align: center;">No current or upcoming donations.</td>
+      </tr>
+    </tbody>
+  </table>
+  <app-card class="col s12 m6 l4 " *ngFor="let donation of this.currentDonations" [forCarousel]="false"
+    [donationId]="donation.id" [donorId]="donation.userid"
+    [date]="this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate))"
+    [startTime]="donation.starttime" [endTime]="donation.endtime" [description]="donation.description"
+    [isCurrent]="this.donationService.isCurrentDonationByDonation(donation)"></app-card>
 </div>
