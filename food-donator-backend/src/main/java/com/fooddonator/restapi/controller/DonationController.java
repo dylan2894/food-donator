@@ -98,7 +98,9 @@ public class DonationController {
       // filter donations to obtain upcoming and current donations
       currentAndUpcomingDonations = donations
       .stream()
-      .filter(donation -> donation.donationdate >= now.getTime().getTime())
+      .filter(donation -> donation.donationdate >= now.getTime().getTime()) // gets donations which are today and in the future
+      //TODO also check if a donation is today, but in the past! (compare string times)
+      //.filter(donation -> donation.endtime >= )
       .collect(Collectors.toList());
     }
   

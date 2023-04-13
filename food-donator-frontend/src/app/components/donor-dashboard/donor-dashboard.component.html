@@ -5,54 +5,85 @@
 <div class="row">
   <div class="col s12 m12 l12">
     <h4 class="subtitle">My Current and Upcoming Donations</h4>
-    <table class="collection highlight">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Start Time</th>
-          <th>End Time</th>
-          <th>Description</th>
-        </tr>
-      </thead>
+    <ul *ngIf="currentAndUpcomingDonations.length === 0" class="collection">
+      <li style="text-align: center;" class="collection-item">
+        <span>No current or upcoming donations.</span>
+      </li>
+    </ul>
+    <ul id="currentCollapsible" class="collapsible expandable">
+      <li *ngFor="let donation of this.currentAndUpcomingDonations;">
+        <div class="collapsible-header">
+          <table>
+            <tbody>
+              <td style="width: 5%;">
+                <!-- icon -->
+                <i class="material-icons">volunteer_activism</i>
+              </td>
+              <td style="width: 20%;">
+                <!-- Current or Pending chip -->
+                <div *ngIf="this.donationService.isCurrentDonationByDonation(donation)" class="chip current truncate">
+                  Current
+                </div>
+                <div *ngIf="!this.donationService.isCurrentDonationByDonation(donation)" class="chip upcoming truncate">
+                  Upcoming
+                </div>
+              </td>
+              <td style="width: 30%;">
+                <!-- Donation date -->
+                {{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation?.donationdate!)) }}
+              </td>
+              <td style="width: 30%;">
+                <!-- Start and End times -->
+                <small class="infoTxt" style="margin-left: 10px;">{{ donation?.starttime }} - {{ donation?.endtime }}</small>
+              </td>
+            </tbody>
+          </table>
 
-      <tbody>
-        <tr *ngIf="currentAndUpcomingDonations.length === 0">
-          <td colspan="4" style="text-align: center;">No current or upcoming donations.</td>
-        </tr>
-        <tr *ngFor="let donation of currentAndUpcomingDonations">
-          <td>{{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate)) }}</td>
-          <td>{{ donation.starttime }}</td>
-          <td>{{ donation.endtime }}</td>
-          <td>{{ donation.description }}</td>
-          <span class="material-symbols-outlined" (click)="this.deleteDonation(donation.id)">delete</span>
-        </tr>
-      </tbody>
-    </table>
+          <!-- Delete donation button -->
+          <div (click)="this.deleteDonation(donation?.id!, $event)" class="material-symbols-outlined deleteBtn">delete</div>
+        </div>
+        <div class="collapsible-body">
+          <!-- Chips and Description -->
+          <app-collapsible-item-body [donation]="donation"></app-collapsible-item-body>
+        </div>
+      </li>
+    </ul>
   </div>
   <div class="col s12 m12 l12">
     <h4 class="subtitle">My Past Donations</h4>
-    <table class="collection highlight">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Start Time</th>
-          <th>End Time</th>
-          <th>Description</th>
-        </tr>
-      </thead>
+    <ul *ngIf="currentAndUpcomingDonations.length === 0" class="collection">
+      <li style="text-align: center;" class="collection-item">
+        <span>No past donations.</span>
+      </li>
+    </ul>
+    <ul id="pastCollapsible" class="collapsible expandable">
+      <li *ngFor="let donation of this.pastDonations;">
+        <div class="collapsible-header">
+          <table>
+            <tbody>
+              <td style="width: 1%;">
+                <!-- icon -->
+                <i class="material-icons">volunteer_activism</i>
+              </td>
+              <td style="width: 30%;">
+                <!-- Donation date -->
+                {{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation?.donationdate!)) }}
+              </td>
+              <td style="width: 30%;">
+                <!-- Start and End times -->
+                <small class="infoTxt" style="margin-left: 10px;">{{ donation?.starttime }} - {{ donation?.endtime }}</small>
+              </td>
+            </tbody>
+          </table>
 
-      <tbody>
-        <tr *ngIf="pastDonations.length === 0">
-          <td colspan="4" style="text-align: center;">No past donations.</td>
-        </tr>
-        <tr *ngFor="let donation of pastDonations">
-          <td>{{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate)) }}</td>
-          <td>{{ donation.starttime }}</td>
-          <td>{{ donation.endtime }}</td>
-          <td>{{ donation.description }}</td>
-          <span class="material-symbols-outlined" (click)="this.deleteDonation(donation.id)">delete</span>
-        </tr>
-      </tbody>
-    </table>
+          <!-- Delete donation button -->
+          <div (click)="this.deleteDonation(donation?.id!, $event)" class="material-symbols-outlined deleteBtn">delete</div>
+        </div>
+        <div class="collapsible-body">
+          <!-- Chips and Description -->
+          <app-collapsible-item-body [donation]="donation"></app-collapsible-item-body>
+        </div>
+      </li>
+    </ul>
   </div>
 </div>

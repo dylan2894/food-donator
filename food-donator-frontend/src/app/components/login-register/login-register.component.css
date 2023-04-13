@@ -122,7 +122,7 @@ label:has(+ input:focus) {
 }
 
 .infoTxt {
-  color: var(--dark);
+  color: var(--label-colour);
 }
 
 /* TODO implement media queries for larger screens */

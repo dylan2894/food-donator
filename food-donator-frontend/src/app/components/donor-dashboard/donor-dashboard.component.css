@@ -8,6 +8,9 @@
 
   --dark: #36363E; /* Jet */
   --light: #FBF5F3; /* Snow */
+
+  --upcoming: #f5f29f;
+  --current: #8eeba3;
 }
 
 a {
@@ -40,4 +43,17 @@ ul {
 
 .top-nav > h3 {
   text-align: center;
+}
+
+.deleteBtn {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.upcoming {
+  background-color: var(--upcoming);
+}
+
+.current {
+  background-color: var(--current);
 }

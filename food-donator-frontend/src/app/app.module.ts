@@ -33,6 +33,7 @@ import { DoneeSettingsComponent } from './components/donee-settings/donee-settin
 import { DoneeComponent } from './components/donee/donee.component';
 import { DonationsComponent } from './components/donations/donations.component';
 import { ChipSelectorComponent } from './components/shared/chip-selector/chip-selector.component';
+import { CollapsibleItemBodyComponent } from './components/shared/collapsible-item-body/collapsible-item-body.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { ChipSelectorComponent } from './components/shared/chip-selector/chip-se
     DoneeSettingsComponent,
     DoneeComponent,
     DonationsComponent,
-    ChipSelectorComponent
+    ChipSelectorComponent,
+    CollapsibleItemBodyComponent
   ],
   imports: [
     BrowserModule,
