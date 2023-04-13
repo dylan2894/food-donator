@@ -116,6 +116,10 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       //   }
       // });
 
+      $('button').on('click', (e: Event) => {
+        e.stopPropagation();
+      });
+
       // initialize the popup marker modal
       $('.modal').modal({
         onOpenEnd: () => {

@@ -1,11 +1,15 @@
 .pushSidenav {
   display: block;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
 .nonMapContainer {
-  width: calc(100% - 300px);
+  width: 100%;
+}
+
+#doneeContainer {
+  width: calc(100% - 30px);
 }
 
 /* Bigger screens */
@@ -13,5 +17,9 @@
   .pushSidenav {
     position: absolute !important;
     left: 300px !important;
+  }
+
+  .nonMapContainer {
+    width: calc(100% - 300px);
   }
 }
