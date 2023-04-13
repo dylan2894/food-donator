@@ -31,10 +31,26 @@ export class CardComponent {
     private userService: UserService,
     private userTagService: UserTagService
   ) {
+
     $(() => {
+      // jQuery override of activator on card
+      $('i:contains("more_vert")').on('click', function(this: HTMLElement, e: Event) {
+        e.stopPropagation();
+
+        $(this).find('+ .card-reveal').removeClass('closeCard');
+        $(this).find('+ .card-reveal').addClass('openCard');
+      });
+      // jQuery override of close icon on card-reveal
+      $('i:contains("close")').on('click', function (this: HTMLElement, e: Event) {
+        e.stopPropagation();
+        $(this).parent().parent().removeClass('openCard');
+        $(this).parent().parent().addClass('closeCard');
+      });
+
       // initialize chips UI component
       $('.chips').chips();
 
+      // populate the tags on this card
       this.userTagService.getTagsByDonationId(this.donationId).then((_tags) => {
         if(_tags != null) {
           this.tags = _tags;

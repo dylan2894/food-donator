@@ -62,6 +62,25 @@ th {
   margin: 0px !important;
 }
 
+.card {
+  overflow-y: hidden;
+  overflow-wrap: break-word;
+}
+
+.card-reveal {
+  display: block;
+  visibility: hidden;
+  transition: all 200ms;
+}
+
+.openCard {
+  visibility: visible !important;
+  transform: translateY(-100%) !important;
+}
+
+.closeCard {
+  transform: translateY(0%) !important;
+}
 .subtitle {
   margin-bottom: 8px;
 }
