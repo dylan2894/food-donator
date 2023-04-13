@@ -4,8 +4,8 @@
   margin-right: 50px;
 }
 
-#doneeContainer {
-  width: calc(100% - 100px);
+.nonMapContainer {
+  width: calc(100% - 300px);
 }
 
 /* Bigger screens */
@@ -13,9 +13,5 @@
   .pushSidenav {
     position: absolute !important;
     left: 300px !important;
-  }
-
-  #doneeContainer {
-    width: calc(100% - 400px);
   }
 }
