@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Tag } from 'src/app/models/tag.model';
 import { User } from 'src/app/models/user.model';
 import { UserTagService } from 'src/app/services/user-tag/user-tag.service';
@@ -35,7 +35,7 @@ export class CardComponent {
     $(() => {
 
       // Override carousel event listeners (preventing random scrolling when a button in a card is clicked)
-      $('*').on('click', (e: Event) => {
+      $('.carousel.carousel-slider, .card-title').on('click', (e: Event) => {
         e.stopPropagation();
       });
 
@@ -68,7 +68,6 @@ export class CardComponent {
             this.googleMapsDirectionsLink = this.baseGoogleMapsDirectionsLink
               .concat("&destination=", user?.lat!.toString(), ",", user?.lon!.toString());
           }
-          console.log("Current Donor:" + this.correspondingDonor);
         });
       }
     });

@@ -93,28 +93,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       // initialize the slide in sidenav
       $('.sidenav').sidenav();
 
-      // listeners for the slide in sidenav
-      // $('#hiddenMenu').mouseenter(() => {
-      //   this.openMenu();
-      // });
-      // $('#hiddenMenu').click(() => {
-      //   this.openMenu();
-      // });
-      // $('.sidenav').mouseleave(() => {
-      //   this.closeMenu();
-      // });
       $( "#slide-out-donee" ).on("close", () => {
         this.closeMenu();
       });
-      // $('*').on('click', () => {
-      //   const sidenavElement = document.querySelector('.sidenav') as Element;
-      //   if(sidenavElement != null) {
-      //     const sidenav = M.Sidenav.getInstance(sidenavElement);
-      //     if(!sidenav.isOpen){
-      //       $('#hiddenMenu').css('display', 'block');
-      //     }
-      //   }
-      // });
 
       $('button').on('click', (e: Event) => {
         e.stopPropagation();
@@ -124,7 +105,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       $('.modal').modal({
         onOpenEnd: () => {
           // initialize the carousel once the modal is open
-          const carousel = $('.carousel.carousel-slider').carousel({
+          $('.carousel.carousel-slider').carousel({
             noWrap: true,
             fullWidth: false,
             preventLoop: true,
@@ -147,7 +128,6 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       const promises: Promise<string | void>[] = [];
 
       if(donors != null) {
-        const donorSelect = document.querySelector("#donorInnerSelect") as HTMLSelectElement;
         donors.forEach((donor: User) => {
           const promise = new Promise<void>((resolve) => {
           // Push donors onto the markers array
