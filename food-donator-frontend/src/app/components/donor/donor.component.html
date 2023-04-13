@@ -1,7 +1,9 @@
 <app-sidenav [isDonor]="true"></app-sidenav>
 <div id="donorContainer">
-  <app-donor-dashboard *ngIf="this.currentRoute === '/dashboard'"></app-donor-dashboard>
-  <app-donor-donate *ngIf="this.currentRoute === '/donate'"></app-donor-donate>
-  <app-donor-settings *ngIf="this.currentRoute === '/donor-settings'"></app-donor-settings>
-  <app-donations *ngIf="this.currentRoute === '/donor-donations'"></app-donations>
+  <div class="nonMapContainer">
+    <app-donor-dashboard *ngIf="this.currentRoute === '/dashboard'"></app-donor-dashboard>
+    <app-donor-donate *ngIf="this.currentRoute === '/donate'"></app-donor-donate>
+    <app-donor-settings *ngIf="this.currentRoute === '/donor-settings'"></app-donor-settings>
+    <app-donations *ngIf="this.currentRoute === '/donor-donations'"></app-donations>
+  </div>
 </div>

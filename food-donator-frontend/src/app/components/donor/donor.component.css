@@ -1,7 +1,3 @@
-#donorContainer {
-  width: 100%;
-}
-
 app-donar-settings, app-donar-donate {
   width: 100%;
 }
@@ -15,3 +11,25 @@ app-donar-settings, app-donar-donate {
 .md-24 { font-size: 24px !important; }
 .md-36 { font-size: 36px !important; }
 .md-48 { font-size: 48px !important; }
+
+.pushSidenav {
+  display: block;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+/* Bigger screens */
+@media only screen and (min-width: 993px) {
+  .pushSidenav {
+    position: absolute !important;
+    left: 300px !important;
+  }
+
+  #donorContainer {
+    width: calc(100% - 330px);
+  }
+
+  .nonMapContainer {
+    width: 100% !important;
+  }
+}

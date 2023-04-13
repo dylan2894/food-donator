@@ -1,12 +1,4 @@
-.pushSidenav {
-  display: block;
-  margin-left: 15px;
-  margin-right: 15px;
-}
 
-.nonMapContainer {
-  width: 100%;
-}
 
 #doneeContainer {
   width: calc(100% - 30px);
@@ -19,7 +11,11 @@
     left: 300px !important;
   }
 
+  #doneeContainer {
+    width: calc(100% - 330px);
+  }
+
   .nonMapContainer {
-    width: calc(100% - 300px);
+    width: 100% !important;
   }
 }
