@@ -121,6 +121,10 @@ label:has(+ input:focus) {
   color: var(--dark);
 }
 
+.infoTxt {
+  color: var(--dark);
+}
+
 /* TODO implement media queries for larger screens */
 @media screen and (min-width: 768px) {
 

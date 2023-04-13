@@ -39,16 +39,17 @@
             Confirmed password does not match password
           </small>
           <label>Account Type</label>
+          <p class="infoTxt">Sign up as either a Donator or a Collector. Collectors can collect donations from Donators.</p>
           <p>
             <label>
               <input (click)="this.onDonorTypeSelected()" type="radio" id="donorCheckbox" formControlName="type" value="donor" class="with-gap">
-              <span>Donor</span>
+              <span>Donator</span>
             </label>
           </p>
           <p>
             <label>
               <input type="radio" id="doneeCheckbox" formControlName="type" value="donee" class="with-gap">
-              <span>Donee</span>
+              <span>Collector</span>
             </label>
           </p>
           <small *ngIf="invalidRegisterForm && registerForm.controls['type'].errors">Please select whether you are a Donor or Donee (Receiver)</small>
