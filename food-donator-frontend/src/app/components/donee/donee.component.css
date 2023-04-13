@@ -1,16 +1,9 @@
-
-
 #doneeContainer {
   width: calc(100% - 30px);
 }
 
 /* Bigger screens */
 @media only screen and (min-width: 993px) {
-  .pushSidenav {
-    position: absolute !important;
-    left: 300px !important;
-  }
-
   #doneeContainer {
     width: calc(100% - 330px);
   }

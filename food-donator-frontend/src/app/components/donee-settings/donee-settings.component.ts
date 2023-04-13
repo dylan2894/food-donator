@@ -32,10 +32,6 @@ export class DoneeSettingsComponent {
         this.currentUser = user;
       }
     });
-
-    $(document).ready(() => {
-      $('#doneeContainer').addClass('pushSidenav');
-    });
   }
 
   toggleChangePhoneNum(phoneNum: string) {

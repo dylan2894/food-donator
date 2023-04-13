@@ -29,10 +29,5 @@ export class DonationsComponent {
         });
       }
     });
-
-    $(() => {
-      $('#doneeContainer').addClass('pushSidenav');
-      $('#donorContainer').addClass('pushSidenav');
-    });
   }
 }
