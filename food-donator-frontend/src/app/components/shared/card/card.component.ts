@@ -31,14 +31,16 @@ export class CardComponent {
     private userService: UserService,
     private userTagService: UserTagService
   ) {
-    // this.userTagService.getUserTags().then((userTags) => {
-    //   //TODO
-    // });
-
     $(() => {
       // initialize chips UI component
       $('.chips').chips();
-      console.log(this.donorId)
+
+      this.userTagService.getTagsByDonationId(this.donationId).then((_tags) => {
+        if(_tags != null) {
+          this.tags = _tags;
+        }
+      });
+
       // if donorId is supplied, fetch the donor which corresponds to this donation card.
       if (this.donorId != '') {
         this.userService.getUser(this.donorId).then((user) => {
@@ -47,7 +49,6 @@ export class CardComponent {
             this.googleMapsDirectionsLink = this.baseGoogleMapsDirectionsLink
               .concat("&destination=", user?.lat!.toString(), ",", user?.lon!.toString());
           }
-
           console.log("Current Donor:" + this.correspondingDonor);
         });
       }

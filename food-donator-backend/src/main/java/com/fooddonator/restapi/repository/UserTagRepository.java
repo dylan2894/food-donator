@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -52,5 +53,45 @@ public class UserTagRepository {
       return (Map) resp.getBody().get("data");
     }
     return new HashMap();
+  }
+
+  /**
+   * Gets a list of {@link UserTag}'s which match this donation ID, from the usertags table using AstraDB's REST API.
+   * @param id a string {@link Donation} ID as an index for querying
+   * @return the {@link UserTag}'s which matches the provided donation ID parameter
+   */
+  public List<UserTag> getUserTagsByDonationId(String donationId) {
+    System.out.println("\n[USER TAG REPO] getUserTagsByDonationId\n");
+    
+    String search = "{\"donationid\":{\"$eq\":\""+donationId+"\"}}";
+    var request = RequestEntity.get(ASTRA_REST_API_URL + "/usertags?where={search}")
+      .header(RequestKeys.Header.X_CASSANDRA_TOKEN, ASTRA_DB_TOKEN)
+      .build();
+      
+    ResponseEntity<Map> rateResponse =
+    restTemplate.exchange(
+      ASTRA_REST_API_URL + "/usertags?where={search}",
+      HttpMethod.GET,
+      request,
+      Map.class,
+      search
+    );
+    Map data = rateResponse.getBody();
+    ArrayList<Map> many = (ArrayList<Map>) data.get("data");
+    System.out.println("Many size: " + many.size());
+
+    List<UserTag> userTags = new ArrayList<>();
+    if(!many.isEmpty()) {
+      for(int i=0; i<many.size(); i++) {
+
+        System.out.println("Getting tag...");
+
+        Map target = many.get(i);
+        String tagId = target.get("tagid").toString();
+        userTags.add(new UserTag(tagId, donationId));
+      }
+      return userTags;
+    }
+    return new ArrayList<>();
   }
 }

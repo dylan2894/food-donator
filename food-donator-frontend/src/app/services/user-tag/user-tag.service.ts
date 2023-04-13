@@ -38,9 +38,9 @@ export class UserTagService {
     return null;
   }
 
-  async getUserTags(): Promise<UserTag[]|null> {
+  async getTagsByDonationId(donationId: string): Promise<Tag[]|null> {
     const req = new Promise((resolve, reject) => {
-      this.http.get(this.baseUrl + RequestRouting.READ_ALL, { headers: this.headers }).subscribe({
+      this.http.get(this.baseUrl + "readTagsByDonationId?donationId=" + donationId, { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
@@ -51,9 +51,9 @@ export class UserTagService {
     });
 
     try {
-      return await req as UserTag[];
+      return await req as Tag[];
     } catch(e) {
-      console.error("[TAG SERVICE] getTags() error", e);
+      console.error("[USER TAG SERVICE] getTagsByDonationId() error", e);
     }
     return null;
   }

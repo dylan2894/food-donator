@@ -62,4 +62,35 @@ public class TagRepository {
 
     return response;
   }
+
+  /**
+   * Gets a {@link Tag} from the tags table using AstraDB's REST API.
+   * @param id a string {@link Tag} ID as an index for querying.
+   * @return the {@link Tag} object which matches the provided ID.
+   */
+  public Tag getTagById(String id) {
+    System.out.println("\n[TAG REPO] getTagById\n");
+    URI uri =UriComponentsBuilder.fromHttpUrl(ASTRA_REST_API_URL)
+      .pathSegment("/tags/" + id)
+      .build()
+      .toUri();
+    var request = RequestEntity.get(uri)
+      .header(RequestKeys.Header.X_CASSANDRA_TOKEN, ASTRA_DB_TOKEN)
+      .build();
+      
+    ResponseEntity<Map> rateResponse =
+    restTemplate.exchange(
+      request,
+      Map.class
+    );
+    Map data = rateResponse.getBody();
+    ArrayList<Map> many = (ArrayList<Map>) data.get("data");
+    if(!many.isEmpty()) {
+      Map target = many.get(0);
+      String tagName = target.get("name").toString();
+
+      return new Tag(id, tagName);
+    }
+    return null;
+  }
 }

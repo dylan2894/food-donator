@@ -39,3 +39,4 @@ INSERT INTO main_keyspace.tags (id, name) VALUES (uuid(), 'Clothes');
 CREATE INDEX IF NOT EXISTS ON main_keyspace.user(phone_num);
 CREATE INDEX IF NOT EXISTS ON main_keyspace.user(type);
 CREATE INDEX IF NOT EXISTS ON main_keyspace.donation(userId);
+CREATE INDEX IF NOT EXISTS ON main_keyspace.usertags(donationID);
