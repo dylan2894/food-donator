@@ -12,6 +12,7 @@
 
   --deep-purple-accent-2: #7c4dff;
   --indigo-lighten-2: #7986cb;
+  --indigo-lighten-3: #9fa8da;
   --indigo-lighten-4: #c5cae9;
   --indigo-lighten-5: #e8eaf6;
 }
@@ -101,7 +102,7 @@ p {
   width: 250px;
   padding-right: 25px;
   border-radius: 2px;
-  background-color: var(--indigo-lighten-2);
+  background-color: var(--indigo-lighten-3);
 }
 
 #donorSelect input {
@@ -133,6 +134,7 @@ p {
   margin-top: 10px !important;
   line-height: 100%;
   width: 250px !important;
+  background-color: var(--indigo-lighten-3);
 }
 
 .fixed-action-btn {
@@ -146,22 +148,6 @@ p {
 
 .booksmarksIcon {
   padding-right: 15px;
-}
-
-#hiddenMenu {
-  position: absolute;
-  top: 15%;
-  left: -10px;
-  height: 70%;
-  width: 20px;
-  border-radius: 10px;
-
-  background-color: rgba(var(--darkRGB), 0.5);
-  z-index: 999;
-}
-
-#hiddenMenu:hover {
-  background-color: transparent;
 }
 
 #modal1 {
@@ -243,6 +229,10 @@ input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
 
 .material-symbols-outlined:hover {
   cursor: pointer;
+}
+
+.select-wrapper input.select-dropdown {
+  z-index: 0;
 }
 
 /* Bigger screens */
