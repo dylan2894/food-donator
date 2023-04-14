@@ -65,6 +65,7 @@ export class DonorDashboardComponent {
       }
 
       await this.donationService.deleteDonation(donationId);
+
       this.currentAndUpcomingDonations = this.currentAndUpcomingDonations.filter((donation) => {
         return donation.id != donationId;
       });

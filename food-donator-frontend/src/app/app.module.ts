@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -34,6 +34,7 @@ import { DoneeComponent } from './components/donee/donee.component';
 import { DonationsComponent } from './components/donations/donations.component';
 import { ChipSelectorComponent } from './components/shared/chip-selector/chip-selector.component';
 import { CollapsibleItemBodyComponent } from './components/shared/collapsible-item-body/collapsible-item-body.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,13 @@ import { CollapsibleItemBodyComponent } from './components/shared/collapsible-it
     MatButtonModule,
     BrowserAnimationsModule,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     /**
