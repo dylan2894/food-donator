@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { Donation } from 'src/app/models/donation.model';
+import { Tag } from 'src/app/models/tag.model';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
+import { UserTagService } from 'src/app/services/user-tag/user-tag.service';
 import { Constants } from 'src/app/shared/constants/constants';
 import DateUtil from 'src/app/utils/DateUtil';
 
@@ -13,21 +15,78 @@ import DateUtil from 'src/app/utils/DateUtil';
 })
 export class DonationsComponent {
   currentUser: User|null = null;
-  currentDonations: Donation[] | null = [];
+  currentDonations: Donation[] = [];
+  tempDonationsHolder: Donation[] = [];
+  tags: Tag[] = [];
 
   constructor(
     public donationService: DonationService,
     public dateUtil: DateUtil,
     private authenticationService: AuthenticationService,
+    private userTagService: UserTagService
   ) {
     const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
         this.currentUser = user;
         this.donationService.getCurrentAndUpcomingDonations().then((donations) => {
-          this.currentDonations = donations;
+          if(donations) {
+            this.currentDonations = donations;
+            this.tempDonationsHolder = donations;
+          }
         });
       }
     });
   }
+
+  async filterByChips(selected: Tag[]){
+    $(`app-card`).css('display', 'block');
+
+    if(selected.length == 0) {
+      this.currentDonations = this.tempDonationsHolder;
+      return;
+    }
+
+    this.tags = selected;
+    const cards = document.getElementsByTagName('app-card');
+    const excludedDonationIds: string[] = [];
+
+    // check which cards have the correct chips on them,
+    // exclude cards which do not have the correct chips on them
+    // by adding the corresponding donation ID onto an excludedDonationIds array.
+    for(let i=0; i<cards.length; i++) {
+      for(const tag of this.tags) {
+        if(cards[i].innerHTML.match(new RegExp(tag.name, 'g')) == null) {
+
+          console.log(`Cannot find ${tag.name} on card`);
+
+          const donationID = cards[i].getAttribute('ng-reflect-donation-id');
+          if(donationID){
+            console.log("Excluding donation: " + donationID);
+            excludedDonationIds.push(donationID);
+          }
+        } else {
+          console.log(`Found ${tag.name} on card`)
+        }
+      }
+    }
+
+    // filter out all donations which have a donation ID which is in the excludedDonationIds array.
+    // this.currentDonations = this.tempDonationsHolder.filter((donation) => {
+    //   if(excludedDonationIds.find((donId) => {
+    //     return donation.id.includes(donId);
+    //   }) != undefined){
+    //     // this donation is excluded
+    //     return false;
+    //   }
+    //   // this donation is included
+    //   return true;
+    // });
+
+    excludedDonationIds.forEach((donationID) => {
+      console.log("displaying none");
+      $(`app-card[id^="${donationID}"]`).css('display', 'none');
+    });
+  }
+
 }

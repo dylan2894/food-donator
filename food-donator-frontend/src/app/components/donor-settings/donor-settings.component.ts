@@ -45,7 +45,6 @@ export class DonorSettingsComponent implements AfterViewInit {
       if(user != null) {
         // Set the current user for rendering
         this.currentUser = user;
-        console.log("Address: " + this.currentUser.address)
 
         // Create a marker for the user's saved location
         this.userMarker = {

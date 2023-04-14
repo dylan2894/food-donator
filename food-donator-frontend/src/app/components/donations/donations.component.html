@@ -2,6 +2,12 @@
   <h3>Donations</h3>
 </div>
 
+<!-- Filter by tags -->
+<div class="row">
+  <label>Filter by tags</label>
+  <app-chip-selector (selectedEvent)="filterByChips($event)"></app-chip-selector>
+</div>
+
 <div id="donationContainer" class="row">
   <table *ngIf="this.currentDonations?.length === 0">
     <tbody>
@@ -10,7 +16,9 @@
       </tr>
     </tbody>
   </table>
-  <app-card class="col s12 m6 l4 " *ngFor="let donation of this.currentDonations" [forCarousel]="false"
+  <app-card class="col s12 m6 l4 " *ngFor="let donation of this.currentDonations"
+    id="{{ donation.id }}"
+    [forCarousel]="false"
     [donationId]="donation.id" [donorId]="donation.userid"
     [date]="this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate))"
     [startTime]="donation.starttime" [endTime]="donation.endtime" [description]="donation.description"

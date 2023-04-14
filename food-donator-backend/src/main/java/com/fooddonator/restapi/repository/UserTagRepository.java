@@ -78,14 +78,10 @@ public class UserTagRepository {
     );
     Map data = rateResponse.getBody();
     ArrayList<Map> many = (ArrayList<Map>) data.get("data");
-    System.out.println("Many size: " + many.size());
 
     List<UserTag> userTags = new ArrayList<>();
     if(!many.isEmpty()) {
       for(int i=0; i<many.size(); i++) {
-
-        System.out.println("Getting tag...");
-
         Map target = many.get(i);
         String tagId = target.get("tagid").toString();
         userTags.add(new UserTag(tagId, donationId));
