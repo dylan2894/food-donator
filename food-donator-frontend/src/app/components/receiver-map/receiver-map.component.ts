@@ -17,6 +17,7 @@ import DateUtil from 'src/app/utils/DateUtil';
 import MapUtil from 'src/app/utils/MapUtil';
 import PhoneNumUtil from 'src/app/utils/PhoneNumUtil';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const $: any
 
 @Component({
@@ -180,8 +181,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
    * Centers the Google Map on the selected Donor when the donor select option changes
    * @param event the event triggered by the HTML select change
    */
-  async onChange(event: any) {
-    const donorId: string = event.target.value;
+  async onChange(event: Event) {
+    const donorInp = event.target as HTMLInputElement;
+    const donorId = donorInp.value;
     const donor = this.donors.find((donor) => {
       return donor.id == donorId
     });
