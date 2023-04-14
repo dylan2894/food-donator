@@ -125,14 +125,20 @@ export class LoginRegisterComponent {
     const passwordCtrl = this.registerForm.controls['password'];
     const typeOfUserCtrl = this.registerForm.controls['type'];
     const nameCtrl = this.registerForm.controls['name'];
-    console.log(this.placesAutocompleteUtil.currentSelectedCoords?.lat())
-    console.log(this.placesAutocompleteUtil.currentSelectedCoords?.lng())
-    console.log(this.placesAutocompleteUtil.currentSelectedAddress);
+
+    const existingUser = await this.userService.getUserByPhoneNum(phoneNumCtrl.value);
+
+    if(existingUser) {
+      this.registerForm.controls.address.setErrors({
+        existingUser: true
+      });
+    }
 
     if(this.registerForm.valid
       && this.registerForm.controls['confirmPassword'].valid
       && this.placesAutocompleteUtil.currentSelectedCoords != undefined
-      && this.placesAutocompleteUtil.currentSelectedAddress!= undefined) {
+      && this.placesAutocompleteUtil.currentSelectedAddress!= undefined
+      && existingUser == null) {
 
       this.invalidRegisterForm = false;
 

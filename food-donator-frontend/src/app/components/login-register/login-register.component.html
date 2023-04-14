@@ -26,6 +26,11 @@
           <label for="registerPhoneNum">Phone Number</label>
           <input id="registerPhoneNum" prefix="(+27)" mask=' 00 000 0000' formControlName="phone_num" class="input">
           <small *ngIf="invalidRegisterForm && registerForm.controls['phone_num'].errors">Please enter a valid phone number</small>
+          <small
+            *ngIf="invalidRegisterForm
+            && registerForm.controls.address.hasError('existingUser')">
+              Please login with your existing account
+            </small>
           <label for="registerPassword">Password</label>
           <input id="registerPassword" type="password" formControlName="password" class="input">
           <small *ngIf="invalidRegisterForm && registerForm.controls['password'].errors">Please enter a valid password</small>
