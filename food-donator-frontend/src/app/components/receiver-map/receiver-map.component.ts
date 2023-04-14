@@ -110,6 +110,12 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
 
       // initialize the floating action button
       $('.fixed-action-btn').floatingActionButton();
+
+      // initialize the tooltips
+      $('.tooltipped').tooltip();
+
+      // initialize the tap target (Feature Discovery)
+      $('.tap-target').tapTarget();
     });
   }
 
@@ -170,6 +176,10 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           // set the Map bounds to encompass all the donors
           const bounds = this.mapUtil.getBoundsByMarkers(this.markers);
           this.map.googleMap?.fitBounds(bounds);
+
+          // open Feature Discovery
+          $('.tap-target').tapTarget('open');
+
         });
         // set the donors to be supplied in the donor select
         this.donors = donors;
