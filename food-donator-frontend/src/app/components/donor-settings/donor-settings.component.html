@@ -10,7 +10,7 @@
       Name of Donor
       <span class="inlineEditControls">
         <input formControlName="nameField" [value]="this.currentUser?.name" [readOnly]="!this.nameCheck">
-        <button class="btn-flat waves-effect"
+        <button type="button" class="btn-flat waves-effect"
           (click)="this.toggleChangeName(this.editDetailsForm.controls.nameField.getRawValue())">
           <i *ngIf="!this.nameCheck" class="material-symbols-outlined">edit</i>
           <div *ngIf="this.nameCheck" class="editBtnContainer">
@@ -24,7 +24,7 @@
       <span class="inlineEditControls">
         <input id="phoneNum" formControlName="phoneNumField" prefix="(+27)" mask=' 00 000 0000'
           [readOnly]="!this.phoneNumCheck">
-        <button class="btn-flat waves-effect"
+        <button type="button" class="btn-flat waves-effect"
           (click)="this.toggleChangePhoneNum(this.editDetailsForm.controls.phoneNumField.getRawValue())">
           <i *ngIf="!this.phoneNumCheck" class="material-symbols-outlined">edit</i>
           <div *ngIf="this.phoneNumCheck" class="editBtnContainer">
@@ -40,7 +40,7 @@
       Address
       <span class="inlineEditControls">
         <input id="placesField" formControlName="locationField" [readOnly]="!this.locationCheck">
-        <button class="btn-flat waves-effect"
+        <button type="button" class="btn-flat waves-effect"
           (click)="this.toggleChangeAddress(this.placeAutocompleteUtil.currentSelectedAddress!)">
           <i *ngIf="!this.locationCheck" class="material-symbols-outlined">edit</i>
           <div *ngIf="this.locationCheck" class="editBtnContainer">
