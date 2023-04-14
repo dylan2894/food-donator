@@ -71,20 +71,7 @@ export class DonationsComponent {
       }
     }
 
-    // filter out all donations which have a donation ID which is in the excludedDonationIds array.
-    // this.currentDonations = this.tempDonationsHolder.filter((donation) => {
-    //   if(excludedDonationIds.find((donId) => {
-    //     return donation.id.includes(donId);
-    //   }) != undefined){
-    //     // this donation is excluded
-    //     return false;
-    //   }
-    //   // this donation is included
-    //   return true;
-    // });
-
     excludedDonationIds.forEach((donationID) => {
-      console.log("displaying none");
       $(`app-card[id^="${donationID}"]`).css('display', 'none');
     });
   }
