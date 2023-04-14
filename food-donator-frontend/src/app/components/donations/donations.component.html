@@ -2,19 +2,20 @@
   <h3>Donations</h3>
 </div>
 
-<!-- Filter by tags -->
-<div class="row">
-  <app-chip-selector (selectedEvent)="filterByChips($event)"></app-chip-selector>
-</div>
-
 <div id="donationContainer" class="row">
-  <table *ngIf="this.currentDonations?.length === 0">
-    <tbody>
-      <tr>
-        <td colspan="4" style="text-align: center;">No current or upcoming donations.</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="col s12 m12 l12">
+    <table *ngIf="this.currentDonations?.length === 0">
+      <tbody>
+        <tr>
+          <td colspan="4" style="text-align: center;">No current or upcoming donations.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Filter by tags -->
+  <div style="padding: 0 0.75rem;">
+    <app-chip-selector (selectedEvent)="filterByChips($event)"></app-chip-selector>
+  </div>
   <app-card class="col s12 m6 l4 " *ngFor="let donation of this.currentDonations"
     id="{{ donation.id }}"
     [forCarousel]="false"
