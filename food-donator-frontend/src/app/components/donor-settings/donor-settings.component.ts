@@ -138,6 +138,12 @@ export class DonorSettingsComponent implements AfterViewInit {
           return;
         }
 
+        if(address == null || address == '') {
+          this.locationCheck = false;
+          this.locationFieldErrors = true;
+          return;
+        }
+
         // set the current user's address to the new address
         this.currentUser.address = address;
         this.currentUser.lat = this.placeAutocompleteUtil.currentSelectedCoords?.lat();
