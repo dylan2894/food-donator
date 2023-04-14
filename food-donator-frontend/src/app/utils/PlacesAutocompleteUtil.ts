@@ -8,7 +8,8 @@ export default class {
   placeAutocomplete(map: GoogleMap) {
     const options = {
       fields: ["formatted_address", "geometry", "name"],
-      strictBounds: false
+      strictBounds: true,
+      componentRestrictions: { country: "za" }
     };
 
     const autocomplete =
@@ -46,6 +47,14 @@ export default class {
     // Push the user's saved location to the markers array for rendering
     // this.markers.push(this.userMarker);
 
+    // prevent the user from bypassing the places Autocomplete
+    const input = document.getElementById('placesField') as HTMLInputElement;
+    input?.addEventListener("change", () => {
+      input.value = "";
+      this.currentSelectedCoords = undefined;
+      this.currentSelectedAddress = undefined;
+    });
+
     autocomplete.addListener("place_changed", () => {
       infowindow.close();
       marker.setVisible(false);
@@ -72,8 +81,8 @@ export default class {
       // set current selected address
       this.currentSelectedAddress = place.formatted_address?.toString();
 
-      console.log(this.currentSelectedCoords.lat() + ", " + this.currentSelectedCoords.lng())
-      console.log(this.currentSelectedAddress)
+      // console.log(this.currentSelectedCoords.lat() + ", " + this.currentSelectedCoords.lng())
+      // console.log(this.currentSelectedAddress)
 
       marker.setPosition(place.geometry.location);
       marker.setVisible(true);

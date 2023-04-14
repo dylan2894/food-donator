@@ -165,9 +165,6 @@ export class DonorSettingsComponent implements AfterViewInit {
 
 
   toggleChangeName(name: string) {
-
-
-
     if(this.nameCheck) {
       this.changeName(name);
       this.nameCheck = false;
@@ -180,9 +177,11 @@ export class DonorSettingsComponent implements AfterViewInit {
   toggleChangeAddress(address: string) {
     if(this.locationCheck) {
 
+      // if the address is the same or is not specified
       if(address == this.currentUser?.address || address == '') {
         M.toast({html: 'Successfully updated address.'})
         this.locationCheck = false;
+        this.locationFieldErrors = false;
         return;
       }
 
