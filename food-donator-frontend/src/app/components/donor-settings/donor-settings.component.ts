@@ -118,14 +118,12 @@ export class DonorSettingsComponent implements AfterViewInit {
         this.userService.updateUser(this.currentUser).then((updateResponse) => {
             // successfully updated user
             M.toast({html: 'Successfully updated name.'})
-            console.log("successfully updated name.");
             this.nameCheck = false;
         });
       }
     } catch(e) {
       console.error(e);
       M.toast({html: 'Failed to update name. Try again later.'})
-      console.log("failed to update name.");
     }
   }
 
@@ -153,7 +151,6 @@ export class DonorSettingsComponent implements AfterViewInit {
         this.userService.updateUser(this.currentUser).then((updateResponse) => {
             // successfully updated user
             M.toast({html: 'Successfully updated address.'})
-            console.log("successfully updated address.");
             this.map.googleMap?.setCenter({
               lat: this.placeAutocompleteUtil.currentSelectedCoords!.lat()!,
               lng: this.placeAutocompleteUtil.currentSelectedCoords!.lng()!
@@ -164,7 +161,6 @@ export class DonorSettingsComponent implements AfterViewInit {
     } catch(e) {
       console.error(e);
       M.toast({html: 'Failed to update address. Try again later.'})
-      console.log("failed to update address.");
     }
   }
 
