@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { HttpParameterCodec, HttpParams } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { GoogleMap } from '@angular/google-maps';
 import { Router } from '@angular/router';
-// import { GoogleMap } from '@angular/google-maps';
 import M from 'materialize-css';
 import { IMarker } from 'src/app/models/Imarker.model';
 import { Donation } from 'src/app/models/donation.model';
@@ -58,38 +56,26 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     });
 
     // set the google map options
-    //this.center = { lat: -25.781951024040037, lng: 28.338064949199595 };
     this.mapOptions = {
       //center: { lat: -25.781951024040037, lng: 28.338064949199595 },
       //zoom: 16,
+
       zoomControl: true,
+      zoomControlOptions: {
+        position: google.maps.ControlPosition.RIGHT_CENTER,
+      },
       mapTypeControl: false,
       streetViewControl: true,
+      streetViewControlOptions: {
+        position: google.maps.ControlPosition.RIGHT_CENTER
+      },
       fullscreenControl: false,
       styles: MapUtil.STYLES['hide']
     };
   }
 
-  /**
-   * Centers the Google Map on the selected Donor when the donor select option changes
-   * @param event the event triggered by the HTML select change
-   */
-  async onChange(event: any) {
-    const donorId: string = event.target.value;
-    this.donors.forEach((donor: User) => {
-      if(donor.id == donorId) {
-        const newCenter: CenterMapInput = {
-          lat: donor.lat!,
-          lng: donor.lon!
-        }
-        this.center = newCenter;
-        this.map.googleMap?.panTo(this.center);
-      }
-    });
-  }
-
   ngOnInit() {
-    $(document).ready(() => {
+    $(() => {
       // initialize the slide in sidenav
       $('.sidenav').sidenav();
 
@@ -120,6 +106,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
 
       // initialize the donor select filter
       $('select').formSelect();
+
+      // initialize the floating action button
+      $('.fixed-action-btn').floatingActionButton();
     });
   }
 
@@ -185,6 +174,50 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
         this.donors = donors;
       }
     });
+  }
+
+  /**
+   * Centers the Google Map on the selected Donor when the donor select option changes
+   * @param event the event triggered by the HTML select change
+   */
+  async onChange(event: any) {
+    const donorId: string = event.target.value;
+    const donor = this.donors.find((donor) => {
+      return donor.id == donorId
+    });
+    if(donor) {
+      const newCenter: CenterMapInput = {
+        lat: donor.lat!,
+        lng: donor.lon!
+      }
+      this.center = newCenter;
+      this.map.googleMap?.panTo(this.center);
+    }
+  }
+
+  centerMapOnMyLocation() {
+    if(!navigator.geolocation) {
+      alert("Your browser does not support geolocation. Please use a different browser.");
+    }
+
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0,
+    };
+
+    // get current position
+    navigator.geolocation.getCurrentPosition((position) => {
+      // center map on current position
+      const newCenter: CenterMapInput = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      }
+      this.center = newCenter;
+      this.map.googleMap?.panTo(this.center);
+    }, (err) => {
+      console.error(err);
+    }, options);
   }
 
   logout(): void {

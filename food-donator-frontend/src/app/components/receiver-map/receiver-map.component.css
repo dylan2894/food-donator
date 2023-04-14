@@ -89,10 +89,6 @@ p {
   word-wrap: normal;
 }
 
-/* .carousel.carousel-slider .carousel-item {
-  min-height: 300px;
-} */
-
 /** Container for Donor Select and Saved Pins Switch */
 .wrapper {
   margin-right: 25px;
@@ -104,8 +100,16 @@ p {
   right: 10px;
   width: 250px;
   padding-right: 25px;
-  border-radius: 8px;
-  background-color: var(--secondary);
+  border-radius: 2px;
+  background-color: var(--indigo-lighten-2);
+}
+
+#donorSelect input {
+  color: white;
+}
+
+#donorSelectLabel {
+  color: var(--indigo-lighten-5);
 }
 
 #donorSelect, #donorSelectLabel {
@@ -114,23 +118,25 @@ p {
   padding-left: 25px;
 }
 
-.pins-switch {
+.myLocationBtn {
   position: absolute;
-  display: flex;
+  display: flex !important;
   flex-direction: row;
   justify-content: center;
   align-content: center;
   top: 100px;
   right: 10px;
-  padding: 20px;
-  padding-left: 10px;
-  padding-right: 0px;
-  margin-top: 10px;
-  height: fit-content;
-  width: 250px;
-  border-radius: 8px;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  padding-left: 10px !important;
+  padding-right: 0px !important;
+  margin-top: 10px !important;
+  line-height: 100%;
+  width: 250px !important;
+}
 
-  background-color: var(--secondary);
+.fixed-action-btn {
+  right: 10px;
 }
 
 .center {
@@ -187,12 +193,6 @@ tr, td, th {
   margin-right: 10px;
 }
 
-/* #flexContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-} */
-
 #modalHeading {
   display: inline;
   width: fit-content;
@@ -208,21 +208,6 @@ tr, td, th {
   width: 200px;
   display: inline-block;
 }
-
-/* #scheduleContainer {
-  margin: 0;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: #b4b4b4;
-  border-radius: 10px;
-
-  max-height: 30vh;
-  width: 100%;
-  overflow-y: scroll;
-  scrollbar-width: 0px;
-} */
 
 #actionButtonsContainer {
   margin: 0;
