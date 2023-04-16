@@ -25,8 +25,8 @@ export class ChipSelectorComponent {
     if(this.selectedArray.includes(chip)) {
       this.selectedArray = this.removeSelection(chip);
 
-      $('.chip:contains("'+chip.name+'"):not(app-card .chip)').removeClass("selected");
-      $('.chip:contains("'+chip.name+'"):not(app-card .chip)').html(chip.name); // remove the close icon
+      $('.chipSelectorChip:contains("'+chip.name+'")').removeClass("selected");
+      $('.chipSelectorChip:contains("'+chip.name+'")').html(chip.name); // remove the close icon
 
       this.selectedEvent.emit(this.selectedArray);
       return;
@@ -34,8 +34,8 @@ export class ChipSelectorComponent {
 
     // if chip is not selected, select it
     this.selectedArray.push(chip);
-    $('.chip:contains("'+chip.name+'"):not(app-card .chip)').addClass("selected");
-    $('.chip:contains("'+chip.name+'"):not(app-card .chip)').html(chip.name + "<i class='close material-icons'>close</i>");
+    $('.chipSelectorChip:contains("'+chip.name+'")').addClass("selected");
+    $('.chipSelectorChip:contains("'+chip.name+'")').html(chip.name + "<i class='close material-icons'>close</i>");
     this.selectedEvent.emit(this.selectedArray);
   }
 
