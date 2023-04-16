@@ -12,7 +12,7 @@
           <input formControlName="dateCtrl" type="text" class="datepicker" readonly>
           <small *ngIf="isDateFormSubmitted && dateForm.controls.dateCtrl.errors">Please select a donation date.</small>
           <div>
-            <button mat-button (click)="this.isDateSelected(stepper)">Next</button>
+            <button class="waves-effect waves-light btn-small" (click)="this.isDateSelected(stepper)">Next</button>
           </div>
         </form>
       </mat-step>
@@ -25,8 +25,8 @@
           <small *ngIf="isStartTimeFormSubmitted && startTimeForm.controls.startTimeCtrl.errors">Please select a start
             time.</small>
           <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="this.isStartTimeSelected(stepper)">Next</button>
+            <button class="btn-small btn-flat" matStepperPrevious>Back</button>
+            <button class="waves-effect waves-light btn-small" (click)="this.isStartTimeSelected(stepper)">Next</button>
           </div>
         </form>
       </mat-step>
@@ -42,8 +42,8 @@
             *ngIf="isEndTimeFormSubmitted && endTimeForm.controls.endTimeCtrl.hasError('endTimeBeforeStartTime')">Please
             select an end time which is after the selected start time.</small>
           <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="this.isEndTimeSelected(stepper)">Next</button>
+            <button class="btn-small btn-flat" matStepperPrevious>Back</button>
+            <button class="waves-effect waves-light btn-small" (click)="this.isEndTimeSelected(stepper)">Next</button>
           </div>
         </form>
       </mat-step>
@@ -67,8 +67,8 @@
           </div>
 
           <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="this.isDescriptionSelected(stepper)">Next</button>
+            <button class="btn-small btn-flat" matStepperPrevious>Back</button>
+            <button class="waves-effect waves-light btn-small" (click)="this.isDescriptionSelected(stepper)">Next</button>
           </div>
         </form>
       </mat-step>
@@ -98,9 +98,8 @@
           </tbody>
         </table>
         <div id="finalStepBtnContainer">
-          <button mat-button (click)="stepper.reset()">Reset Steps</button>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="this.onSubmitDonation()">Create Donation</button>
+          <button class="btn-small btn-flat" matStepperPrevious>Back</button>
+          <button  (click)="this.onSubmitDonation()" class="waves-effect waves-light btn-small">Create Donation</button>
         </div>
       </mat-step>
 

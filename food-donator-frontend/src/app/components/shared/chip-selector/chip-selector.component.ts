@@ -8,7 +8,6 @@ import { TagService } from 'src/app/services/tag/tag.service';
   styleUrls: ['./chip-selector.component.css']
 })
 export class ChipSelectorComponent {
-  //chips: string[] = ["Canned Food", "Grains", "Long Life Milk", "Blankets", "Clothes","Clothes","Clothes","Clothes","Clothes","Clothes"];
   chips: Tag[] = [];
   selectedArray: Tag[] = [];
   @Output() selectedEvent = new EventEmitter<Tag[]>();
@@ -22,18 +21,21 @@ export class ChipSelectorComponent {
   }
 
   toggleChipSelect(chip: Tag) {
+    // if chip is already selected, unselect it
     if(this.selectedArray.includes(chip)) {
       this.selectedArray = this.removeSelection(chip);
-      $('.chip:contains("'+chip.name+'")').removeClass("selected");
-      $('.chip:contains("'+chip.name+'")').html(chip.name);
+
+      $('.chip:contains("'+chip.name+'"):not(app-card .chip)').removeClass("selected");
+      $('.chip:contains("'+chip.name+'"):not(app-card .chip)').html(chip.name); // remove the close icon
 
       this.selectedEvent.emit(this.selectedArray);
       return;
     }
 
+    // if chip is not selected, select it
     this.selectedArray.push(chip);
-    $('.chip:contains("'+chip.name+'")').addClass("selected");
-    $('.chip:contains("'+chip.name+'")').html(chip.name + "<i class='close material-icons'>close</i>");
+    $('.chip:contains("'+chip.name+'"):not(app-card .chip)').addClass("selected");
+    $('.chip:contains("'+chip.name+'"):not(app-card .chip)').html(chip.name + "<i class='close material-icons'>close</i>");
     this.selectedEvent.emit(this.selectedArray);
   }
 

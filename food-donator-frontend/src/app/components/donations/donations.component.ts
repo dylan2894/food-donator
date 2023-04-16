@@ -57,16 +57,10 @@ export class DonationsComponent {
     for(let i=0; i<cards.length; i++) {
       for(const tag of this.tags) {
         if(cards[i].innerHTML.match(new RegExp(tag.name, 'g')) == null) {
-
-          console.log(`Cannot find ${tag.name} on card`);
-
           const donationID = cards[i].getAttribute('ng-reflect-donation-id');
           if(donationID){
-            console.log("Excluding donation: " + donationID);
             excludedDonationIds.push(donationID);
           }
-        } else {
-          console.log(`Found ${tag.name} on card`)
         }
       }
     }
