@@ -35,13 +35,19 @@ th {
 }
 
 .carousel-item {
-  /* background-color: transparent; */
-  /* padding: 10px; */
   width: 90%;
 }
 
 .container {
   width: 100%;
+}
+
+#actionButtonsContainer {
+  height: calc(100% - 40px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
 }
 
 .chip {

@@ -30,23 +30,9 @@ body {
   transition: background-color 0s !important;
 }
 
-/* mat-stepper, app-donor, app-donor-donate, #donorContainer {
-  display: block;
-  height: 95%;
-}
-
-.mat-step {
-  height: 25%;
-} */
-
 #finalStepBtnContainer {
   margin-top: 25px;
 }
-
-/* p {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 120%;
-} */
 
 .mat-horizontal-content-container{
   height: 100%;
@@ -112,6 +98,14 @@ body {
 .input-field input[type=text]:focus, .materialize-textarea:focus:not([readonly]) {
   border-bottom: 0.5px solid var(--indigo-lighten-2) !important;
   box-shadow: 0 1px 0 0 var(--indigo-lighten-2) !important;
+}
+
+.mat-step-header {
+  font-size: 1.5em;
+}
+
+.mat-step-icon-content {
+  font-size: 0.7em;
 }
 
 /* Bigger screens */

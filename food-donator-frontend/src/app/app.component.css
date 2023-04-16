@@ -15,11 +15,44 @@
   --indigo-lighten-5: #e8eaf6;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+}
+
 body {
-	/* background: #d0d0d0; */
+  font-family: 'Montserrat', sans-serif;
   background-color: var(--indigo-lighten-5);
 	height: 100%;
   width: 100%;
+}
+
+label {
+  font-size: 1.3rem;
+  color: var(--dark);
+}
+
+.select-wrapper+label {
+  font-size: 1em;
+}
+
+small {
+  font-size: 1.1em;
+}
+
+.btn {
+  font-size: 1.1rem;
+}
+
+.btn-small {
+  font-size: 1.1rem;
+}
+
+.btn-flat {
+  font-size: 1.1rem;
+}
+
+.chip {
+  font-weight: 900;
 }
 
 app-sidenav {

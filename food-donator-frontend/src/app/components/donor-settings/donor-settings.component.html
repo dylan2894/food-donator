@@ -7,7 +7,7 @@
     <h4>Personal Information</h4>
 
     <form [formGroup]="editDetailsForm">
-      Name of Donor
+      <label>Name of Donor</label>
       <span class="inlineEditControls">
         <input formControlName="nameField" [value]="this.currentUser?.name" [readOnly]="!this.nameCheck">
         <button type="button" class="btn-flat waves-effect"
@@ -20,7 +20,7 @@
         </button>
       </span>
 
-      Phone Number
+      <label>Phone Number</label>
       <span class="inlineEditControls">
         <input id="phoneNum" formControlName="phoneNumField" prefix="(+27)" mask=' 00 000 0000'
           [readOnly]="!this.phoneNumCheck">
@@ -37,7 +37,7 @@
         number.</small>
 
       <h4>Donor Location</h4>
-      Address
+      <label>Address</label>
       <span class="inlineEditControls">
         <input id="placesField" formControlName="locationField" [readOnly]="!this.locationCheck">
         <button type="button" class="btn-flat waves-effect"

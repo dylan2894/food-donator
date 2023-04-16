@@ -8,7 +8,7 @@
       <mat-step [stepControl]="dateForm">
         <form [formGroup]="dateForm">
           <ng-template matStepLabel>Donation Date</ng-template>
-          <mat-label>Select the donation date</mat-label>
+          <label>Select the donation date</label>
           <input formControlName="dateCtrl" type="text" class="datepicker" readonly>
           <small *ngIf="isDateFormSubmitted && dateForm.controls.dateCtrl.errors">Please select a donation date.</small>
           <div>
@@ -20,7 +20,7 @@
       <mat-step [stepControl]="startTimeForm">
         <form [formGroup]="startTimeForm">
           <ng-template matStepLabel>Start Time</ng-template>
-          <mat-label>Specify the time when the donation window starts</mat-label>
+          <label>Specify the time when the donation window starts</label>
           <input formControlName="startTimeCtrl" type="text" class="timepicker" id="startTime" required readonly>
           <small *ngIf="isStartTimeFormSubmitted && startTimeForm.controls.startTimeCtrl.errors">Please select a start
             time.</small>
@@ -34,7 +34,7 @@
       <mat-step [stepControl]="endTimeForm">
         <form [formGroup]="endTimeForm">
           <ng-template matStepLabel>End Time</ng-template>
-          <mat-label>Specify the time when the donation window ends</mat-label>
+          <label>Specify the time when the donation window ends</label>
           <input formControlName="endTimeCtrl" type="text" class="timepicker" id="endTime" readonly>
           <small *ngIf="isEndTimeFormSubmitted && endTimeForm.controls.endTimeCtrl.hasError('required')">Please select
             an end time.</small>
@@ -54,13 +54,13 @@
 
           <ng-template matStepLabel>Description and Tags</ng-template>
           <div>
-            <mat-label>Select tags which correspond to the donation contents:</mat-label>
+            <label>Select tags which correspond to the donation contents:</label>
             <app-chip-selector (selectedEvent)="updateChipSelectorState($event)"></app-chip-selector>
             <small *ngIf="isDescriptionFormSubmitted && !isTagsSelected">Please select at least one tag.</small>
           </div>
 
           <div>
-            <mat-label>Provide a description of the donation contents.</mat-label>
+            <label>Provide a description of the donation contents.</label>
             <input id="descriptionField" formControlName="descriptionCtrl" class="input" type="text">
             <small *ngIf="isDescriptionFormSubmitted && descriptionForm.controls.descriptionCtrl.errors">Please provide
               a short description of the donation contents.</small>
