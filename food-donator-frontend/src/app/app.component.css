@@ -11,6 +11,7 @@
 
   --deep-purple-accent-2: #7c4dff;
   --indigo-lighten-2: #7986cb;
+  --indigo-lighten-3: #9fa8da;
   --indigo-lighten-4: #c5cae9;
   --indigo-lighten-5: #e8eaf6;
 }
@@ -41,14 +42,16 @@ small {
 
 .btn {
   font-size: 1.1rem;
+  background-color: var(--indigo-lighten-2);
 }
 
 .btn-small {
   font-size: 1.1rem;
+  background-color: var(--indigo-lighten-2);
 }
 
-.btn-flat {
-  font-size: 1.1rem;
+.btn:hover, .btn-small:hover {
+  background-color: var(--indigo-lighten-3);
 }
 
 .chip {

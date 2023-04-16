@@ -41,18 +41,23 @@
   padding: 15px;
 }
 
-.material-symbols-outlined {
+app-sidenav .material-symbols-outlined {
   user-select: none;
   transition: all 100ms;
   color: rgba(238, 238, 238, 0.8);
-  text-shadow: black 0px 0px 3px;
+  text-shadow: black 0px 0px 1px;
+}
+
+app-sidenav .material-symbols-outlined:hover {
+  color: #2b2c40;
+  cursor: pointer;
+  text-shadow: none;
 }
 
 .sidenav li {
   line-height: 84px;
   width: 100%;
 }
-
 
 .sidenav li > a {
   height: 84px;
@@ -70,11 +75,6 @@
 .sidenav li > a:hover {
   color: rgba(30, 30, 30, 0.8);
   text-shadow: none;
-}
-
-.sidenav > div > .material-symbols-outlined:hover {
-  color: var(--secondary);
-  cursor: pointer;
 }
 
 .navContainer {
