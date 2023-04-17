@@ -34,7 +34,7 @@
               </td>
               <td style="width: 30%;">
                 <!-- Start and End times -->
-                <small class="infoTxt" style="margin-left: 10px;">{{ donation?.starttime }} - {{ donation?.endtime }}</small>
+                <small class="infoTxt" style="margin-left: 10px;">{{ donation?.starttime!.substring(0, 5) }} - {{ donation?.endtime!.substring(0, 5) }}</small>
               </td>
             </tbody>
           </table>
@@ -71,7 +71,7 @@
               </td>
               <td style="width: 30%;">
                 <!-- Start and End times -->
-                <small class="infoTxt" style="margin-left: 10px;">{{ donation?.starttime }} - {{ donation?.endtime }}</small>
+                <small class="infoTxt" style="margin-left: 10px;">{{ donation?.starttime!.substring(0, 5) }} - {{ donation?.endtime!.substring(0, 5) }}</small>
               </td>
             </tbody>
           </table>
