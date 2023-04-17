@@ -35,6 +35,7 @@ import { DonationsComponent } from './components/donations/donations.component';
 import { ChipSelectorComponent } from './components/shared/chip-selector/chip-selector.component';
 import { CollapsibleItemBodyComponent } from './components/shared/collapsible-item-body/collapsible-item-body.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { RecurringComponent } from './components/shared/recurring/recurring.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     DoneeComponent,
     DonationsComponent,
     ChipSelectorComponent,
-    CollapsibleItemBodyComponent
+    CollapsibleItemBodyComponent,
+    RecurringComponent
   ],
   imports: [
     BrowserModule,

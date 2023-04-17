@@ -54,6 +54,10 @@ small {
   background-color: var(--indigo-lighten-3);
 }
 
+.btn-flat.btn-small {
+  background-color: transparent;
+}
+
 .chip {
   font-weight: 900;
 }

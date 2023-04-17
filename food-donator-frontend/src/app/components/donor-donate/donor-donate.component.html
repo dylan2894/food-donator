@@ -11,6 +11,9 @@
           <label>Select the donation date</label>
           <input formControlName="dateCtrl" type="text" class="datepicker" readonly>
           <small *ngIf="isDateFormSubmitted && dateForm.controls.dateCtrl.errors">Please select a donation date.</small>
+
+          <app-recurring (selectedEvent)="this.setRecurringUnit($event)" (enteredQuantity)="this.setRecurringQuantity($event)"></app-recurring>
+
           <div>
             <button class="waves-effect waves-light btn-small" (click)="this.isDateSelected(stepper)">Next</button>
           </div>
@@ -75,6 +78,7 @@
 
       <mat-step>
         <ng-template matStepLabel>Review Details</ng-template>
+        <p>The following donation session<span *ngIf="this.recurringUnit !== 'never'">s</span> will be created:</p>
         <table>
           <thead>
             <tr>
@@ -86,11 +90,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{{ this.date.getDate() }} {{ this.months[this.date.getMonth()] }} {{ this.date.getFullYear() }}</td>
-              <td>{{ this.startTime }}</td>
-              <td>{{ this.endTime }}</td>
-              <td>{{ this.description }}</td>
+            <tr *ngFor="let donation of donations">
+              <td>{{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate)) }}</td>
+              <td>{{ donation.starttime }}</td>
+              <td>{{ donation.endtime }}</td>
+              <td>{{ donation.description }}</td>
               <td>
                 <div *ngFor="let tag of tags" class="chip">{{ tag.name }}</div>
               </td>

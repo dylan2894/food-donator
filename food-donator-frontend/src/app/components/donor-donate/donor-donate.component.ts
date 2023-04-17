@@ -12,6 +12,7 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 import { DonationService } from 'src/app/services/donation/donation.service';
 import { UserTagService } from 'src/app/services/user-tag/user-tag.service';
 import { Constants } from 'src/app/shared/constants/constants';
+import DateUtil from 'src/app/utils/DateUtil';
 
 @Component({
   selector: 'app-donor-donate',
@@ -32,9 +33,13 @@ export class DonorDonateComponent implements OnInit {
   startTime = "";
   endTime = "";
   description = "";
+  recurringUnit = "never";
+  recurringQuantity = 1;
+  donations: Donation[] = [];
 
   dateForm = this.fb.group({
-    dateCtrl: ['', Validators.required]
+    dateCtrl: ['', Validators.required],
+    recurringCtrl: ['']
   });
   startTimeForm = this.fb.group({
     startTimeCtrl: ['', Validators.required]
@@ -47,6 +52,7 @@ export class DonorDonateComponent implements OnInit {
   });
 
   constructor(
+    public dateUtil: DateUtil,
     private userTagService: UserTagService,
     private fb: FormBuilder,
     private donationService: DonationService,
@@ -62,14 +68,21 @@ export class DonorDonateComponent implements OnInit {
         defaultTime: new Date().getTime().toLocaleString(),
         twelveHour: false
       }
+
+      // initialize materialize datepicker
       const datepicker = document.querySelector('.datepicker') as Element;
       M.Datepicker.init(datepicker, dateOptions);
 
+      // initialize materialize timepicker
       const startTimepicker = document.querySelector('#startTime') as Element;
       M.Timepicker.init(startTimepicker, timeOptions);
 
+      // initialize materialize timepicker
       const endTimepicker = document.querySelector('#endTime') as Element;
       M.Timepicker.init(endTimepicker, timeOptions);
+
+      // initialize materialize select
+      $('select').formSelect();
 
       $('.datepicker').on('change', () => {
         this.isDateFormSubmitted = false;
@@ -85,6 +98,16 @@ export class DonorDonateComponent implements OnInit {
     });
   }
 
+  setRecurringUnit(unit: string) {
+    console.log(unit);
+    this.recurringUnit = unit;
+  }
+
+  setRecurringQuantity(quantity: number) {
+    console.log(quantity);
+    this.recurringQuantity = quantity;
+  }
+
   isDateSelected(stepper: MatStepper): void {
     this.isDateFormSubmitted = true;
 
@@ -92,8 +115,8 @@ export class DonorDonateComponent implements OnInit {
     const instance = M.Datepicker.getInstance(datepicker);
     if(instance.date != null) {
       this.date = instance.date;
-
       this.dateForm.controls.dateCtrl.setErrors(null);
+
       stepper.next();
       return;
     }
@@ -148,6 +171,7 @@ export class DonorDonateComponent implements OnInit {
   }
 
   isDescriptionSelected(stepper: MatStepper): void {
+    this.donations = [];
     this.isDescriptionFormSubmitted = true;
 
     if(this.descriptionForm.errors || !this.isTagsSelected) {
@@ -156,6 +180,38 @@ export class DonorDonateComponent implements OnInit {
 
     if(this.descriptionForm.controls.descriptionCtrl.value) {
       this.description = this.descriptionForm.controls.descriptionCtrl.value;
+
+      // create donation objects and push them onto the donations array
+      const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
+      this.authenticationService.getUserByJWT(jwt).then((user: User | null) => {
+        if(user){
+          for(let i=0; i<this.recurringQuantity + 1; i++) {
+            const theDate = new Date(this.date);
+            // if recurringUnit is daily
+            if(this.recurringUnit == 'daily'){
+              theDate.setDate(theDate.getDate() + i);
+            }
+            // if recurringUnit is weekly
+            if(this.recurringUnit == 'weekly') {
+              theDate.setDate(theDate.getDate() + i*7);
+            }
+            // if recurringUnit is monthly
+            if(this.recurringUnit == 'monthly') {
+              theDate.setMonth(theDate.getMonth() + i);
+            }
+            const donation: Donation = {
+              id: "",
+              userid: user.id,
+              donationdate: theDate.valueOf(),
+              starttime: this.startTime,
+              endtime: this.endTime,
+              description: this.description
+            }
+            this.donations.push(donation);
+          }
+        }
+      });
+
       stepper.next();
     }
   }
@@ -164,45 +220,37 @@ export class DonorDonateComponent implements OnInit {
     const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user: User | null) => {
       if(user != null){
-        const donation: Donation = {
-          id: "",
-          userid: user.id,
-          donationdate: this.date.valueOf(),
-          starttime: this.startTime,
-          endtime: this.endTime,
-          description: this.description
-        }
-
-        this.donationService.createDonation(donation).then((resp: CreateDonationOutput) => {
-          if(resp.id != null){
-            // create tags
-            const promises: Promise<void>[] = [];
-
-            for(const tag of this.tags){
-              const createUserTagInput: UserTag = {
-                tagid: tag.id,
-                donationid: resp.id
+        const promises: Promise<void>[] = [];
+        this.donations.forEach((donation) => {
+          this.donationService.createDonation(donation).then((resp: CreateDonationOutput) => {
+            if(resp.id != null){
+              // create tags
+              for(const tag of this.tags){
+                const createUserTagInput: UserTag = {
+                  tagid: tag.id,
+                  donationid: resp.id
+                }
+                promises.push(
+                  this.userTagService.createUserTag(createUserTagInput).then((createTagOutput: CreateTagOutput) => {
+                    //
+                  })
+                );
               }
-              promises.push(
-                this.userTagService.createUserTag(createUserTagInput).then((createTagOutput: CreateTagOutput) => {
-                  //
-                })
-              );
             }
+          });
+        });
 
-            // wait for all tags to be created
-            Promise.all(promises).then(() => {
-              this.router.navigateByUrl('/dashboard');
-              M.toast({html: 'New donation successfully created!' })
-            }).catch(() => {
-              console.error("Could not create all tags.");
-              M.toast({html: "Failed to create donation, please try again." });
-            });
-
+        // wait for all tags to be created
+        Promise.all(promises).then(() => {
+          this.router.navigateByUrl('/dashboard');
+          if(this.donations.length == 1) {
+            M.toast({html: 'New donation successfully created!' })
             return;
           }
-
-          M.toast({html: 'Failed to create the donation. Try again later.' })
+          M.toast({html: 'New donations successfully created!' })
+        }).catch(() => {
+          console.error("Could not create all tags.");
+          M.toast({html: "Failed to create donation, please try again." });
         });
       }
     });
