@@ -1,0 +1,19 @@
+#recurringContainer {
+  display: table-cell;
+  height: 100px;
+  vertical-align: middle;
+}
+
+.inlineBlock {
+  display: inline-block;
+}
+
+.quantityContainer {
+  width: 140px;
+  margin-left: 20px;
+}
+
+.quantitySelector {
+  width: 50px !important;
+  text-align: center;
+}
