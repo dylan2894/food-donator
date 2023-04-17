@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.fooddonator.restapi.service.AuthenticationService;
 import com.fooddonator.restapi.constants.RequestKeys;
@@ -21,7 +22,11 @@ import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/authenticate")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(
+  origins = "https://food-donator-frontend.web.app/", 
+  allowedHeaders = "*",
+  methods = {RequestMethod.POST}
+)
 public class AuthenticationController {
 
   private Logger logger = LogManager.getLogger(AuthenticationController.class);
