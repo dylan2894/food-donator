@@ -2,6 +2,7 @@ package com.fooddonator.restapi.controller;
 
 import java.time.LocalTime;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -69,6 +70,7 @@ public class DonationController {
   public ResponseEntity<List<Donation>> getDonations() {
     System.out.println("[DONATION CONTROLLER] /donation/readAll");
     List<Donation> donations = repository.getDonations();
+    Collections.sort(donations);
     return new ResponseEntity<>(donations, null, HttpStatus.OK);
   }
 
@@ -76,6 +78,7 @@ public class DonationController {
   public ResponseEntity<List<Donation>> getDonationsByUserId(@RequestParam String userId) {
     System.out.println("[DONATION CONTROLLER] /donation/readAllByUserId");
     List<Donation> donations = repository.getDonationsByUserId(userId);
+    Collections.sort(donations);
     return new ResponseEntity<>(donations, null, HttpStatus.OK);
   }
 
@@ -104,6 +107,7 @@ public class DonationController {
       .collect(Collectors.toList());
     }
   
+    Collections.sort(currentAndUpcomingDonations);
     return new ResponseEntity<>(currentAndUpcomingDonations, null, HttpStatus.OK);
   }
 
@@ -130,6 +134,7 @@ public class DonationController {
       .collect(Collectors.toList());
     }
   
+    Collections.sort(currentAndUpcomingDonations);
     return new ResponseEntity<>(currentAndUpcomingDonations, null, HttpStatus.OK);
   }
 
