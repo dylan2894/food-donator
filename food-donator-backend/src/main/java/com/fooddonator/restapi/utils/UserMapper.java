@@ -7,7 +7,7 @@ public final class UserMapper {
 
   private UserMapper(){}
   
-  public static User MapUserJsonToUser(Map map) {
+  public static User mapUserJsonToUser(Map map) {
     User user = new User();
     user.id = map.get("id").toString();
     user.password =map.get("password").toString();

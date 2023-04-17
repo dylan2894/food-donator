@@ -1,17 +1,13 @@
 package com.fooddonator.restapi.controller;
 
-import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +24,15 @@ import com.fooddonator.restapi.repository.DonationRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 @RestController
 @RequestMapping("/donation")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class DonationController {
+
+  private Logger logger = LogManager.getLogger(DonationController.class);
 
   DonationController() {}
 
@@ -39,15 +40,13 @@ public class DonationController {
   private DonationRepository repository;
 
   @PostMapping("/create")
-  public ResponseEntity<Map> createDonation(@RequestBody Donation donation) {
+  public ResponseEntity<Map<String, Object>> createDonation(@RequestBody Donation donation) {
+    logger.info("/donation/create");
 
-    System.out.println("\nDonation Date: " + Long.toString(donation.donationdate) + "\n");
-
-    System.out.println("[DONATION CONTROLLER] /donation/create");
-    Map createDonationResult = repository.createDonation(donation);
+    Map<String, Object> createDonationResult = repository.createDonation(donation);
     
     if(createDonationResult.isEmpty()) {
-      Map<String, String> response = new HashMap<>();
+      Map<String, Object> response = new HashMap<>();
       response.put("error", "cannot create donation.");
       return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
@@ -57,10 +56,10 @@ public class DonationController {
 
   @GetMapping("/readOne")
   public ResponseEntity<Donation> getDonation(@RequestParam String id) {
-    System.out.println("[DONATION CONTROLLER] /donation/readOne");
+    logger.info("/donation/readOne");
     Donation donation = repository.getDonation(id);
     if(donation == null) {
-      System.out.println("[DONATION CONTROLLER] Donation with id: " + id + " not found.");
+      logger.warn("Donation with id: {} not found.", id);
       return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
     }
     return new ResponseEntity<>(donation, HttpStatus.OK);
@@ -68,7 +67,7 @@ public class DonationController {
 
   @GetMapping("/readAll")
   public ResponseEntity<List<Donation>> getDonations() {
-    System.out.println("[DONATION CONTROLLER] /donation/readAll");
+    logger.info("/donation/readAll");
     List<Donation> donations = repository.getDonations();
     Collections.sort(donations);
     return new ResponseEntity<>(donations, null, HttpStatus.OK);
@@ -76,7 +75,7 @@ public class DonationController {
 
   @GetMapping("/readAllByUserId")
   public ResponseEntity<List<Donation>> getDonationsByUserId(@RequestParam String userId) {
-    System.out.println("[DONATION CONTROLLER] /donation/readAllByUserId");
+    logger.info("/donation/readAllByUserId");
     List<Donation> donations = repository.getDonationsByUserId(userId);
     Collections.sort(donations);
     return new ResponseEntity<>(donations, null, HttpStatus.OK);
@@ -84,8 +83,7 @@ public class DonationController {
 
   @GetMapping("/readCurrentAndUpcomingByUserId")
   public ResponseEntity<List<Donation>> getCurrentAndUpcomingDonationsByUserId(@RequestParam String userId) {
-    System.out.println("[DONATION CONTROLLER] /donation/readCurrentAndUpcomingByUserId");
-
+    logger.info("/donation/readCurrentAndUpcomingByUserId");
     Calendar now = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
     int year = now.get(Calendar.YEAR);
     int month = now.get(Calendar.MONTH);
@@ -113,8 +111,7 @@ public class DonationController {
 
   @GetMapping("/readAllCurrentAndUpcoming")
   public ResponseEntity<List<Donation>> getCurrentAndUpcomingDonations() {
-    System.out.println("[DONATION CONTROLLER] /donation/readAllCurrentAndUpcoming");
-
+    logger.info("/donation/readAllCurrentAndUpcoming");
     Calendar now = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
     int year = now.get(Calendar.YEAR);
     int month = now.get(Calendar.MONTH);
@@ -139,14 +136,14 @@ public class DonationController {
   }
 
   @GetMapping("/delete")
-  public ResponseEntity<Map> deleteDonation(@RequestParam String id) {
-    System.out.println("[DONATION CONTROLLER] /donation/delete");
-    Map deleted;
+  public ResponseEntity<Map<String, Object>> deleteDonation(@RequestParam String id) {
+    logger.info("/donation/delete");
+    Map<String, Object> deleted;
     try {
       deleted = repository.deleteDonation(id);
     } catch(Exception e) {
-      System.out.println("[DONATION CONTROLLER] Donation with id: " + id + " could not be deleted.");
-      Map<String, String> response = new HashMap<>();
+      logger.error("Donation with id: {} could not be deleted.", id, e);
+      Map<String, Object> response = new HashMap<>();
       response.put("error", "cannot delete donation: " + id);
       return new ResponseEntity<>(response, null, HttpStatus.BAD_REQUEST);
     }

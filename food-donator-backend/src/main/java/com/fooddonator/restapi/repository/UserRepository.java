@@ -1,6 +1,7 @@
 package com.fooddonator.restapi.repository;
 
 import java.util.List;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -26,6 +29,8 @@ import com.fooddonator.restapi.utils.UserMapper;
 @Repository
 public class UserRepository {
 
+  private Logger logger = LogManager.getLogger(UserRepository.class);
+
   private static final ResourceBundle resource = ResourceBundle.getBundle("application");
   private final String ASTRA_REST_API_URL = resource.getString("astra.url");
   private final String ASTRA_DB_TOKEN = resource.getString("astra.token");
@@ -42,9 +47,8 @@ public class UserRepository {
    * @param user the new {@link User} to create in the DB
    * @return the result from the AstraDB REST API request
    */
-  public Map createUser(User user) {
-
-    System.out.println("Creating User with address: " + user.address);
+  public Map<String, Object> createUser(User user) {
+    logger.info("Creating User with address: {}", user.address);
 
     user.id = UUID.randomUUID().toString();
 
@@ -54,14 +58,15 @@ public class UserRepository {
       .toUri();
 
     RequestEntity<User> req = RequestEntity.post(uri)
-      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .header(RequestKeys.Header.X_CASSANDRA_TOKEN, ASTRA_DB_TOKEN)
       .body(user);
 
     ResponseEntity<Map> resp = restTemplate.exchange(req, Map.class);
-    if(resp != null && resp.getBody() != null) {
-      return (Map) resp.getBody().get("data");
+    Map body = resp.getBody();
+    if(body != null) {
+      return (Map<String, Object>) body.get("data");
     }
-    return new HashMap();
+    return new HashMap<>();
   }
 
 
@@ -71,13 +76,13 @@ public class UserRepository {
    * @return the {@link User} object which matches the provided ID parameter
    */
   public User getUser(String id) {
-    System.out.println("\n[USER REPO] getUser\n");
+    logger.info("getUser");
     URI uri =UriComponentsBuilder.fromHttpUrl(ASTRA_REST_API_URL)
       .pathSegment("/user/" + id)
       .build()
       .toUri();
     var request = RequestEntity.get(uri)
-      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .header(RequestKeys.Header.X_CASSANDRA_TOKEN, ASTRA_DB_TOKEN)
       .build();
       
     ResponseEntity<Map> rateResponse =
@@ -109,10 +114,10 @@ public class UserRepository {
    * @return the {@link User} object which matches the provided phone number parameter
    */
   public User getUserByPhoneNum(String phone_num) {
-    System.out.println("\n[USER REPO] getUserByPhoneNum\n");
+    logger.info("getUserByPhoneNum");
     String search = "{\"phone_num\":{\"$eq\":\""+phone_num+"\"}}";
     var request = RequestEntity.get(ASTRA_REST_API_URL + "/user?where={search}")
-      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .header(RequestKeys.Header.X_CASSANDRA_TOKEN, ASTRA_DB_TOKEN)
       .build();
       
     ResponseEntity<Map> rateResponse =
@@ -125,7 +130,7 @@ public class UserRepository {
     );
     Map data = rateResponse.getBody();
     ArrayList<Map> many = (ArrayList<Map>) data.get("data");
-    if(many.size() <= 0) {
+    if(many.isEmpty()) {
       return null;
     }
 
@@ -171,17 +176,17 @@ public class UserRepository {
 
     List<User> response = new ArrayList<>();
     for (Map map : many) {
-      response.add(UserMapper.MapUserJsonToUser(map));
+      response.add(UserMapper.mapUserJsonToUser(map));
     }
 
     return response;
   }
 
   public List<User> getDonors() {
-    System.out.println("\n[USER REPO] getDonors\n");
+    logger.info("getDonors");
     String search = "{\"type\":{\"$eq\":\"donor\"}}";
     var request = RequestEntity.get(ASTRA_REST_API_URL + "/user?where={search}")
-      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .header(RequestKeys.Header.X_CASSANDRA_TOKEN, ASTRA_DB_TOKEN)
       .build();
       
     ResponseEntity<Map> rateResponse =
@@ -194,20 +199,20 @@ public class UserRepository {
     );
     Map data = rateResponse.getBody();
     ArrayList<Map> many = (ArrayList<Map>) data.get("data");
-    if(many.size() <= 0) {
-      return null;
+    if(many.isEmpty()) {
+      return new ArrayList<>();
     }
 
     List<User> response = new ArrayList<>();
     for (Map map : many) {
-      response.add(UserMapper.MapUserJsonToUser(map));
+      response.add(UserMapper.mapUserJsonToUser(map));
     }
 
     return response;
   }
 
   public ResponseEntity<Map> updateUser(Map user) {
-    System.out.println("\n[USER REPO] updateUser()\n");
+    logger.info("updateUser");
 
     URI uri = UriComponentsBuilder.fromHttpUrl(ASTRA_REST_API_URL)
       .pathSegment("/user/" + user.get("id"))
@@ -225,8 +230,7 @@ public class UserRepository {
     try {
       return restTemplate.exchange(req, Map.class);
     } catch(RestClientException e) {
-      System.out.println("[USER REPO] updateUser() error");
-      System.out.println(e.getMessage());
+      logger.error("Cannot update user.", e);
     }
 
     return null;
@@ -243,7 +247,7 @@ public class UserRepository {
       .build()
       .toUri();
     var deleteRequest = RequestEntity.delete(uri)
-      .header("X-Cassandra-Token", ASTRA_DB_TOKEN)
+      .header(RequestKeys.Header.X_CASSANDRA_TOKEN, ASTRA_DB_TOKEN)
       .build();
 
     restTemplate.exchange(deleteRequest, Map.class);

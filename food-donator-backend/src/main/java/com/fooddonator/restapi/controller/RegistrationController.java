@@ -18,10 +18,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fooddonator.restapi.service.RegistrationService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 @RestController
 @RequestMapping("/register")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RegistrationController {
+
+  private Logger logger = LogManager.getLogger(RegistrationController.class);
   
   RegistrationController() {}
 
@@ -32,7 +37,7 @@ public class RegistrationController {
 
   @PostMapping("/user")
   @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
-  public ResponseEntity<Map> registerUser(@RequestBody User user) {
+  public ResponseEntity<Map<String, String>> registerUser(@RequestBody User user) {
     Map<String, String> msg = new HashMap<>();
 
     // check if user exists already
@@ -45,7 +50,7 @@ public class RegistrationController {
     // try register the new user
     try {
       registrationService.registerUser(user);
-      System.out.println("[REGISTRATION CONTROLLER] registerUser() completed.");
+      logger.info("registerUser completed.");
     } catch (Exception e) {
       msg.put(ResponseKeys.ERROR, e.getMessage());
       return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);

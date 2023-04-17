@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,9 @@ import com.fooddonator.restapi.utils.TagMapper;
 @PropertySource("classpath:application.properties")
 @Repository
 public class TagRepository {
+
+  private Logger logger = LogManager.getLogger(TagRepository.class);
+
   private static final ResourceBundle resource = ResourceBundle.getBundle("application");
   private final String ASTRA_REST_API_URL = resource.getString("astra.url");
   private final String ASTRA_DB_TOKEN = resource.getString("astra.token");
@@ -57,7 +62,7 @@ public class TagRepository {
 
     List<Tag> response = new ArrayList<>();
     for (Map map : many) {
-      response.add(TagMapper.MapTagJsonToTag(map));
+      response.add(TagMapper.mapTagJsonToTag(map));
     }
 
     return response;
@@ -69,7 +74,7 @@ public class TagRepository {
    * @return the {@link Tag} object which matches the provided ID.
    */
   public Tag getTagById(String id) {
-    System.out.println("\n[TAG REPO] getTagById\n");
+    logger.info("getTagById");
     URI uri =UriComponentsBuilder.fromHttpUrl(ASTRA_REST_API_URL)
       .pathSegment("/tags/" + id)
       .build()

@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.jni.Local;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.RequestEntity;
@@ -33,6 +35,7 @@ import com.fooddonator.restapi.constants.RequestRouting;
 @Repository
 public class DonationRepository {
 
+  private Logger logger = LogManager.getLogger(DonationRepository.class);
   private static final ResourceBundle resource = ResourceBundle.getBundle("application");
   private String baseUrl = resource.getString(ApplicationPropertiesKeys.ASTRA_URL);
   private String astraToken = resource.getString(ApplicationPropertiesKeys.ASTRA_TOKEN);
@@ -48,7 +51,7 @@ public class DonationRepository {
    * @param donation the new {@link Donation} to create in the DB
    * @return the result from the AstraDB REST API request
    */
-  public Map createDonation(Donation donation) {
+  public Map<String, Object> createDonation(Donation donation) {
     donation.id = UUID.randomUUID().toString();
 
     URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
@@ -66,11 +69,10 @@ public class DonationRepository {
         return resp.getBody();
       }
     } catch(RestClientException e) {
-      System.out.println("[DONATION REPO] createDonation() error");
-      System.out.println(e.getMessage());
+      logger.error("createDonation error", e);
     }
 
-    return new HashMap<String, String>();
+    return new HashMap<>();
   }
 
   /**
@@ -79,7 +81,7 @@ public class DonationRepository {
    * @return the {@link Donation} object which matches the provided ID parameter
    */
   public Donation getDonation(String id) {
-    System.out.println("\n[DONATION REPO] getDonation\n");
+    logger.info("getDonation");
     URI uri =UriComponentsBuilder.fromHttpUrl(baseUrl)
       .pathSegment(RequestRouting.Donation.Repository.GET_DONATION + id)
       .build()
@@ -93,10 +95,10 @@ public class DonationRepository {
       request,
       Map.class
     );
-    Map data = rateResponse.getBody();
-    ArrayList<Map> many = (ArrayList<Map>) data.get("data");
-    if(many.size() > 0) {
-      Map target = many.get(0);
+    Map<String, Object> data = rateResponse.getBody();
+    ArrayList<Map<String, Object>> many = (ArrayList<Map<String, Object>>) data.get("data");
+    if(!many.isEmpty()) {
+      Map<String, Object> target = many.get(0);
       return DonationMapper.MapDonationJsonToDonation(target);
     }
     return null;
@@ -107,7 +109,7 @@ public class DonationRepository {
    * @return A {@link List} of {@link Donation} objects.
    */
   public List<Donation> getDonations() {
-    System.out.println("\n[DONATION REPO] getDonation\n");
+    logger.info("getDonation");
     URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
     .pathSegment(RequestRouting.Donation.Repository.GET_DONATIONS)
     .build()
@@ -121,14 +123,14 @@ public class DonationRepository {
       request,
       Map.class
     );
-    Map data = rateResponse.getBody();
-    ArrayList<Map> many = (ArrayList<Map>) data.get("data");
-    if(many.size() <= 0) {
-      return null;
+    Map<String, Object> data = rateResponse.getBody();
+    ArrayList<Map<String, Object>> many = (ArrayList<Map<String, Object>>) data.get("data");
+    if(many.isEmpty()) {
+      return new ArrayList<>();
     }
 
     List<Donation> response = new ArrayList<>();
-    for (Map map : many) {
+    for (Map<String, Object> map : many) {
       response.add(DonationMapper.MapDonationJsonToDonation(map));
     }
 
@@ -141,7 +143,7 @@ public class DonationRepository {
    * @return A {@link List} of {@link Donation} objects.
    */
   public List<Donation> getDonationsByUserId(String userId) {
-    System.out.println("\n[DONATION REPO] getDonationsByUserId\n");
+    logger.info("getDonationsByUserId");
 
     String search = "{\"userid\":{\"$eq\":\""+userId+"\"}}";
     var request = RequestEntity.get(baseUrl + RequestRouting.Donation.Repository.GET_DONATIONS_BY_USER_ID)
@@ -156,14 +158,16 @@ public class DonationRepository {
       Map.class,
       search
     );
-    Map data = rateResponse.getBody();
-    ArrayList<Map> many = (ArrayList<Map>) data.get("data");
-    if(many.size() <= 0) {
-      return null;
-    }
+    Map<String, Object> data = rateResponse.getBody();
     List<Donation> response = new ArrayList<>();
-    for (Map map : many) {
-      response.add(DonationMapper.MapDonationJsonToDonation(map));
+    if(data != null) {
+      ArrayList<Map<String, Object>> many = (ArrayList<Map<String, Object>>) data.get("data");
+      if(many.isEmpty()) {
+        return new ArrayList<>();
+      }
+      for (Map<String, Object> map : many) {
+        response.add(DonationMapper.MapDonationJsonToDonation(map));
+      }
     }
 
     return response;
@@ -174,7 +178,7 @@ public class DonationRepository {
    * @param donationId A {@link String} UUID.
    * @return the result from the AstraDB REST API request
    */
-  public Map deleteDonation(String donationId) {
+  public Map<String, Object> deleteDonation(String donationId) {
     URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
       .pathSegment(RequestRouting.Donation.Repository.DELETE_DONATION + donationId)
       .build()
@@ -190,10 +194,9 @@ public class DonationRepository {
         return resp.getBody();
       }
     } catch(RestClientException e) {
-      System.out.println("[DONATION REPO] createDonation() error");
-      System.out.println(e.getMessage());
+      logger.error("createDonation error", e);
     }
 
-    return new HashMap<String, String>();
+    return new HashMap<>();
   }
 }

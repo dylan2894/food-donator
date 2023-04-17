@@ -2,6 +2,9 @@ package com.fooddonator.restapi.controller;
 
 import java.util.Map;
 import java.util.HashMap;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +23,8 @@ import org.springframework.http.HttpStatus;
 @RequestMapping("/authenticate")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthenticationController {
+
+  private Logger logger = LogManager.getLogger(AuthenticationController.class);
   
   AuthenticationController() {}
 
@@ -34,7 +39,7 @@ public class AuthenticationController {
   @PostMapping("/login")
   public ResponseEntity<Map<String, String>> authenticate(@RequestBody User user) {
     if(user.phone_num == null || user.password == null) {
-      System.out.println("[AUTH CONTROLLER] Phone number or password is empty.");
+      logger.warn("Phone number or password is empty.");
       Map<String, String> emptyResp = new HashMap<>();
       emptyResp.put("error", "Phone number or password is empty.");
       return new ResponseEntity<>(emptyResp, HttpStatus.UNAUTHORIZED);
@@ -83,10 +88,10 @@ public class AuthenticationController {
 
   @PostMapping("/getUserByJWT")
   public ResponseEntity<User> getUserByJWT(@RequestBody String jwt) {
-    System.out.println("[AUTHENTICATION CONTROLLER] /authenticate/getUserByJWT");
+    logger.info("/authenticate/getUserByJWT");
     User user = this.authenticationService.getUserByJWT(jwt);
     if(user == null) {
-      System.out.println("[AUTHENTICATION CONTROLLER] User with jwt: " + jwt + " not found.");
+      logger.warn("User with jwt: {} not found.", jwt);
       return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
     }
     user.salt = null;

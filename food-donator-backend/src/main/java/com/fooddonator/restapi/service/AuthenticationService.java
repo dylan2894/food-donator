@@ -1,5 +1,7 @@
 package com.fooddonator.restapi.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fooddonator.restapi.model.User;
@@ -14,6 +16,8 @@ import javax.crypto.SecretKeyFactory;
 
 @Service
 public class AuthenticationService {
+
+  private Logger logger = LogManager.getLogger(AuthenticationService.class);
   
   @Autowired
   private UserRepository userRepo;
@@ -36,9 +40,9 @@ public class AuthenticationService {
       } else if ("donee".equals(user.type)) {
         return this.jwtTokenUtil.generateTokenForDonee(_phone_num);
       }
-      System.out.println("[AUTH SERVICE] no user type provided.");
+      logger.warn("No user type provided.");
     }
-    System.out.println("[AUTH SERVICE] Login unsuccessful.");
+    logger.error("Login unsuccessful. Password incorrect");
     return null;
   }
 
@@ -49,7 +53,7 @@ public class AuthenticationService {
    */
   public Boolean isJwtValidForDonor(String jwt) {
     if(jwt == null || "".equals(jwt)) {
-      System.out.println("[AUTH SERVICE] JWT is null or empty.");
+      logger.warn("JWT is null or empty.");
       return false;
     }
     return this.jwtTokenUtil.validateTokenForDonor(jwt);
@@ -62,7 +66,7 @@ public class AuthenticationService {
    */
   public Boolean isJwtValidForDonee(String jwt) {
     if(jwt == null || "".equals(jwt)) {
-      System.out.println("[AUTH SERVICE] JWT is null or empty.");
+      logger.warn("JWT is null or empty.");
       return false;
     }
     return this.jwtTokenUtil.validateTokenForDonee(jwt);
@@ -85,7 +89,7 @@ public class AuthenticationService {
    */
   private boolean isPasswordCorrect(User user, String candidatePassword) {            
     if(user == null){
-      System.out.println("[AUTH SERVICE] could not find user by phone number.");
+      logger.warn("Could not find user by phone number.");
       return false;
     }
 
@@ -99,7 +103,7 @@ public class AuthenticationService {
       SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
       hash = factory.generateSecret(spec).getEncoded();
     } catch (Exception e) {
-      System.out.println(e);
+      logger.error(e);
     }
 
     // Base64 encode the hashed candidate password
@@ -110,9 +114,7 @@ public class AuthenticationService {
       return true;
     }
 
-    System.out.println("[AUTH SERVICE] password is incorrect.");
-    System.out.println("Stored password is: " + user.password.toString());
-    System.out.println("Hashed candidate password is: " + hash.toString());
+    logger.warn("Password is incorrect.");
     return false;
   }
 

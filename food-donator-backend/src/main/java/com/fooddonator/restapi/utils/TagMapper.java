@@ -8,9 +8,9 @@ public class TagMapper {
   
   private TagMapper(){}
   
-  public static Tag MapTagJsonToTag(Map map) {
-    String tagID = map.get("id").toString();
-    String tagName = map.get("name").toString();
+  public static Tag mapTagJsonToTag(Map<String, String> map) {
+    String tagID = map.get("id");
+    String tagName = map.get("name");
 
     return new Tag(tagID, tagName);
   }

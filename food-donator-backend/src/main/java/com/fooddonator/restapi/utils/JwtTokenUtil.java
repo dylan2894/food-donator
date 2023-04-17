@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,8 @@ import java.util.ResourceBundle;
 @PropertySource("classpath:application.properties")
 @Component
 public class JwtTokenUtil implements Serializable {
+
+  private Logger logger = LogManager.getLogger(JwtTokenUtil.class);
 
   @Autowired
   UserRepository userRepo;
@@ -50,7 +54,7 @@ public class JwtTokenUtil implements Serializable {
     final String type = getTypeFromToken(token);
 
     if(!type.equals("donor")) {
-      System.out.println("[JWT TOKEN UTIL] This user is not a donor.");
+      logger.info("This user is not a donor.");
       return false;
     }
 
@@ -58,17 +62,17 @@ public class JwtTokenUtil implements Serializable {
     User user;
     user = (User) this.userRepo.getUserByPhoneNum(userPhoneNum);
     if(user == null) {
-      System.out.println("[JWT TOKEN UTIL] No user found with this ID.");
+      logger.info("No user found with this ID.");
       return false;
     }
 
     if(user.id == null){
-      System.out.println("[JWT TOKEN UTIL] No user found which matches this JWT userID.");
+      logger.info("No user found which matches this JWT userID.");
       return false;
     }
 
-    if(isTokenExpired(token)) {
-      System.out.println("[JWT TOKEN UTIL] JWT is expired.");
+    if(Boolean.TRUE.equals(isTokenExpired(token))) {
+      logger.info("JWT is expired.");
       return false;
     }
 
@@ -80,7 +84,7 @@ public class JwtTokenUtil implements Serializable {
     final String type = getTypeFromToken(token);
 
     if(!type.equals("donee")) {
-      System.out.println("[JWT TOKEN UTIL] This user is not a donee.");
+      logger.info("This user is not a donee.");
       return false;
     }
 
@@ -88,17 +92,17 @@ public class JwtTokenUtil implements Serializable {
     User user;
     user = (User) this.userRepo.getUserByPhoneNum(userPhoneNum);
     if(user == null) {
-      System.out.println("[JWT TOKEN UTIL] No user found with this phone number.");
+      logger.info("No user found with this phone number.");
       return false;
     }
 
     if(user.id == null){
-      System.out.println("[JWT TOKEN UTIL] No user found which matches this JWT userID.");
+      logger.info("No user found which matches this JWT userID.");
       return false;
     }
 
     if(isTokenExpired(token)) {
-      System.out.println("[JWT TOKEN UTIL] JWT is expired.");
+      logger.info("JWT is expired.");
       return false;
     }
 

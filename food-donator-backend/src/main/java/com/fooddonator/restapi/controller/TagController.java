@@ -2,6 +2,8 @@ package com.fooddonator.restapi.controller;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,8 @@ import com.fooddonator.restapi.model.Tag;
 @RequestMapping("/tags")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TagController {
+
+  private Logger logger = LogManager.getLogger(TagController.class);
   
   TagController(){}
 
@@ -23,7 +27,7 @@ public class TagController {
 
   @GetMapping("/readAll")
   public List<Tag> getTags() {
-    System.out.println("[TAG CONTROLLER] /tags/readAll");
+    logger.info("/tags/readAll");
     return repository.getTags();
   }
 }

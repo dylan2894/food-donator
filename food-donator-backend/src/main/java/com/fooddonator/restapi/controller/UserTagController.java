@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +28,9 @@ import com.fooddonator.restapi.repository.UserTagRepository;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserTagController {
 
-  UserTagController() {
-  }
+  private Logger logger = LogManager.getLogger();
+
+  UserTagController() {}
 
   @Autowired
   private UserTagRepository userTagRepository;
@@ -36,13 +39,12 @@ public class UserTagController {
 
   @PostMapping("/create")
   public ResponseEntity<Map> createUserTag(@RequestBody UserTag userTag) {
-
-    System.out.println("[USER TAG CONTROLLER] /tags/create");
+    logger.info("/tags/create");
     Map createUserTagResult;
     try {
       createUserTagResult = userTagRepository.createUserTag(userTag);
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      logger.error(e);
       Map<String, String> response = new HashMap<>();
       response.put("error", "cannot create usertag.");
       return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -62,10 +64,11 @@ public class UserTagController {
    */
   @GetMapping("/readTagsByDonationId")
   public ResponseEntity<List<Tag>> getTagsByDonationId(@RequestParam String donationId) {
-    System.out.println("[USER TAG CONTROLLER] /usertags/readTagsByDonationId");
+    logger.info("/usertags/readTagsByDonationId");
+    
     List<UserTag> usertags = userTagRepository.getUserTagsByDonationId(donationId);
     if (usertags == null) {
-      System.out.println("[USER TAG CONTROLLER] Usertags for donation with id: " + donationId + " not found.");
+      logger.warn("Usertags for donation with id: {} not found.", donationId);
       return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
     }
 

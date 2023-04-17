@@ -1,5 +1,7 @@
 package com.fooddonator.restapi.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fooddonator.restapi.model.User;
@@ -15,13 +17,15 @@ import javax.crypto.SecretKeyFactory;
 @Service
 public class RegistrationService {
 
+  private Logger logger = LogManager.getLogger(RegistrationService.class);
+
   @Autowired
   private UserRepository userRepo;
 
   /**
    * creates a hash of the provided password for storage 
    * and then creates a new {@link User} in the User table within the DB
-   * @param candidatePassword the password of the new User to register on the system
+   * @param candidatePassword the password of the new User to register
    */
   public boolean registerUser(User userInput) throws Exception {
     // 1. create a random salt
@@ -54,7 +58,7 @@ public class RegistrationService {
       throw e;
     }
 
-    System.out.println("[REGISTRATION SERVICE] registerUser() completed.");
+    logger.info("registerUser completed.");
     return true;
   }
 
@@ -73,7 +77,7 @@ public class RegistrationService {
       SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
       hash = factory.generateSecret(spec).getEncoded();
     } catch (Exception e) {
-      System.out.println("[REGISTRATION SERVICE] failed to hash password: " + e.getMessage());
+      logger.error("Failed to hash password.", e);
       throw e;
     }
 

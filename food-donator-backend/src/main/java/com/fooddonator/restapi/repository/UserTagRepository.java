@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -23,6 +25,9 @@ import com.fooddonator.restapi.model.UserTag;
 @PropertySource("classpath:application.properties")
 @Repository
 public class UserTagRepository {
+
+  private Logger logger = LogManager.getLogger(UserTagRepository.class);
+
   private static final ResourceBundle resource = ResourceBundle.getBundle("application");
   private final String ASTRA_REST_API_URL = resource.getString("astra.url");
   private final String ASTRA_DB_TOKEN = resource.getString("astra.token");
@@ -61,7 +66,7 @@ public class UserTagRepository {
    * @return the {@link UserTag}'s which matches the provided donation ID parameter
    */
   public List<UserTag> getUserTagsByDonationId(String donationId) {
-    System.out.println("\n[USER TAG REPO] getUserTagsByDonationId\n");
+    logger.info("getUserTagsByDonationId");
     
     String search = "{\"donationid\":{\"$eq\":\""+donationId+"\"}}";
     var request = RequestEntity.get(ASTRA_REST_API_URL + "/usertags?where={search}")
