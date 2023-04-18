@@ -4,5 +4,6 @@ export interface Donation {
   donationdate: number,
   starttime: string,
   endtime: string,
-  description: string
+  description: string,
+  reserved: boolean
 }

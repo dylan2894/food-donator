@@ -278,4 +278,31 @@ export class DonationService {
     }
     return false;
   }
+
+  /**
+   * Updates a {@link Donation} by making an HTTP request to the backend.
+   */
+  async updateDonation(donation: Donation): Promise<Map<string,object> | null> {
+    const req = new Promise((resolve, reject) => {
+      this.http.post(this.baseUrl + "update", donation, { headers: this.headers, observe: 'response' }).subscribe({
+        next: (resp) => {
+          if(resp.status != 200) {
+            throw new HttpErrorResponse({status: resp.status});
+          }
+          resolve(resp);
+        },
+        error: (err: HttpErrorResponse) => {
+          reject(err);
+        }
+      });
+    });
+
+    try {
+      return await req as Map<string, object>;
+    } catch(e) {
+      console.error("[DONATION SERVICE] updateDonation error", e);
+    }
+    return null;
+  }
+
 }

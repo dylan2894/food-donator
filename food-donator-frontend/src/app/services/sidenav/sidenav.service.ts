@@ -8,7 +8,9 @@ export class SidenavService {
   /**
    * Toggles the sidenav for the donor flow
    */
-  toggleSidenav(isDonor: boolean): void {
+  toggleSidenav(isDonor: boolean, e: Event): void {
+    e.stopPropagation();
+
     let elem;
     if(isDonor) {
       elem = document.getElementById('slide-out-donor');

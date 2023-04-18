@@ -205,7 +205,8 @@ export class DonorDonateComponent implements OnInit {
               donationdate: theDate.valueOf(),
               starttime: this.startTime,
               endtime: this.endTime,
-              description: this.description
+              description: this.description,
+              reserved: false
             }
             this.donations.push(donation);
           }
