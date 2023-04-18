@@ -73,13 +73,13 @@ p {
 }
 
 .card .carousel.carousel-slider .carousel-item {
-  
+
 }
 
 .carousel-left-chevron {
   position: absolute;
   top: 50%;
-  left: 0%;
+  left: 1%;
   z-index: 999;
 }
 
