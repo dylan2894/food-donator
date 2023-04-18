@@ -36,6 +36,7 @@ export class DonorDonateComponent implements OnInit {
   recurringUnit = "never";
   recurringQuantity = 1;
   donations: Donation[] = [];
+  currentUser: User | null = null;
 
   dateForm = this.fb.group({
     dateCtrl: ['', Validators.required],
@@ -57,7 +58,13 @@ export class DonorDonateComponent implements OnInit {
     private fb: FormBuilder,
     private donationService: DonationService,
     private authenticationService: AuthenticationService,
-    private router: Router) {}
+    private router: Router
+  ) {
+    const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
+    this.authenticationService.getUserByJWT(jwt).then((user: User | null) => {
+      this.currentUser = user;
+    });
+  }
 
   ngOnInit() {
     $(() => {
@@ -113,7 +120,7 @@ export class DonorDonateComponent implements OnInit {
 
     const datepicker = document.querySelector('.datepicker') as Element;
     const instance = M.Datepicker.getInstance(datepicker);
-    if(instance.date != null) {
+    if (instance.date != null) {
       this.date = instance.date;
       this.dateForm.controls.dateCtrl.setErrors(null);
 
@@ -128,7 +135,7 @@ export class DonorDonateComponent implements OnInit {
 
     const timepicker = document.getElementById('startTime') as Element;
     const instance = M.Timepicker.getInstance(timepicker);
-    if(instance.time != null) {
+    if (instance.time != null) {
       this.startTime = instance.time;
 
       this.startTimeForm.controls.startTimeCtrl.setErrors(null);
@@ -143,11 +150,11 @@ export class DonorDonateComponent implements OnInit {
 
     const timepicker = document.querySelector('#endTime') as Element;
     const instance = M.Timepicker.getInstance(timepicker);
-    if(instance.time != null) {
+    if (instance.time != null) {
       this.endTime = instance.time;
 
       // check if end time is after start time
-      if(this.endTime <= this.startTime) {
+      if (this.endTime <= this.startTime) {
         this.endTimeForm.controls.endTimeCtrl.setErrors({ endTimeBeforeStartTime: true });
         return;
       }
@@ -159,8 +166,8 @@ export class DonorDonateComponent implements OnInit {
     this.endTimeForm.controls.endTimeCtrl.setErrors({ required: true });
   }
 
-  updateChipSelectorState(selected: Tag[]){
-    if(selected.length > 0) {
+  updateChipSelectorState(selected: Tag[]) {
+    if (selected.length > 0) {
       this.isTagsSelected = true;
       this.tags = selected;
       return;
@@ -174,59 +181,72 @@ export class DonorDonateComponent implements OnInit {
     this.donations = [];
     this.isDescriptionFormSubmitted = true;
 
-    if(this.descriptionForm.errors || !this.isTagsSelected) {
+    if (this.descriptionForm.errors || !this.isTagsSelected) {
       return;
     }
 
-    if(this.descriptionForm.controls.descriptionCtrl.value) {
+    if (this.descriptionForm.controls.descriptionCtrl.value) {
       this.description = this.descriptionForm.controls.descriptionCtrl.value;
-
-      // create donation objects and push them onto the donations array
-      const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
-      this.authenticationService.getUserByJWT(jwt).then((user: User | null) => {
-        if(user){
-          for(let i=0; i<this.recurringQuantity + 1; i++) {
-            const theDate = new Date(this.date);
-            // if recurringUnit is daily
-            if(this.recurringUnit == 'daily'){
-              theDate.setDate(theDate.getDate() + i);
-            }
-            // if recurringUnit is weekly
-            if(this.recurringUnit == 'weekly') {
-              theDate.setDate(theDate.getDate() + i*7);
-            }
-            // if recurringUnit is monthly
-            if(this.recurringUnit == 'monthly') {
-              theDate.setMonth(theDate.getMonth() + i);
-            }
-            const donation: Donation = {
-              id: "",
-              userid: user.id,
-              donationdate: theDate.valueOf(),
-              starttime: this.startTime,
-              endtime: this.endTime,
-              description: this.description,
-              reserved: false
-            }
-            this.donations.push(donation);
-          }
-        }
-      });
-
       stepper.next();
+    }
+  }
+
+  updateDonations(recurringQuantity: number, recurringUnit: string, stepper: MatStepper) {
+    // console.log(stepper._getFocusIndex());
+    this.donations = [];
+    // create donation objects and push them onto the donations array
+    if(this.currentUser) {
+      if(recurringUnit == 'never') {
+        const donation: Donation = {
+          id: "",
+          userid: this.currentUser.id,
+          donationdate: this.date.valueOf(),
+          starttime: this.startTime,
+          endtime: this.endTime,
+          description: this.description,
+          reserved: false
+        }
+        this.donations.push(donation);
+        return;
+      }
+      for (let i = 0; i < recurringQuantity + 1; i++) {
+        const theDate = new Date(this.date);
+        // if recurringUnit is daily
+        if (recurringUnit == 'daily') {
+          theDate.setDate(theDate.getDate() + i);
+        }
+        // if recurringUnit is weekly
+        if (recurringUnit == 'weekly') {
+          theDate.setDate(theDate.getDate() + i * 7);
+        }
+        // if recurringUnit is monthly
+        if (recurringUnit == 'monthly') {
+          theDate.setMonth(theDate.getMonth() + i);
+        }
+        const donation: Donation = {
+          id: "",
+          userid: this.currentUser.id,
+          donationdate: theDate.valueOf(),
+          starttime: this.startTime,
+          endtime: this.endTime,
+          description: this.description,
+          reserved: false
+        }
+        this.donations.push(donation);
+      }
     }
   }
 
   onSubmitDonation() {
     const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user: User | null) => {
-      if(user != null){
+      if (user != null) {
         const promises: Promise<void>[] = [];
         this.donations.forEach((donation) => {
           this.donationService.createDonation(donation).then((resp: CreateDonationOutput) => {
-            if(resp.id != null){
+            if (resp.id != null) {
               // create tags
-              for(const tag of this.tags){
+              for (const tag of this.tags) {
                 const createUserTagInput: UserTag = {
                   tagid: tag.id,
                   donationid: resp.id
@@ -244,14 +264,14 @@ export class DonorDonateComponent implements OnInit {
         // wait for all tags to be created
         Promise.all(promises).then(() => {
           this.router.navigateByUrl('/dashboard');
-          if(this.donations.length == 1) {
-            M.toast({html: 'New donation successfully created!' })
+          if (this.donations.length == 1) {
+            M.toast({ html: 'New donation successfully created!' })
             return;
           }
-          M.toast({html: 'New donations successfully created!' })
+          M.toast({ html: 'New donations successfully created!' })
         }).catch(() => {
           console.error("Could not create all tags.");
-          M.toast({html: "Failed to create donation, please try again." });
+          M.toast({ html: "Failed to create donation, please try again." });
         });
       }
     });

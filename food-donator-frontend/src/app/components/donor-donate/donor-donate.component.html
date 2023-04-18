@@ -3,7 +3,8 @@
 </div>
 <div class="row">
   <div class="col s12 m12 l12">
-    <mat-stepper orientation="vertical" [linear]="false" #stepper>
+    <mat-stepper orientation="vertical"  [linear]="true" #stepper
+    (selectionChange)="this.updateDonations(this.recurringQuantity, this.recurringUnit, stepper)">
 
       <mat-step [stepControl]="dateForm">
         <form [formGroup]="dateForm">
@@ -76,7 +77,7 @@
         </form>
       </mat-step>
 
-      <mat-step>
+      <mat-step >
         <ng-template matStepLabel>Review Details</ng-template>
         <p>The following donation session<span *ngIf="this.recurringUnit !== 'never'">s</span> will be created:</p>
         <table>
@@ -90,7 +91,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let donation of donations">
+            <tr *ngFor="let donation of this.donations">
               <td>{{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate)) }}</td>
               <td>{{ donation.starttime }}</td>
               <td>{{ donation.endtime }}</td>
