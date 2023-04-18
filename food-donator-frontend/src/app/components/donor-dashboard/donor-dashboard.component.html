@@ -2,12 +2,13 @@
 <div class="row top-nav">
   <h3>Dashboard</h3>
 </div>
-<div class="row">
-  <div class="col s12 m12 l12">
+<div class="row" >
+  <div class="col s12 m12 l12" id="boundingContainer">
     <h4 class="subtitle">My Current and Upcoming Donations</h4>
-    <ul *ngIf="currentAndUpcomingDonations.length === 0" class="collection">
-      <li style="text-align: center;" class="collection-item">
-        <span>No current or upcoming donations.</span>
+    <ul class="collection">
+      <li style="text-align: center;" class="collection-item noCurrent">
+        <span class="button_text"></span>
+        <span *ngIf="currentAndUpcomingDonations.length === 0" class="noCurrentTxt">No current or upcoming donations.</span>
       </li>
     </ul>
     <ul id="currentCollapsible" class="collapsible expandable">
@@ -27,6 +28,10 @@
                 <div *ngIf="!this.donationService.isCurrentDonationByDonation(donation)" class="chip upcoming truncate">
                   Upcoming
                 </div>
+                <!-- Reserved chip -->
+                <div *ngIf="donation.reserved" class="chip red accent-1 truncate">
+                  Reserved
+                </div>
               </td>
               <td style="width: 30%;">
                 <!-- Donation date -->
@@ -36,11 +41,28 @@
                 <!-- Start and End times -->
                 <small class="infoTxt" style="margin-left: 10px;">{{ donation?.starttime!.substring(0, 5) }} - {{ donation?.endtime!.substring(0, 5) }}</small>
               </td>
+              <td>
+                <!-- Dropdown trigger -->
+                <div class="material-icons dropdown-trigger" [attr.data-target]="'dropdown-' + donation.id" (click)="$event.stopPropagation()">more_vert</div>
+              </td>
             </tbody>
           </table>
 
-          <!-- Delete donation button -->
-          <div (click)="this.deleteDonation(donation?.id!, $event)" class="material-symbols-outlined deleteBtn">delete</div>
+          <!-- Dropdown Structure -->
+          <ul [id]="'dropdown-' + donation.id" class='dropdown-content'>
+            <li *ngIf="donation.reserved" (click)="this.markAsReserved(donation, $event)">
+              <i class="material-symbols-outlined">free_cancellation</i>
+              Unreserve
+            </li>
+            <li *ngIf="!donation.reserved" (click)="this.markAsReserved(donation, $event)">
+              <i class="material-symbols-outlined">event_busy</i>
+              Mark as Reserved
+            </li>
+            <li (click)="this.deleteDonation(donation?.id!, $event)">
+              <i class="material-symbols-outlined">delete</i>
+              Delete donation
+            </li>
+          </ul>
         </div>
         <div class="collapsible-body">
           <!-- Chips and Description -->
@@ -51,9 +73,10 @@
   </div>
   <div class="col s12 m12 l12">
     <h4 class="subtitle">My Past Donations</h4>
-    <ul *ngIf="currentAndUpcomingDonations.length === 0" class="collection">
-      <li style="text-align: center;" class="collection-item">
-        <span>No past donations.</span>
+    <ul class="collection">
+      <li style="text-align: center;" class="collection-item noPast">
+        <span class="button_text"></span>
+        <span *ngIf="pastDonations.length === 0" class="noCurrentTxt">No past donations.</span>
       </li>
     </ul>
     <ul id="pastCollapsible" class="collapsible expandable">
@@ -61,10 +84,11 @@
         <div class="collapsible-header">
           <table>
             <tbody>
-              <td style="width: 1%;">
+              <td style="width: 5%;">
                 <!-- icon -->
                 <i class="material-icons">volunteer_activism</i>
               </td>
+              <td style="width: 20%;"></td>
               <td style="width: 30%;">
                 <!-- Donation date -->
                 {{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation?.donationdate!)) }}
@@ -73,13 +97,22 @@
                 <!-- Start and End times -->
                 <small class="infoTxt" style="margin-left: 10px;">{{ donation?.starttime!.substring(0, 5) }} - {{ donation?.endtime!.substring(0, 5) }}</small>
               </td>
+              <td>
+                <!-- Dropdown trigger -->
+                <div class="material-icons dropdown-trigger" [attr.data-target]="'dropdown-' + donation.id" (click)="$event.stopPropagation()">more_vert</div>
+              </td>
             </tbody>
           </table>
 
-          <!-- Delete donation button -->
-          <div (click)="this.deleteDonation(donation?.id!, $event)" class="material-symbols-outlined deleteBtn">delete</div>
+          <!-- Dropdown Structure -->
+          <ul [id]="'dropdown-' + donation.id" class='dropdown-content'>
+            <li (click)="this.deleteDonation(donation?.id!, $event)">
+              <i class="material-symbols-outlined">delete</i>
+              Delete donation
+            </li>
+          </ul>
         </div>
-        <div class="collapsible-body">
+        <div class="collapsible-body indigo lighten-5">
           <!-- Chips and Description -->
           <app-collapsible-item-body [donation]="donation"></app-collapsible-item-body>
         </div>

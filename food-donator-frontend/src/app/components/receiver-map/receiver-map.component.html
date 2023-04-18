@@ -96,11 +96,7 @@
           <app-card *ngFor="let donation of this.currentDonorDonations"
           [forCarousel]="true"
           [donorId]="donation.userid"
-          [donationId]="donation.id"
-          [date]="this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate))"
-          [startTime]="donation.starttime"
-          [endTime]="donation.endtime"
-          [description]="donation.description"
+          [donation]="donation"
           [isCurrent]="this.donationService.isCurrentDonationByDonation(donation)"
           ></app-card>
         </div>
