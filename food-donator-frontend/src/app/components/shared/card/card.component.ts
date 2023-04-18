@@ -1,8 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { Donation } from 'src/app/models/donation.model';
 import { Tag } from 'src/app/models/tag.model';
 import { User } from 'src/app/models/user.model';
 import { UserTagService } from 'src/app/services/user-tag/user-tag.service';
 import { UserService } from 'src/app/services/user/user.service';
+import DateUtil from 'src/app/utils/DateUtil';
 import PhoneNumUtil from 'src/app/utils/PhoneNumUtil';
 
 @Component({
@@ -12,11 +14,7 @@ import PhoneNumUtil from 'src/app/utils/PhoneNumUtil';
 })
 export class CardComponent {
   @Input() donorId = '';
-  @Input() donationId = '';
-  @Input() date = '';
-  @Input() startTime = '';
-  @Input() endTime = '';
-  @Input() description = '';
+  @Input() donation: Donation | null = null;
   @Input() isCurrent = false;
   @Input() forCarousel = false;
 
@@ -27,6 +25,7 @@ export class CardComponent {
   prefilledText = "Hi, I am contacting you from the Donator app.";
 
   constructor(
+    public dateUtil: DateUtil,
     public phoneNumberUtil: PhoneNumUtil,
     private userService: UserService,
     private userTagService: UserTagService
@@ -54,7 +53,7 @@ export class CardComponent {
       $('.chips').chips();
 
       // populate the tags on this card
-      this.userTagService.getTagsByDonationId(this.donationId).then((_tags) => {
+      this.userTagService.getTagsByDonationId(this.donation!.id!).then((_tags) => {
         if(_tags != null) {
           this.tags = _tags;
         }
