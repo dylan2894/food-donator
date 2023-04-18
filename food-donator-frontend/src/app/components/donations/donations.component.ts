@@ -57,7 +57,7 @@ export class DonationsComponent {
     for(let i=0; i<cards.length; i++) {
       for(const tag of this.tags) {
         if(cards[i].innerHTML.match(new RegExp(tag.name, 'g')) == null) {
-          const donationID = cards[i].getAttribute('ng-reflect-donation-id');
+          const donationID = cards[i].getAttribute('id');
           if(donationID){
             excludedDonationIds.push(donationID);
           }
