@@ -26,7 +26,7 @@ import org.springframework.http.ResponseEntity;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin(
-  origins = "https://food-donator-frontend.web.app/", 
+  origins = {"https://food-donator-frontend.web.app/", "http://localhost:4200/"}, 
   allowedHeaders = "*",
   methods = {RequestMethod.POST, RequestMethod.GET}
 )

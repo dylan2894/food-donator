@@ -15,10 +15,10 @@ export class AuthenticationService {
   headers: HttpHeaders = new HttpHeaders();
 
   constructor(private http: HttpClient) {
-    //TODO update url to point to backend
+    // update url to point to backend
     this.baseUrl = environment.link + RequestRouting.Services.Authentication.AUTHENTICATE;
-    this.headers.set("Origin", "http://localhost:4200");
-    this.headers.set("Host", "http://localhost:4200");
+    this.headers.set("Origin", environment.frontend);
+    this.headers.set("Host", environment.frontend);
   }
 
   /**

@@ -14,8 +14,8 @@ export class UserTagService {
 
   constructor(private http: HttpClient) {
     this.baseUrl = environment.link + RequestRouting.Services.UserTag.USER_TAG;
-    this.headers.set("Origin", "http://localhost:4200");
-    this.headers.set("Host", "http://localhost:4200");
+    this.headers.set("Origin", environment.frontend);
+    this.headers.set("Host", environment.frontend);
   }
 
   async createUserTag(userTag: UserTag): Promise<any> {

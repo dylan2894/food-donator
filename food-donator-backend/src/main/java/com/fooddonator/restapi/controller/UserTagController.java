@@ -27,7 +27,7 @@ import com.fooddonator.restapi.repository.UserTagRepository;
 @RestController
 @RequestMapping("/usertags")
 @CrossOrigin(
-  origins = "https://food-donator-frontend.web.app/", 
+  origins = {"https://food-donator-frontend.web.app/", "http://localhost:4200/"}, 
   allowedHeaders = "*",
   methods = {RequestMethod.POST, RequestMethod.GET}
 )

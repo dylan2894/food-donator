@@ -23,7 +23,7 @@ import org.springframework.http.HttpStatus;
 @RestController
 @RequestMapping("/authenticate")
 @CrossOrigin(
-  origins = "https://food-donator-frontend.web.app/", 
+  origins = {"https://food-donator-frontend.web.app/", "http://localhost:4200/"}, 
   allowedHeaders = "*",
   methods = {RequestMethod.POST}
 )

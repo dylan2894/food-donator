@@ -13,8 +13,8 @@ export class DonationService {
 
   constructor(private http: HttpClient) {
    this.baseUrl = environment.link + RequestRouting.Services.Donation.DONATION;
-   this.headers.set("Origin", "http://localhost:4200");
-   this.headers.set("Host", "http://localhost:4200");
+   this.headers.set("Origin", environment.frontend);
+   this.headers.set("Host", environment.frontend);
   }
 
   async createDonation(donation: Donation): Promise<any> {

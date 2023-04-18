@@ -31,7 +31,7 @@ import org.apache.logging.log4j.Logger;
 @RestController
 @RequestMapping("/donation")
 @CrossOrigin(
-  origins = "https://food-donator-frontend.web.app/", 
+  origins = {"https://food-donator-frontend.web.app/", "http://localhost:4200/"}, 
   allowedHeaders = "*",
   methods = {RequestMethod.POST, RequestMethod.GET}
 )

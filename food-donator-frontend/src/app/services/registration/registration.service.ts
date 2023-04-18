@@ -14,8 +14,8 @@ export class RegistrationService {
   constructor(private http: HttpClient) {
     //TODO update url to point to backend
     this.baseUrl = environment.link + RequestRouting.Services.Registration.REGISTRATION;
-    this.headers.set("Origin", "http://localhost:4200");
-    this.headers.set("Host", "http://localhost:4200");
+    this.headers.set("Origin", environment.frontend);
+    this.headers.set("Host", environment.frontend);
   }
 
   async registerUser(user: RegisterUserInput): Promise<void> {
