@@ -30,7 +30,7 @@ export class DonationsComponent {
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
         this.currentUser = user;
-        this.donationService.getCurrentAndUpcomingDonations().then((donations) => {
+        this.donationService.getCurrentAndUpcomingDonationsByNonReserved().then((donations) => {
           if(donations) {
             this.currentDonations = donations;
             this.tempDonationsHolder = donations;
