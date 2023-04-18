@@ -1,0 +1,33 @@
+<div id="burgerMenu" (click)="this.sidenavService.toggleSidenav(true)">
+  <i class="material-icons md-36">menu</i>
+</div>
+
+<ul id="slide-out-donor" class="sidenav sidenav-fixed">
+  <div *ngIf="this.isDonor" id="navBtnWrapper">
+    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/dashboard']">Dashboard</a></li>
+    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/donate']">Donate</a></li>
+    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/donor-donations']">All Donations</a></li>
+  </div>
+  <div *ngIf="!this.isDonor" id="navBtnWrapper">
+    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/map']">Map</a></li>
+    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/donee-donations']">All Donations</a></li>
+  </div>
+
+  <div id="logoutWrapper">
+    <span (click)="this.logout()" class="material-symbols-outlined" style="float: left;"
+    (click)="this.sidenavService.clearOverlay()"
+    >
+    logout
+    </span>
+    <span *ngIf="this.isDonor" [routerLink]="['/donor-settings']" class="material-symbols-outlined" style="float: right;"
+    (click)="this.sidenavService.clearOverlay()"
+    >
+    settings
+    </span>
+    <span *ngIf="!this.isDonor" [routerLink]="['/donee-settings']" class="material-symbols-outlined" style="float: right;"
+    (click)="this.sidenavService.clearOverlay()"
+    >
+    settings
+    </span>
+  </div>
+</ul>

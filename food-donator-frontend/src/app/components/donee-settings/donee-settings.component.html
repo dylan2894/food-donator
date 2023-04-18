@@ -1,0 +1,33 @@
+<div class="row top-nav">
+  <h3>Settings</h3>
+</div>
+
+<div class="row">
+  <div class="col">
+    <!-- <h5>Push notifications</h5>
+    <div class="switch">
+    <label>
+      Off
+      <input type="checkbox">
+      <span class="lever"></span>
+      On
+    </label> -->
+
+    <h5>Personal Information</h5>
+    <form [formGroup]="editDetailsForm">
+      Phone Number
+      <div>
+        <input id="phoneNumField" formControlName="phoneNumField" type="text" prefix="(+27)" mask=' 00 000 0000'
+          [value]="this.phoneNumUtil.format(this.currentUser?.phone_num!)" [readOnly]="!this.phoneNumCheck">
+        <button id="editPhoneNumBtn" class="btn-flat waves-effect"
+          (click)="this.toggleChangePhoneNum(this.editDetailsForm.controls.phoneNumField.value)">
+          <i *ngIf="!this.phoneNumCheck" class="material-symbols-outlined">edit</i>
+          <span *ngIf="this.phoneNumCheck">
+            Save Changes
+            <i class="material-symbols-outlined check">check</i>
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

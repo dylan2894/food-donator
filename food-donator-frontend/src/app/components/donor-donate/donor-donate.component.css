@@ -1,0 +1,117 @@
+* {
+  --deep-purple-accent-2: #7c4dff;
+  --indigo-lighten-2: #7986cb;
+  --indigo-lighten-4: #c5cae9;
+}
+
+.mat-stepper-vertical {
+  margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+  margin-top: 16px;
+}
+
+body {
+  height: 90% !important;
+}
+
+.btn, .btn-small, .btn-large {
+  margin-right: 8px;
+}
+
+.btn-flat.btn-small:hover {
+  background-color: #f5f5f5 !important;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14)
+
+}
+
+.btn-flat {
+  transition: background-color 0s !important;
+}
+
+#finalStepBtnContainer {
+  margin-top: 25px;
+}
+
+.mat-horizontal-content-container{
+  height: 100%;
+}
+.mat-horizontal-stepper-content{
+  height: 100%;
+  display: flex;
+}
+
+.datepicker-date-display {
+  background-color: var(--indigo-lighten-2);
+}
+
+.datepicker-cancel, .datepicker-done, .lever {
+  color: var(--indigo-lighten-2);
+}
+
+.datepicker-table td.is-selected, .timepicker-digital-display, .timepicker-tick:focus {
+  background-color: var(--indigo-lighten-2);
+}
+
+.datepicker-day-button:focus {
+  background-color: var(--indigo-lighten-4) !important;
+}
+
+.datepicker-table td.is-today {
+  color: var(--indigo-lighten-2);
+}
+
+.timepicker-canvas-bearing {
+	fill: var(--indigo-lighten-2);
+}
+
+.timepicker-canvas line {
+    stroke: var(--indigo-lighten-2);
+}
+
+.timepicker-canvas-bg {
+	fill: var(--indigo-lighten-2);
+  z-index: 999;
+}
+
+.timepicker-tick:hover {
+  background-color: var(--indigo-lighten-4);
+}
+
+.timepicker-tick:active {
+  background-color: var(--indigo-lighten-2) !important;
+}
+
+.timepicker-close {
+  color: var(--indigo-lighten-2);
+}
+
+.dropdown-content li > span {
+  color: var(--indigo-lighten-2);
+}
+
+.lever::after {
+  background-color: white !important;
+}
+
+.input-field input[type=text]:focus, .materialize-textarea:focus:not([readonly]) {
+  border-bottom: 0.5px solid var(--indigo-lighten-2) !important;
+  box-shadow: 0 1px 0 0 var(--indigo-lighten-2) !important;
+}
+
+.mat-step-header {
+  font-size: 1.5em;
+}
+
+.mat-step-icon-content {
+  font-size: 0.7em;
+}
+
+/* Bigger screens */
+@media screen and (min-width: 993px) {
+  mat-stepper, app-donor, app-donor-donate, #donorContainer {
+    display: block;
+    height: 90%;
+  }
+}

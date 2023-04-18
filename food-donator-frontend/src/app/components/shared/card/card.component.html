@@ -1,0 +1,133 @@
+<div *ngIf="!this.forCarousel" class="card">
+  <div class="card-content" style="height: 100%;">
+    <span class="card-title">{{ this.correspondingDonor?.name }}
+      <i class="activator material-icons right">more_vert</i>
+      <!-- Slide up revealed info -->
+      <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4">{{ this.correspondingDonor?.name }}<i class="material-icons right">close</i></span>
+        <div id="actionButtonsContainer">
+          <div class="actionButtonsInner">
+            <label>Need directions?</label>
+            <br>
+            <a [href]="this.googleMapsDirectionsLink" target="_blank"><button class="btn-small">Google Maps</button></a>
+            <br>
+            <label style="display: inline-block; margin-top: 15px;">Arrived? Notify the Donor</label>
+            <br>
+            <a aria-label="Chat on WhatsApp" [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.correspondingDonor?.phone_num!) + '?text=' + myEncodeURIComponent(this.prefilledText)" target="_blank">
+              <!-- <img alt="Chat on WhatsApp" src="../../../assets/images/WhatsAppButtonGreenLarge.svg"/> -->
+              <button class="btn-small" style="min-width: 187px;">Chat on WhatsApp</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </span>
+    <div class="subtitle">{{ date }}</div>
+
+
+    <!-- Upcoming or Current donation -->
+    <div *ngIf="this.isCurrent" class="chip current">Current Donation</div>
+    <div *ngIf="!this.isCurrent" class="chip upcoming">Upcoming Donation</div>
+
+    <!-- Chips -->
+    <div *ngFor="let tag of tags" class="chip">
+      {{ tag.name }}
+    </div>
+
+    <!-- Start Time & End Time -->
+    <table>
+      <thead>
+        <tr>
+          <th><label>Start Time</label></th>
+          <th><label>End Time</label></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ startTime.substring(0, 5) }}</td>
+          <td>{{ endTime.substring(0, 5) }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Description -->
+    <table>
+      <thead>
+        <tr>
+          <th><label>Description</label></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ description }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div *ngIf="this.forCarousel" class="card carousel-item ">
+  <div class="card-content" style="height: 100%;">
+    <span class="card-title">{{ date }}
+      <i class="activator material-icons right">more_vert</i>
+      <!-- Slide up revealed info -->
+      <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4">{{ this.correspondingDonor?.name }}<i class="material-icons right">close</i></span>
+        <div id="actionButtonsContainer">
+          <div class="actionButtonsInner">
+            <label>Need directions?</label>
+            <br>
+            <a [href]="this.googleMapsDirectionsLink" target="_blank"><button class="btn-small">Google Maps</button></a>
+            <br>
+            <label style="display: inline-block; margin-top: 15px;">Arrived? Notify the Donor</label>
+            <br>
+            <a aria-label="Chat on WhatsApp" [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.correspondingDonor?.phone_num!) + '?text=' + myEncodeURIComponent(this.prefilledText)" target="_blank">
+              <!-- <img alt="Chat on WhatsApp" src="../../../assets/images/WhatsAppButtonGreenLarge.svg"/> -->
+              <button class="btn-small" style="min-width: 187px;">Chat on WhatsApp</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </span>
+
+    <!-- Upcoming or Current donation -->
+    <div *ngIf="this.isCurrent" class="chip current">Current Donation</div>
+    <div *ngIf="!this.isCurrent" class="chip upcoming">Upcoming Donation</div>
+
+    <!-- Chips -->
+    <div *ngFor="let tag of tags" class="chip">
+      {{ tag.name }}
+    </div>
+
+    <!-- Start Time & End Time -->
+    <table>
+      <thead>
+        <tr>
+          <th><label>Start Time</label></th>
+          <th><label>End Time</label></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ startTime.substring(0, 5) }}</td>
+          <td>{{ endTime.substring(0, 5) }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Description -->
+    <table>
+      <thead>
+        <tr>
+          <th><label>Description</label></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ description }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

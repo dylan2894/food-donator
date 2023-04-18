@@ -1,0 +1,112 @@
+<div class="row top-nav">
+  <h3>Donate</h3>
+</div>
+<div class="row">
+  <div class="col s12 m12 l12">
+    <mat-stepper orientation="vertical" [linear]="false" #stepper>
+
+      <mat-step [stepControl]="dateForm">
+        <form [formGroup]="dateForm">
+          <ng-template matStepLabel>Donation Date</ng-template>
+          <label>Select the donation date</label>
+          <input formControlName="dateCtrl" type="text" class="datepicker" readonly>
+          <small *ngIf="isDateFormSubmitted && dateForm.controls.dateCtrl.errors">Please select a donation date.</small>
+
+          <app-recurring (selectedEvent)="this.setRecurringUnit($event)" (enteredQuantity)="this.setRecurringQuantity($event)"></app-recurring>
+
+          <div>
+            <button class="waves-effect waves-light btn-small" (click)="this.isDateSelected(stepper)">Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="startTimeForm">
+        <form [formGroup]="startTimeForm">
+          <ng-template matStepLabel>Start Time</ng-template>
+          <label>Specify the time when the donation window starts</label>
+          <input formControlName="startTimeCtrl" type="text" class="timepicker" id="startTime" required readonly>
+          <small *ngIf="isStartTimeFormSubmitted && startTimeForm.controls.startTimeCtrl.errors">Please select a start
+            time.</small>
+          <div>
+            <button class="btn-small btn-flat" matStepperPrevious>Back</button>
+            <button class="waves-effect waves-light btn-small" (click)="this.isStartTimeSelected(stepper)">Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="endTimeForm">
+        <form [formGroup]="endTimeForm">
+          <ng-template matStepLabel>End Time</ng-template>
+          <label>Specify the time when the donation window ends</label>
+          <input formControlName="endTimeCtrl" type="text" class="timepicker" id="endTime" readonly>
+          <small *ngIf="isEndTimeFormSubmitted && endTimeForm.controls.endTimeCtrl.hasError('required')">Please select
+            an end time.</small>
+          <small
+            *ngIf="isEndTimeFormSubmitted && endTimeForm.controls.endTimeCtrl.hasError('endTimeBeforeStartTime')">Please
+            select an end time which is after the selected start time.</small>
+          <div>
+            <button class="btn-small btn-flat" matStepperPrevious>Back</button>
+            <button class="waves-effect waves-light btn-small" (click)="this.isEndTimeSelected(stepper)">Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="descriptionForm">
+        <form [formGroup]="descriptionForm">
+
+
+          <ng-template matStepLabel>Description and Tags</ng-template>
+          <div>
+            <label>Select tags which correspond to the donation contents:</label>
+            <app-chip-selector (selectedEvent)="updateChipSelectorState($event)"></app-chip-selector>
+            <small *ngIf="isDescriptionFormSubmitted && !isTagsSelected">Please select at least one tag.</small>
+          </div>
+
+          <div>
+            <label>Provide a description of the donation contents.</label>
+            <input id="descriptionField" formControlName="descriptionCtrl" class="input" type="text">
+            <small *ngIf="isDescriptionFormSubmitted && descriptionForm.controls.descriptionCtrl.errors">Please provide
+              a short description of the donation contents.</small>
+          </div>
+
+          <div>
+            <button class="btn-small btn-flat" matStepperPrevious>Back</button>
+            <button class="waves-effect waves-light btn-small" (click)="this.isDescriptionSelected(stepper)">Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Review Details</ng-template>
+        <p>The following donation session<span *ngIf="this.recurringUnit !== 'never'">s</span> will be created:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Description</th>
+              <th>Tags</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let donation of donations">
+              <td>{{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation.donationdate)) }}</td>
+              <td>{{ donation.starttime }}</td>
+              <td>{{ donation.endtime }}</td>
+              <td>{{ donation.description }}</td>
+              <td>
+                <div *ngFor="let tag of tags" class="chip">{{ tag.name }}</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="finalStepBtnContainer">
+          <button class="btn-small btn-flat" matStepperPrevious>Back</button>
+          <button  (click)="this.onSubmitDonation()" class="waves-effect waves-light btn-small">Create Donation</button>
+        </div>
+      </mat-step>
+
+    </mat-stepper>
+  </div>
+</div>

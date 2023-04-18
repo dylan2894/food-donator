@@ -1,0 +1,35 @@
+<div class="row top-nav">
+  <h3>All Donations</h3>
+</div>
+
+<div id="donationContainer" class="row">
+  <!-- Filter by tags -->
+  <div style="padding: 0 0.75rem;">
+    <app-chip-selector (selectedEvent)="filterByChips($event)"></app-chip-selector>
+  </div>
+
+  <div class="col s12 m12 l12">
+    <table *ngIf="this.currentDonations?.length === 0 || emptyFilter">
+      <tbody>
+        <tr *ngIf="this.currentDonations?.length === 0">
+          <td colspan="4" style="text-align: center;">
+            <label>No current or upcoming donations.</label>
+          </td>
+        </tr>
+        <tr *ngIf="emptyFilter">
+          <td colspan="4" style="text-align: center;">
+            <label>No donations match this filter</label>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Donations -->
+  <app-card class="col s12 m6 l4 " *ngFor="let donation of this.currentDonations"
+    id="{{ donation.id }}"
+    [forCarousel]="false"
+    [donation]="donation"
+    [donorId]="donation.userid"
+    [isCurrent]="this.donationService.isCurrentDonationByDonation(donation)"></app-card>
+</div>

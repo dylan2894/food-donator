@@ -1,0 +1,143 @@
+* {
+  --primary: #6369D1; /* Violet Blue Crayola */
+  --secondary: #C6C6C6; /* Silver */
+
+  --warning: #FDB849; /* Maximum Yellow Red */
+  --danger: #F21B3F; /* Red Munsell */
+  --success: #60B67A; /* Medium Sea Green */
+
+  --dark: #36363E; /* Jet */
+  --darkRGB: 21, 21, 24;
+  --light: #FBF5F3; /* Snow */
+
+  --indigo-lighten-2: #7986cb;
+  --indigo-lighten-4: #c5cae9;
+  --indigo-lighten-5: #e8eaf6;
+
+  --label-colour: #9e9e9e;
+}
+
+/* Mobile First */
+a, .tab {
+  user-select: none;
+}
+
+small {
+  display: block;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  color: var(--danger);
+}
+
+.tabs {
+  display: flex;
+  flex-direction: row;
+  overflow-x: hidden;
+}
+
+.btn {
+  position: relative;
+  margin-top: 15px;
+  width: 100%;
+  height: 50px;
+}
+
+#donationLabel {
+  display: block;
+  margin-top: 10px;
+}
+
+.successfulCapture {
+  background-color: var(--success);
+}
+
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 15%;
+  height: 100%;
+  /* width: 100%; */
+}
+
+.formWrapper > .card {
+  display: fixed;
+  width: 90%;
+  height: 20rem;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 25%;
+}
+
+.card-content, .card-reveal {
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+}
+
+.card {
+  box-shadow: none;
+}
+
+#locationIcon {
+  height: 100%;
+}
+
+#locationBtn:focus {
+  background-color: var(--success);
+}
+
+.tabs .tab a{
+  color:var(--dark);
+} /*Black color to the text*/
+
+.tabs .tab a:hover {
+  background-color:#eee;
+  color:var(--primary);
+} /*Text color on hover*/
+
+.tabs .tab a:focus {
+  background-color: transparent;
+}
+
+.tabs .tab a.active {
+  background-color:var(--indigo-lighten-4);
+  color:var(--primary);
+} /*Background and text color when a tab is active*/
+
+.tabs .indicator {
+  background-color:var(--primary);
+} /*Color of underline*/
+
+/* label focus color */
+input:focus + label {
+  color: var(--label-colour) !important;
+}
+/* label underline focus color */
+input:focus {
+  border-bottom: 1px solid var(--indigo-lighten-2) !important;
+  box-shadow: 0 1px 0 0 var(--indigo-lighten-2) !important;
+}
+
+label:has(+ input:focus) {
+  color: var(--dark);
+}
+
+.infoTxt {
+  color: var(--label-colour);
+}
+
+/* TODO implement media queries for larger screens */
+@media screen and (min-width: 768px) {
+
+  .formWrapper {
+    display: block;
+    padding: 8%;
+  }
+
+  .formWrapper > .card {
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+
+
+}

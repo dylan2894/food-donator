@@ -1,0 +1,89 @@
+<div class="formWrapper">
+  <div class="card grey lighten-4">
+    <div class="card-tabs">
+      <ul class="tabs tabs-fixed-width">
+        <li class="tab"><a class="active" href="/login#login">Login</a></li>
+        <li class="tab"><a href="/login#register">Register</a></li>
+      </ul>
+    </div>
+    <div class="card-content grey lighten-4">
+      <div id="login">
+        <form [formGroup]="loginForm" (ngSubmit)="this.login()">
+          <label for="loginPhoneNum">Phone Number</label>
+          <input id="loginPhoneNum" prefix="(+27)" mask=' 00 000 0000' formControlName="phone_num" class="input">
+          <small *ngIf="invalidLoginForm && loginForm.controls['phone_num'].errors">Please enter a valid phone number</small>
+          <label for="loginPassword">Password</label>
+          <input id="loginPassword" type="password" formControlName="password" class="input" >
+          <small *ngIf="invalidLoginForm && loginForm.controls['password'].errors">Please enter a valid password</small>
+          <button class="btn"><span class="button_text">Login</span></button>
+        </form>
+      </div>
+      <div id="register">
+        <form [formGroup]="registerForm" (ngSubmit)="this.register()">
+          <label for="name">Name</label>
+          <input id="name" formControlName="name" class="input" placeholder="Joe's Restaurant">
+          <small *ngIf="invalidRegisterForm && registerForm.controls['name'].errors">Please enter a name</small>
+          <label for="registerPhoneNum">Phone Number</label>
+          <input id="registerPhoneNum" prefix="(+27)" mask=' 00 000 0000' formControlName="phone_num" class="input">
+          <small *ngIf="invalidRegisterForm && registerForm.controls['phone_num'].errors">Please enter a valid phone number</small>
+          <small
+            *ngIf="invalidRegisterForm
+            && registerForm.controls.address.hasError('existingUser')">
+              Please login with your existing account
+            </small>
+          <label for="registerPassword">Password</label>
+          <input id="registerPassword" type="password" formControlName="password" class="input">
+          <small *ngIf="invalidRegisterForm && registerForm.controls['password'].errors">Please enter a valid password</small>
+          <label for="confirmPassword">Confirm Password</label>
+          <input id="confirmPassword" type="password" formControlName="confirmPassword" class="input">
+          <small *ngIf="invalidRegisterForm && registerForm.controls['confirmPassword'].errors?.['required']">Please confirm your password</small>
+          <small
+            *ngIf="invalidRegisterForm &&
+            !registerForm.controls['confirmPassword'].errors?.['required'] &&
+            registerForm.controls['confirmPassword'].errors?.['match_error']">
+            Confirmed password does not match password
+          </small>
+          <label>Account Type</label>
+          <p class="infoTxt">Sign up as either a Donator or a Collector. Collectors can collect donations from Donators.</p>
+          <p>
+            <label>
+              <input (click)="this.onDonorTypeSelected()" type="radio" id="donorCheckbox" formControlName="type" value="donor" class="with-gap">
+              <span>Donator</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input type="radio" id="doneeCheckbox" formControlName="type" value="donee" class="with-gap">
+              <span>Collector</span>
+            </label>
+          </p>
+          <small *ngIf="invalidRegisterForm && registerForm.controls['type'].errors">Please select whether you are a Donor or Donee (Receiver)</small>
+          <div *ngIf="this.isDonor">
+            <label for="placesField">Address</label>
+            <input id="placesField" type="text" formControlName="address" class="input" placeholder="Enter your address">
+            <div id="infowindow-content">
+              <span id="placeName" class="title"></span><br />
+              <span id="placeAddress"></span>
+            </div>
+            <small
+            *ngIf="invalidRegisterForm
+            && (this.placesAutocompleteUtil.currentSelectedCoords === undefined
+            || registerForm.controls['address'].errors)">
+              Please enter a valid address
+            </small>
+            <google-map width="100%" height="200px" [options]="mapOptions">
+              <map-marker
+                *ngFor="let marker of this.markers"
+                [position]="marker.position"
+                [label]="marker.label!"
+                [title]="marker.title!"
+                [options]="marker.options!"
+              ></map-marker>
+            </google-map>
+          </div>
+          <button class="btn">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

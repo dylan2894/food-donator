@@ -1,9 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ReceiverMapComponent } from './components/receiver-map/receiver-map.component';
+import { LoginRegisterComponent } from './components/login-register/login-register.component';
+import { DonorGuard } from './shared/guard/donor.guard';
+import { DoneeGuard } from './shared/guard/donee.guard';
+import { DonorComponent } from './components/donor/donor.component';
+import { DoneeComponent } from './components/donee/donee.component';
 
 const routes: Routes = [
-  { path: '**', component: ReceiverMapComponent }
+  { path: 'map', component: DoneeComponent, canActivate: [DoneeGuard] },
+  { path: 'donee-settings', component: DoneeComponent, canActivate: [DoneeGuard] },
+  { path: 'donee-donations', component: DoneeComponent, canActivate: [DoneeGuard] },
+  { path: 'donor-donations', component: DonorComponent, canActivate: [DonorGuard] },
+  { path: 'dashboard', component: DonorComponent, canActivate: [DonorGuard] },
+  { path: 'donate', component: DonorComponent, canActivate: [DonorGuard] },
+  { path: 'donor-settings', component: DonorComponent, canActivate: [DonorGuard] },
+  { path: 'login', component: LoginRegisterComponent },
+  { path: '**', component: LoginRegisterComponent }
 ];
 
 @NgModule({

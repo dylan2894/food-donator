@@ -1,0 +1,30 @@
+* {
+  --primary: #6369D1; /* Violet Blue Crayola */
+  --secondary: #C6C6C6; /* Silver */
+
+  --warning: #FDB849; /* Maximum Yellow Red */
+  --danger: #F21B3F; /* Red Munsell */
+  --success: #60B67A; /* Medium Sea Green */
+
+  --dark: #36363E; /* Jet */
+  --light: #FBF5F3; /* Snow */
+
+  --deep-purple-accent-2: #7c4dff;
+  --indigo-lighten-2: #7986cb;
+  --indigo-lighten-4: #c5cae9;
+  --indigo-lighten-5: #e8eaf6;
+}
+
+.selected {
+  border: 1px solid var(--dark) !important;
+}
+
+.chip {
+  user-select: none;
+  cursor: pointer;
+}
+
+.chipSelectorContainer {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}

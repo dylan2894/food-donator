@@ -1,0 +1,101 @@
+* {
+  --primary: #6369D1; /* Violet Blue Crayola */
+  --secondary: #C6C6C6; /* Silver */
+
+  --warning: #FDB849; /* Maximum Yellow Red */
+  --danger: #F21B3F; /* Red Munsell */
+  --success: #60B67A; /* Medium Sea Green */
+
+  --dark: #36363E; /* Jet */
+  --light: #FBF5F3; /* Snow */
+
+  --deep-purple-accent-2: #7c4dff;
+  --indigo-lighten-2: #7986cb;
+  --indigo-lighten-4: #c5cae9;
+  --indigo-lighten-5: #e8eaf6;
+
+  --upcoming: #f5f29f;
+  --current: #8eeba3;
+}
+
+tr {
+  border-bottom: none;
+}
+
+th {
+  font-weight: normal;
+}
+
+.upcoming {
+  background-color: var(--upcoming);
+}
+
+.current {
+  background-color: var(--current);
+}
+
+.carousel-item {
+  width: 90%;
+}
+
+.container {
+  width: 100%;
+}
+
+#actionButtonsContainer {
+  height: calc(100% - 40px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+}
+
+.chip {
+  text-overflow: ellipsis;
+  word-break: break-all;
+  overflow: hidden;
+}
+
+.card {
+  border: 1px solid black;
+}
+
+.card, .card-content {
+  border-radius: 10px;
+}
+
+.card, .carousel-item {
+  margin: 0px !important;
+}
+
+.card {
+  overflow-y: hidden;
+  overflow-wrap: break-word;
+}
+
+.card-reveal {
+  display: block;
+  visibility: hidden;
+  transition: all 200ms;
+}
+
+.openCard {
+  visibility: visible !important;
+  transform: translateY(-100%) !important;
+}
+
+.closeCard {
+  transform: translateY(0%) !important;
+}
+.subtitle {
+  margin-bottom: 8px;
+}
+
+
+
+/* Bigger screens */
+@media only screen and (min-width: 993px) {
+  .carousel-item, .carousel-reveal {
+    width: 400px !important;
+  }
+}

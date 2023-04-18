@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 declare const $: any;
 
@@ -8,5 +9,10 @@ declare const $: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'food-donator';
+  title = 'Food Donator';
+
+  constructor() {
+    console.log("Env.link: " + environment.link);
+  }
 }
+

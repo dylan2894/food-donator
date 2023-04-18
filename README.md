@@ -1,6 +1,16 @@
-# Food Donator
-## Commands to get started
-### Frontend
-Navigate to the "food-donator-frontend" folder, and run `npm start`. The Angular frontend app will launch on `localhost:4200`.
-### Backend
-Navigate to the "food-donator-backend" folder, and run `./mvnw spring-boot:run`. The Java Spring backend app will launch on `localhost:4070/food-donator`.
+# Donator App
+
+## Commands To Get Started
+To run the backend locally: `mvn clean install -DskipTests=true`
+<br>
+To run the frontend locally in a development environment: `npm run start:dev`
+<br>
+To run the frontend in a production environment: `npm start`
+
+## Commands To Deploy
+To deploy the frontend to Firebase: `npm run deploy`
+<br>
+To deploy the backend to Google App Engine: `gcloud app deploy`
+
+## Additional Commands
+Stream backend Google App Engine logs to the cmd line: `gcloud app logs tail -s default`

@@ -1,0 +1,56 @@
+* {
+  --primary: #6369d1; /* Violet Blue Crayola */
+  --secondary: #c6c6c6; /* Silver */
+
+  --warning: #fdb849; /* Maximum Yellow Red */
+  --danger: #f21b3f; /* Red Munsell */
+  --success: #60b67a; /* Medium Sea Green */
+
+  --dark: #36363e; /* Jet */
+  --darkRGB: 21, 21, 24;
+  --light: #fbf5f3; /* Snow */
+}
+
+button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+col i {
+  margin-right: 10px;
+}
+
+/* .btn-flat {
+  max-width: 200px;
+} */
+
+.editBtnContainer {
+  display: flex;
+  min-width: 90px;
+  height: 100%;
+  font-size: xx-small;
+  text-align: center;
+  justify-content: center;
+}
+
+.check {
+  color: var(--success);
+  display: inline;
+}
+
+.invisible {
+  display: none;
+}
+
+.inlineEditControls {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.material-symbols-outlined {
+  padding: 0px;
+  margin: 0px;
+}

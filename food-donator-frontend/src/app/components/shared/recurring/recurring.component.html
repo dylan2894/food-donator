@@ -1,0 +1,22 @@
+<form [formGroup]="recurringForm">
+  <div id="recurringContainer">
+    <div class="inlineBlock">
+      <label for="recurringCtrl">Repeat</label>
+      <select id="recurringCtrl" formControlName="recurringCtrl" [(ngModel)]="selected" (ngModelChange)="setRecurringUnit($event)" class="browser-default">
+        <option selected value="never">Never</option>
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+      </select>
+    </div>
+    <div *ngIf="this.selected !== '' && this.selected !== 'never'" class="inlineBlock quantityContainer">
+      <span>for</span>
+      <input formControlName="recurringQuantity" [(ngModel)]="quantity" [value]="quantity" (input)="this.setQuantity(this.recurringForm.controls.recurringQuantity.value!)" type="number" min="1" max="31" class="quantitySelector">
+      <span *ngIf="this.selected === 'daily'">days</span>
+      <span *ngIf="this.selected === 'weekly'">weeks</span>
+      <span *ngIf="this.selected === 'monthly'">months</span>
+    </div>
+  </div>
+</form>
+<small *ngIf="recurringForm.controls.recurringQuantity.hasError('incorrectQuantity')">Please select a valid number</small>
+<small *ngIf="recurringForm.controls.recurringCtrl.hasError('incorrectUnit')">Please select a valid unit</small>

@@ -1,29 +1,108 @@
 <div class="google-map">
-  <google-map width="100%" height="100vh" [options]="mapOptions" ></google-map>
+  <google-map width="100%" height="100vh" [options]="mapOptions"
+  >
+    <map-marker
+      *ngFor="let marker of markers"
+      [position]="marker.position"
+      [label]="marker.label!"
+      [title]="marker.title!"
+      [options]="marker.options!"
+      (mapClick)="this.openModal(marker.id!, marker.title!, marker.phoneNum!)"
+    ></map-marker>
+  </google-map>
 </div>
 
 <!-- Donor Select -->
-<div class="wrapper">
-  <div id="donorSelect" class="input-field col s12">
-    <select>
-      <option value="" disabled selected>Choose your option</option>
-      <option value="option1">Option 1</option>
-      <option value="2">Option 2</option>
-      <option value="3">Option 3</option>
-    </select>
-    <label id="donorSelectLabel">Select Donor</label>
-  </div>
+<div id="donorSelect" class="input-field col s12">
+  <select id="donorInnerSelect" (change)="onChange($event)">
+    <option value="" disabled selected>Choose your option</option>
+    <option *ngFor="let donor of donors" [value]="donor.id">
+      {{ donor.name }}
+    </option>
+  </select>
+  <label id="donorSelectLabel" for="donorInnerSelect">Select Donor</label>
+</div>
 
-  <!-- Saved Pins Switch -->
-  <div class="switch">
-    <div><label>View Saved Pins</label></div>
-    <label>
-      Off
-      <input type="checkbox">
-      <span class="lever"></span>
-      On
-    </label>
+<!-- My Location button -->
+<button (click)="centerMapOnMyLocation()" class="myLocationBtn btn">
+  <div style="margin-right: 5px;" class="material-icons">my_location</div>
+  <span>My Location</span>
+</button>
+
+<!-- FAB Key/Legend -->
+<div class="fixed-action-btn">
+  <a id="mapFab" class="btn-floating btn-large indigo lighten-2">
+    <i class="large material-icons">map</i>
+  </a>
+  <ul>
+    <li>
+      <a class="btn-floating tooltipped red" data-position="left" data-tooltip="Red pins indicate donors who do not have upcoming donations.">
+        <i class="material-icons">location_on</i>
+      </a>
+    </li>
+    <li>
+      <a class="btn-floating tooltipped yellow darken-1" data-position="left" data-tooltip="Yellow pins are donors who have upcoming donations.">
+        <i class="material-icons">location_on</i>
+      </a>
+    </li>
+    <li>
+      <a class="btn-floating tooltipped green" data-position="left" data-tooltip="Green pins are donors who have current, active donations.">
+        <i class="material-icons">location_on</i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+<!-- Feature Discovery -->
+<div class="tap-target indigo lighten-3" data-target="mapFab">
+  <div class="tap-target-content">
+    <h5>Map Key</h5>
+    <p>Use the map key to find current and upcoming donations. As well as donors would don't currently have a donation.</p>
   </div>
 </div>
 
-<i id="accountIcon" class="material-icons large ">account_circle</i>
+<!-- Modal Structure -->
+<div id="modal1" class="modal bottom-sheet">
+  <div class="modal-content">
+
+    <span>
+      <h4 id="modalHeading">{{ this.currentDonorName }}</h4>
+      <span id="savedPinsContainer">
+        <i class="material-symbols-outlined center">bookmarks</i>
+        Save Pin
+      </span>
+    </span>
+
+    <div id="flexContainer">
+      <!-- Donation Schedule -->
+      <div *ngIf="this.currentDonorDonations === null || this.currentDonorDonations?.length === 0; else loadCarousel">
+        <table>
+          <thead>
+            <tr><td style="text-align: center;">No upcoming donations</td></tr>
+          </thead>
+        </table>
+      </div>
+
+      <!-- Carousel within Modal -->
+      <ng-template #loadCarousel>
+        <div class="carousel carousel-slider">
+          <div (click)="this.carouselPrev($event)" class="carousel-left-chevron">
+            <i class="material-symbols-outlined">chevron_left</i>
+          </div>
+          <div (click)="this.carouselNext($event)" class="carousel-right-chevron">
+            <i class="material-symbols-outlined">chevron_right</i>
+          </div>
+          <app-card *ngFor="let donation of this.currentDonorDonations"
+          [forCarousel]="true"
+          [donorId]="donation.userid"
+          [donation]="donation"
+          [isCurrent]="this.donationService.isCurrentDonationByDonation(donation)"
+          ></app-card>
+        </div>
+      </ng-template>
+
+
+    </div>
+  </div>
+</div>

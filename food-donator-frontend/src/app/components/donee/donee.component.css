@@ -1,0 +1,14 @@
+#doneeContainer {
+  width: calc(100% - 30px);
+}
+
+/* Bigger screens */
+@media only screen and (min-width: 993px) {
+  #doneeContainer {
+    width: calc(100% - 330px);
+  }
+
+  .nonMapContainer {
+    width: 100% !important;
+  }
+}

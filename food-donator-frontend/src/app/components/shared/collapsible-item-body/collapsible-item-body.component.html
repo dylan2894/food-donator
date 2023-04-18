@@ -1,0 +1,7 @@
+<div style="margin-bottom: 20px;">
+  <label>Description</label>
+  <div>{{ donation?.description }}</div>
+</div>
+<div>
+  <div *ngFor="let tag of tags" class="chip indigo lighten-4">{{ tag.name }}</div>
+</div>
