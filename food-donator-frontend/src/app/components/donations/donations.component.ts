@@ -18,6 +18,7 @@ export class DonationsComponent {
   currentDonations: Donation[] = [];
   tempDonationsHolder: Donation[] = [];
   tags: Tag[] = [];
+  emptyFilter = false;
 
   constructor(
     public donationService: DonationService,
@@ -40,6 +41,7 @@ export class DonationsComponent {
   }
 
   async filterByChips(selected: Tag[]){
+    this.emptyFilter = false;
     $(`app-card`).css('display', 'block');
 
     if(selected.length == 0) {
@@ -68,6 +70,13 @@ export class DonationsComponent {
     excludedDonationIds.forEach((donationID) => {
       $(`app-card[id^="${donationID}"]`).css('display', 'none');
     });
+
+    // check if there are no cards displaying
+    if($(`app-card:visible`).length == 0)
+    {
+      // no cards are currently visible, display text
+      this.emptyFilter = true;
+    }
   }
 
 }
