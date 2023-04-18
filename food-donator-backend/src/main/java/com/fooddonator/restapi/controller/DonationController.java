@@ -140,6 +140,23 @@ public class DonationController {
     return new ResponseEntity<>(currentAndUpcomingDonations, null, HttpStatus.OK);
   }
 
+  @PostMapping("/update")
+  public ResponseEntity<Map> updateDonation(@RequestBody Map donation) {
+    logger.info("/donation/update");
+
+    try {
+      ResponseEntity<Map> response = repository.updateDonation(donation);
+      if(response != null) {
+        return response;
+      }
+    } catch(Exception e) {
+      logger.error("Cannot update donation", e);
+    }
+
+    logger.error("Could not update donation with id: {}", donation.get("id"));
+    return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
+  }
+
   @GetMapping("/delete")
   public ResponseEntity<Map<String, Object>> deleteDonation(@RequestParam String id) {
     logger.info("/donation/delete");

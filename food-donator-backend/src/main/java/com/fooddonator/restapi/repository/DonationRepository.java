@@ -1,11 +1,7 @@
 package com.fooddonator.restapi.repository;
 
 import java.net.URI;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -14,7 +10,6 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tomcat.jni.Local;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -171,6 +166,34 @@ public class DonationRepository {
     }
 
     return response;
+  }
+
+  /**
+   * Updates a {@link Donation} in the Donation table using AstraDB's REST API.
+   * @param donation The updated {@link Donation} object.
+   * @return
+   */
+  public ResponseEntity<Map> updateDonation(Map donation) {
+    logger.info("updateDonation");
+
+    URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .pathSegment("/donation/" + donation.get("id"))
+      .build()
+      .toUri();
+
+    donation.remove("id");
+    
+    RequestEntity<Map> req = RequestEntity.put(uri)
+    .header(RequestKeys.Header.X_CASSANDRA_TOKEN, astraToken)
+    .body(donation);
+
+    try {
+      return restTemplate.exchange(req, Map.class);
+    } catch(RestClientException e) {
+      logger.error("Cannot update donation.", e);
+    }
+
+    return null;
   }
 
   /**
