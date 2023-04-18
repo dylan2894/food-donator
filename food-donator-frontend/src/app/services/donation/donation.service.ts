@@ -121,9 +121,9 @@ export class DonationService {
     return null;
   }
 
-  async getCurrentAndUpcomingDonations() {
+  async getCurrentAndUpcomingDonationsByNonReserved() {
     const req = new Promise((resolve, reject) => {
-      this.http.get(this.baseUrl + "readAllCurrentAndUpcoming", { headers: this.headers }).subscribe({
+      this.http.get(this.baseUrl + "readAllCurrentAndUpcomingByNonReserved", { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
@@ -137,7 +137,7 @@ export class DonationService {
       const resp = await req as Donation[];
       return resp;
     } catch(e) {
-      console.error("[DONATION SERVICE] getCurrentAndUpcomingDonations() error", e);
+      console.error("[DONATION SERVICE] getCurrentAndUpcomingDonationsByNonReserved() error", e);
     }
     return null;
   }

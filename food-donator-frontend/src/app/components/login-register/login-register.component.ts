@@ -88,6 +88,7 @@ export class LoginRegisterComponent {
     const passwordCtrl = this.loginForm.controls['password']
     if(this.loginForm.valid) {
       this.invalidLoginForm = false;
+      $('.btn').text('');
       $('.btn').addClass('button_text--loading');
       $('.btn').addClass('button--loading');
 
@@ -113,6 +114,7 @@ export class LoginRegisterComponent {
         M.toast({html: 'Incorrect details. Cannot sign in.'})
         $('.btn').removeClass('button_text--loading');
         $('.btn').removeClass('button--loading');
+        $('.btn').text('Login');
       }
 
       return;

@@ -86,6 +86,32 @@ public class DonationController {
     return new ResponseEntity<>(donations, null, HttpStatus.OK);
   }
 
+  @GetMapping("/readAllCurrentAndUpcoming")
+  public ResponseEntity<List<Donation>> getCurrentAndUpcomingDonations() {
+    logger.info("/donation/readAllCurrentAndUpcoming");
+    Calendar now = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+    int year = now.get(Calendar.YEAR);
+    int month = now.get(Calendar.MONTH);
+    int day = now.get(Calendar.DAY_OF_MONTH);
+    now.setTimeInMillis(0);
+    now.set(year, month, day);
+    now.setTimeInMillis(now.getTimeInMillis() - 7200000);
+
+    List<Donation> donations = repository.getDonations();
+
+    List<Donation> currentAndUpcomingDonations = null;
+    if(donations != null) {
+      // filter donations to obtain upcoming and current donations
+      currentAndUpcomingDonations = donations
+      .stream()
+      .filter(donation -> donation.donationdate >= now.getTime().getTime())
+      .collect(Collectors.toList());
+    }
+  
+    Collections.sort(currentAndUpcomingDonations);
+    return new ResponseEntity<>(currentAndUpcomingDonations, null, HttpStatus.OK);
+  }
+
   @GetMapping("/readCurrentAndUpcomingByUserId")
   public ResponseEntity<List<Donation>> getCurrentAndUpcomingDonationsByUserId(@RequestParam String userId) {
     logger.info("/donation/readCurrentAndUpcomingByUserId");
@@ -114,30 +140,20 @@ public class DonationController {
     return new ResponseEntity<>(currentAndUpcomingDonations, null, HttpStatus.OK);
   }
 
-  @GetMapping("/readAllCurrentAndUpcoming")
-  public ResponseEntity<List<Donation>> getCurrentAndUpcomingDonations() {
-    logger.info("/donation/readAllCurrentAndUpcoming");
-    Calendar now = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
-    int year = now.get(Calendar.YEAR);
-    int month = now.get(Calendar.MONTH);
-    int day = now.get(Calendar.DAY_OF_MONTH);
-    now.setTimeInMillis(0);
-    now.set(year, month, day);
-    now.setTimeInMillis(now.getTimeInMillis() - 7200000);
-
-    List<Donation> donations = repository.getDonations();
-
-    List<Donation> currentAndUpcomingDonations = null;
-    if(donations != null) {
-      // filter donations to obtain upcoming and current donations
-      currentAndUpcomingDonations = donations
-      .stream()
-      .filter(donation -> donation.donationdate >= now.getTime().getTime())
-      .collect(Collectors.toList());
+  @GetMapping("/readAllCurrentAndUpcomingByNonReserved")
+  public ResponseEntity<List<Donation>> getCurrentAndUpcomingDonationsByNonReserved() {
+    logger.info("/donation/readAllCurrentAndUpcomingByNonReserved");
+    
+    List<Donation> donations = this.getCurrentAndUpcomingDonations().getBody();
+    if (donations != null) {
+      List<Donation> nonReservedDonations = donations
+          .stream()
+          .filter(donation -> !donation.getReserved())
+          .collect(Collectors.toList());
+      return new ResponseEntity<>(nonReservedDonations, null, HttpStatus.OK);
     }
-  
-    Collections.sort(currentAndUpcomingDonations);
-    return new ResponseEntity<>(currentAndUpcomingDonations, null, HttpStatus.OK);
+    
+    return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
   }
 
   @PostMapping("/update")

@@ -35,7 +35,7 @@ th {
 }
 
 .carousel-item {
-  width: 90%;
+  width: 89%;
 }
 
 .container {
@@ -91,7 +91,16 @@ th {
   margin-bottom: 8px;
 }
 
+.reserved {
+  height: 100%;
+  background-color: rgba(23, 23, 23, 0.8) !important;
+  z-index: 99999;
+}
 
+.reserved .chip {
+  position: relative;
+  background-color: transparent !important;
+}
 
 /* Bigger screens */
 @media only screen and (min-width: 993px) {
