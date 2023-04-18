@@ -14,6 +14,7 @@ public class Donation implements Comparable<Donation> {
   public String starttime;
   public String endtime;
   public String description;
+  public Boolean reserved;
 
   @Override
   public int compareTo(Donation donation) {

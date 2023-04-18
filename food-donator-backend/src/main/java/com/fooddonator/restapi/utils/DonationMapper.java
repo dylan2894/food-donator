@@ -28,6 +28,9 @@ public final class DonationMapper {
     if(map.get("description") != null){
       donation.description = map.get("description").toString();
     }
+    if(map.get("reserved") != null) {
+      donation.reserved = (Boolean) map.get("reserved");
+    }
   
     return donation;
   }
