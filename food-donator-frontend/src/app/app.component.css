@@ -72,7 +72,7 @@ app-sidenav {
 }
 
 .button_text--loading {
-  color: transparent;
+  color: white;
 }
 
 .button--loading::after {

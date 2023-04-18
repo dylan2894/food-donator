@@ -17,6 +17,9 @@
 
 #slide-out-donor {
   background-color: var(--primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .material-icons.md-18 { font-size: 18px; }
@@ -45,7 +48,7 @@ app-sidenav .material-symbols-outlined {
   user-select: none;
   transition: all 100ms;
   color: rgba(238, 238, 238, 0.8);
-  text-shadow: black 0px 0px 1px;
+  /* text-shadow: black 0px 0px 1px; */
 }
 
 app-sidenav .material-symbols-outlined:hover {
@@ -90,7 +93,7 @@ app-sidenav .material-symbols-outlined:hover {
   position: fixed;
   top: 40px;
   left: 25px;
-  z-index: 99;
+  z-index: 999;
 }
 
 .nonMapContainer {
