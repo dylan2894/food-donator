@@ -7,7 +7,7 @@
       [label]="marker.label!"
       [title]="marker.title!"
       [options]="marker.options!"
-      (mapClick)="this.openModal(marker.id!, marker.title!, marker.phoneNum!)"
+      (mapClick)="this.openModal(marker.id!, marker.title!, marker.phoneNum!, marker.address!)"
     ></map-marker>
   </google-map>
 </div>
@@ -66,12 +66,19 @@
 <div id="modal1" class="modal bottom-sheet">
   <div class="modal-content">
 
+    <!-- Save Pin -->
     <span>
       <h4 id="modalHeading">{{ this.currentDonorName }}</h4>
       <span id="savedPinsContainer">
+        <span class="material-symbols-outlined">
+          home_pin
+        </span>
+        <span>{{ this.currentDonorAddress }}</span>
+      </span>
+      <!-- <span id="savedPinsContainer">
         <i class="material-symbols-outlined center">bookmarks</i>
         Save Pin
-      </span>
+      </span> -->
     </span>
 
     <div id="flexContainer">

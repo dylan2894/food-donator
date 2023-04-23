@@ -29,9 +29,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   donors: User[] = [];
   currentUser: User | null = null;
-  currentDonor: User | null = null;
   currentDonorName = "";
   currentDonorPhoneNum = "";
+  currentDonorAddress = "";
   currentDonorDonations: Donation[] | null = [];
   mapOptions: google.maps.MapOptions;
   center: CenterMapInput | null = null;
@@ -140,9 +140,12 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
                 determinedColor = MapUtil.GREEN_MARKER;
               }
 
+              console.log("DONOR ADDRESS:", donor.address)
+
               this.markers.push({
                 id: donor.id,
                 phoneNum: donor.phone_num,
+                address: donor.address,
                 position: {
                   lat: donor.lat!,
                   lng: donor.lon!
@@ -251,9 +254,10 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     $('#hiddenMenu').css('display', 'block');
   }
 
-  openModal(donorId: string, donorName: string, donorPhoneNum: string): void {
+  openModal(donorId: string, donorName: string, donorPhoneNum: string, donorAddress: string): void {
     this.currentDonorName = donorName;
     this.currentDonorPhoneNum = donorPhoneNum;
+    this.currentDonorAddress = donorAddress;
 
     // fetch donations for this donor
     this.donationService.getCurrentAndUpcomingDonationsByUserId(donorId).then((donations) => {

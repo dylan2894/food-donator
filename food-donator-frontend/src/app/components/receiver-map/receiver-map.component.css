@@ -171,16 +171,15 @@ tr, td, th {
 }
 
 #savedPinsContainer {
-  float: none;
   display: flex;
   flex-direction: row;
-  align-items: center;
   margin-top: 10px;
-  margin-bottom: 10px;
 }
 
-#savedPinsContainer > i {
-  margin-right: 10px;
+#savedPinsContainer > .material-symbols-outlined {
+  padding: 0%;
+  margin-right: 8px;
+  font-size: 32px;
 }
 
 #modalHeading {
@@ -241,12 +240,12 @@ input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
 
 /* Bigger screens */
 @media only screen and (min-width: 769px) {
-  #scheduleContainer {
-    width: 50%;
+  #savedPinsContainer {
+    line-height: 32px;
   }
 
-  #savedPinsContainer {
-    float: right;
+  #scheduleContainer {
+    width: 50%;
   }
 
   #actionButtonsContainer {
