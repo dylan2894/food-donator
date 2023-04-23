@@ -36,6 +36,12 @@ export class DoneeSettingsComponent {
 
   toggleChangePhoneNum(phoneNum: string) {
     if(this.phoneNumCheck) {
+      if(!phoneNum || phoneNum == "") {
+        this.phoneNumCheck = false;
+        this.editDetailsForm.controls.phoneNumField.setValue(this.currentUser?.phone_num);
+        return;
+      }
+
       if(!confirm("Save phone number changes?")){
         this.phoneNumCheck = false;
         this.editDetailsForm.controls.phoneNumField.setValue(this.currentUser?.phone_num);

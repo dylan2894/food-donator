@@ -32,6 +32,11 @@ label {
   color: var(--dark);
 }
 
+app-sidenav {
+  width: fit-content;
+  display: inline;
+}
+
 .select-wrapper+label {
   font-size: 1em;
 }
@@ -62,9 +67,8 @@ small {
   font-weight: 900;
 }
 
-app-sidenav {
-  width: fit-content;
-  display: inline;
+.toast {
+  font-weight: 400 !important;
 }
 
 .button_text {
