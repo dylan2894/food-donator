@@ -1,6 +1,7 @@
 export interface IMarker {
   id?: string,
   phoneNum?: string,
+  address?: string,
   position: {
     lat: number,
     lng: number
