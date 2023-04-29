@@ -72,11 +72,13 @@
   </div>
 </div>
 
-<div *ngIf="this.forCarousel" class="card carousel-item" style="width: 98% !important;">
+<div *ngIf="this.forCarousel" class="card carousel-item">
   <div class="card-content" style="height: 100%;">
-    <span class="card-title">{{
-      this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation!.donationdate)) }}
+    <span class="card-title">
+      <!-- Ellipsis 'more info' button -->
+      {{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation!.donationdate)) }}
       <i class="activator material-icons right">more_vert</i>
+
       <!-- Slide up revealed info -->
       <div class="card-reveal">
         <span class="card-title grey-text text-darken-4">{{ this.correspondingDonor?.name }}<i
@@ -98,6 +100,7 @@
           </div>
         </div>
       </div>
+
     </span>
 
     <!-- Upcoming or Current donation -->

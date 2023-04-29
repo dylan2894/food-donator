@@ -157,7 +157,7 @@ p {
 #modal1 {
   z-index: 99999;
   background-color: var(--indigo-lighten-5);
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .modal.bottom-sheet {
@@ -170,13 +170,13 @@ tr, td, th {
   padding: 2px;
 }
 
-#savedPinsContainer {
+#modalDonorAddressContainer {
   display: flex;
   flex-direction: row;
   margin-top: 10px;
 }
 
-#savedPinsContainer > .material-symbols-outlined {
+#modalDonorAddressContainer > .material-symbols-outlined {
   padding: 0%;
   margin-right: 8px;
   font-size: 32px;
@@ -240,13 +240,13 @@ input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
 
 /* Bigger screens */
 @media only screen and (min-width: 769px) {
-  #savedPinsContainer {
+  #modalDonorAddressContainer {
     line-height: 32px;
   }
 
-  #scheduleContainer {
+  /* #scheduleContainer {
     width: 50%;
-  }
+  } */
 
   #actionButtonsContainer {
     display: inline-block;

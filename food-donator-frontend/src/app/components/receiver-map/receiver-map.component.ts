@@ -80,12 +80,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       // initialize the slide in sidenav
       $('.sidenav').sidenav();
 
+      // ensure the materialize popout sidenav closes properly
       $( "#slide-out-donee" ).on("close", () => {
         this.closeMenu();
-      });
-
-      $('button').on('click', (e: Event) => {
-        e.stopPropagation();
       });
 
       // initialize the popup marker modal
@@ -95,13 +92,14 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           $('.carousel.carousel-slider').carousel({
             noWrap: true,
             fullWidth: false,
+            numVisible: 10,
             preventLoop: true,
             padding: 20,
             dist: 0
           });
           $('.carousel-slider').slider({
-            full_width: true
-          }); //must be full_width: true for mobile
+            full_width: false
+          });
         }
       });
 
@@ -140,8 +138,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
                 determinedColor = MapUtil.GREEN_MARKER;
               }
 
-              console.log("DONOR ADDRESS:", donor.address)
-
+              // create a marker/pin on the map for each donor
               this.markers.push({
                 id: donor.id,
                 phoneNum: donor.phone_num,
@@ -191,8 +188,8 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Centers the Google Map on the selected Donor when the donor select option changes
-   * @param event the event triggered by the HTML select change
+   * Centers the Google Map on the selected Donor when the donor select option changes.
+   * @param event the event triggered by the HTML select change.
    */
   async onChange(event: Event) {
     const donorInp = event.target as HTMLInputElement;
@@ -210,6 +207,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Centers the Google Map on the current donee user's location.
+   */
   centerMapOnMyLocation() {
     if(!navigator.geolocation) {
       alert("Your browser does not support geolocation. Please use a different browser.");
@@ -267,12 +267,18 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   }
 
   carouselPrev(e: Event) {
+    // prevent materialize from scrolling the carousel wildly
     e.stopPropagation();
+
+    // move carousel one step
     $('.carousel').carousel('prev');
   }
 
   carouselNext(e: Event) {
+    // prevent materialize from scrolling the carousel wildly
     e.stopPropagation();
+
+    // move carousel one step
     $('.carousel').carousel('next');
   }
 }
