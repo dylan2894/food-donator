@@ -39,10 +39,10 @@ export class DonorSettingsComponent implements AfterViewInit {
     private authenticationService: AuthenticationService,
     private fb: FormBuilder,
     private mapUtil: MapUtil
-    ) {
+  ) {
     const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
-      if(user != null) {
+      if (user != null) {
         // Set the current user for rendering
         this.currentUser = user;
 
@@ -108,155 +108,130 @@ export class DonorSettingsComponent implements AfterViewInit {
     });
   }
 
-  changeName(name: string) {
-    try {
-      if(this.currentUser != null) {
-        // set the current user's name to the new name
-        this.currentUser.name = name;
-
-        // update the current user
-        this.userService.updateUser(this.currentUser).then((updateResponse) => {
-            // successfully updated user
-            M.toast({html: 'Successfully updated name.'})
-            this.nameCheck = false;
-        });
-      }
-    } catch(e) {
-      console.error(e);
-      M.toast({html: 'Failed to update name. Try again later.'})
-    }
-  }
-
-  changeLocation(address: string) {
-    try {
-      if(this.currentUser != null) {
-
-        if(this.placeAutocompleteUtil.currentSelectedCoords === undefined) {
-          //TODO add a small HTML text for validation
-          return;
-        }
-
-        if(address == null || address == '') {
-          this.locationCheck = false;
-          this.locationFieldErrors = true;
-          return;
-        }
-
-        // set the current user's address to the new address
-        this.currentUser.address = address;
-        this.currentUser.lat = this.placeAutocompleteUtil.currentSelectedCoords?.lat();
-        this,this.currentUser.lon = this.placeAutocompleteUtil.currentSelectedCoords?.lng();
-
-        // update the current user
-        this.userService.updateUser(this.currentUser).then((updateResponse) => {
-            // successfully updated user
-            M.toast({html: 'Successfully updated address.'})
-            this.map.googleMap?.setCenter({
-              lat: this.placeAutocompleteUtil.currentSelectedCoords!.lat()!,
-              lng: this.placeAutocompleteUtil.currentSelectedCoords!.lng()!
-            });
-            this.locationCheck = false;
-        });
-      }
-    } catch(e) {
-      console.error(e);
-      M.toast({html: 'Failed to update address. Try again later.'})
-    }
-  }
-
-
-  toggleChangeName(name: string) {
-    if(this.nameCheck) {
-      this.changeName(name);
-      this.nameCheck = false;
-      return;
-    }
-
-    this.nameCheck = true;
-  }
-
-  toggleChangeAddress(address: string) {
-    if(this.locationCheck) {
-
-      // if the address is the same or is not specified
-      if(address == this.currentUser?.address || address == '') {
-        M.toast({html: 'Successfully updated address.'})
-        this.locationCheck = false;
-        this.locationFieldErrors = false;
-        return;
-      }
-
-      if(this.editDetailsForm.controls.locationField.errors
-        || this.placeAutocompleteUtil.currentSelectedCoords == undefined
-        || this.placeAutocompleteUtil.currentSelectedAddress == undefined) {
-        this.locationFieldErrors = true;
-        return;
-      }
-      this.locationFieldErrors = false;
-
-      this.changeLocation(address);
+  toggleChangeAddress() {
+    if (this.locationCheck) {
       document.querySelector('.pac-container')?.classList.add('invisible');
       this.locationCheck = false;
       return;
     }
 
+    $('#cancelAndSaveBtnContainer').css('display', 'flex');
     document.querySelector('.pac-container')?.classList.remove('invisible');
     this.locationCheck = true;
   }
 
-  toggleChangePhoneNum(phoneNum: string) {
-    if(this.phoneNumCheck) {
-
-      if(phoneNum == this.currentUser?.phone_num || phoneNum == '') {
-        M.toast({html: 'Successfully updated phone number.'})
-        this.phoneNumCheck = false;
-        return;
-      }
-
-      if(this.editDetailsForm.controls.phoneNumField.errors) {
-        this.phoneNumFieldErrors = true;
-        return;
-      }
-      this.phoneNumFieldErrors = false;
-
-      this.newPhoneNum = phoneNum;
-      $('#newPhoneNumber').text(`New phone number: ${this.phoneNumUtil.format(phoneNum)}. Save changes?`);
-      $('#savePhoneNumberModal').modal('open');
-
-      return;
-    }
-
-    this.phoneNumCheck = true;
+  showChanges() {
+    $('#cancelAndSaveBtnContainer').css('display', 'flex');
   }
 
-  changePhoneNum(phoneNum: string) {
-    this.phoneNumCheck = false;
+  changePhoneNum(phoneNum: string): boolean {
+    if (phoneNum == this.currentUser?.phone_num || phoneNum == '') {
+      return false;
+    }
 
+    if (this.editDetailsForm.controls.phoneNumField.errors) {
+      this.phoneNumFieldErrors = true;
+      return false;
+    }
+    this.phoneNumFieldErrors = false;
+
+    if (this.currentUser != null) {
+      // set the current user's phone number to the new phone number
+      this.currentUser.phone_num = phoneNum;
+    }
+
+    return true;
+  }
+
+  changeName(name: string): boolean {
+    if (name == this.currentUser?.name || name == '') {
+      return false;
+    }
+
+    if (this.currentUser != null) {
+      // set the current user's name to the new name
+      this.currentUser.name = name;
+    }
+
+    return true;
+  }
+
+  changeLocation(address: string): boolean {
+    if (this.currentUser != null) {
+      if (this.placeAutocompleteUtil.currentSelectedCoords === undefined) {
+        return false;
+      }
+
+      if (address == null || address == '' || address == this.currentUser.address) {
+        this.locationCheck = false;
+        this.locationFieldErrors = true;
+        return false;
+      }
+
+      if (this.editDetailsForm.controls.locationField.errors
+        || this.placeAutocompleteUtil.currentSelectedCoords == undefined
+        || this.placeAutocompleteUtil.currentSelectedAddress == undefined) {
+        this.locationFieldErrors = true;
+        return false;
+      }
+      this.locationFieldErrors = false;
+
+      document.querySelector('.pac-container')?.classList.add('invisible');
+      this.locationCheck = false;
+
+
+      // set the current user's address to the new address
+      this.currentUser.address = address;
+      this.currentUser.lat = this.placeAutocompleteUtil.currentSelectedCoords?.lat();
+      this.currentUser.lon = this.placeAutocompleteUtil.currentSelectedCoords?.lng();
+
+      return true;
+    }
+    return false;
+  }
+
+  async saveChanges(phoneNum: string, name: string, address: string) {
     try {
-      if(this.currentUser != null) {
-        // set the current user's phone number to the new phone number
-        this.currentUser.phone_num = phoneNum;
+      if (this.changePhoneNum(phoneNum) || this.changeName(name) || this.changeLocation(address)) {
+        // a field has been altered, update the user.
+        if (this.currentUser) {
+          const updateResponse = await this.userService.updateUser(this.currentUser);
 
-        // update the current user
-        this.userService.updateUser(this.currentUser).then((updateResponse) => {
+          // successfully updated user toast
+          M.toast({
+            html: `
+            <span class="material-symbols-outlined" style="margin-right: 8px;">check</span>
+            Successfully updated your information.`
+          });
 
-            // successfully updated user
-            M.toast({html: 'Successfully updated phone number. Please sign in again.'})
-            this.phoneNumCheck = false;
-        });
+          // center map on new location
+          this.map.googleMap?.setCenter({
+            lat: this.currentUser.lat!,
+            lng: this.currentUser.lon!
+          });
+
+          // set fields to readonly
+          this.locationCheck = false;
+          this.phoneNumCheck = false;
+          this.nameCheck = false;
+        }
+      } else {
+        //TODO no changes were made, hide the Cancel and Save Changes buttons
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e);
-      M.toast({html: 'Failed to update phone number. Try again later.'})
+      M.toast({ html: 'Failed to update your information.' })
     }
   }
 
-  cancelEdit() {
+  cancelChanges() {
     this.phoneNumCheck = false;
     this.nameCheck = false;
     this.locationCheck = false;
     this.editDetailsForm.controls.phoneNumField.setValue(this.currentUser?.phone_num);
     this.editDetailsForm.controls.nameField.setValue(this.currentUser?.name);
     this.editDetailsForm.controls.locationField.setValue(this.currentUser?.address);
+
+    $('#cancelAndSaveBtnContainer').css('display', 'none');
   }
 }

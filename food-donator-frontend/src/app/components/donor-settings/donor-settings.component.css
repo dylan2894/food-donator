@@ -46,7 +46,7 @@ col i {
 }
 
 #cancelAndSaveBtnContainer {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: end;
   justify-self: end;
@@ -73,21 +73,11 @@ col i {
   margin: 0px;
 }
 
-/* #cancelBtn {
-  background-color: var(--light);
-  color: var(--dark);
-}
-
-#saveChangesBtn {
-  background-color: var(--success);
-  color: var(--dark);
-} */
-
 /* Bigger screens */
 @media only screen and (min-width: 769px) {
   #horizontalContainer {
     display: grid;
-    grid-template-columns: [first-line] 40% [second-line] 60% [last-line];
+    grid-template-columns: [first-line] 60% [second-line] 40% [last-line];
   }
 
   #cancelAndSaveBtnContainer {
@@ -96,7 +86,7 @@ col i {
   }
 
   .btn {
-    margin-left: 8px;
+    margin: 0 0 8px 8px;
     width: auto;
   }
 }
