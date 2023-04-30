@@ -123,6 +123,10 @@ p {
   padding-left: 25px;
 }
 
+#flexContainer {
+  text-align: center;
+}
+
 .myLocationBtn {
   position: absolute;
   display: flex !important;
