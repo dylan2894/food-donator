@@ -50,17 +50,26 @@
         </button>
       </span>
       <small *ngIf="locationFieldErrors">Please select a valid location.</small>
-      <google-map width="100%" height="300px" [options]="mapOptions">
-        <map-marker *ngFor="let marker of this.markers" [position]="marker.position" [label]="marker.label!"
-          [title]="marker.title!" [options]="marker.options!"></map-marker>
-      </google-map>
+
+      <div id="horizontalContainer">
+        <google-map width="100%" height="180px" [options]="mapOptions">
+          <map-marker *ngFor="let marker of this.markers" [position]="marker.position" [label]="marker.label!"
+            [title]="marker.title!" [options]="marker.options!"></map-marker>
+        </google-map>
+
+        <span id="cancelAndSaveBtnContainer" class="right">
+          <button id="cancelBtn" class="btn indigo lighten-3">Cancel</button>
+          <button id="saveChangesBtn" class="btn green lighten-1">Save Changes</button>
+        </span>
+      </div>
+
     </form>
   </div>
 
-  <div id="infowindow-content">
+  <!-- <div id="infowindow-content">
     <span id="placeName" class="title"></span><br />
     <span id="placeAddress"></span>
-  </div>
+  </div> -->
 </div>
 
 <!-- Modal popups -->

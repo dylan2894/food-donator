@@ -42,7 +42,7 @@
   background: #555;
 }
 
-google-map {
+#receiverMap {
   display: block;
   width: 100%;
   height: 100%;
