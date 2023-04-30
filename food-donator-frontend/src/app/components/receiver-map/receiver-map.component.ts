@@ -262,7 +262,11 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     // fetch donations for this donor
     this.donationService.getCurrentAndUpcomingDonationsByUserId(donorId).then((donations) => {
       this.currentDonorDonations = donations;
+      $("#flexContainer").css('text-align','left');
       $('.modal').modal('open');
+      if(this.currentDonorDonations?.length == 0) {
+        $("#flexContainer").css('text-align','center');
+      }
     });
   }
 

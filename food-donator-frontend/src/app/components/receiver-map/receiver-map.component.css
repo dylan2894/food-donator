@@ -18,29 +18,29 @@
 }
 
 /* Custom scrollbar */
-/* width */
 ::-webkit-scrollbar {
-  width: 10px;
-  border-radius: 10px;
+  display: none;
+  /* width: 8px;
+  border-radius: 10px; */
 }
 
 /* Track */
-::-webkit-scrollbar-track {
-  background: grey;
+/* ::-webkit-scrollbar-track {
+  background: var(--indigo-lighten-5);
   border-radius: 25px;
   height: 90%;
-}
+} */
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   background: #8b8b8b;
   border-radius: 25px;
-}
+} */
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+/* ::-webkit-scrollbar-thumb:hover {
   background: #555;
-}
+} */
 
 #receiverMap {
   display: block;
@@ -67,9 +67,9 @@ p {
 
 .carousel-item.card {
   /* width: 400px !important; */
-  max-height: 40vh !important;
-  min-height: 40vh !important;
-  height: 40vh !important;
+  max-height: 41vh !important;
+  min-height: 41vh !important;
+  height: 41vh !important;
 }
 
 .card .carousel.carousel-slider .carousel-item {
@@ -120,10 +120,6 @@ p {
   padding-top: 25px;
   padding-bottom: 10px;
   padding-left: 25px;
-}
-
-#flexContainer {
-  text-align: center;
 }
 
 .myLocationBtn {
