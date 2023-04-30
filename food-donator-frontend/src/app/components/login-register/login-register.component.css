@@ -56,6 +56,7 @@ small {
   flex-direction: column;
   justify-content: center;
   padding-top: 15%;
+  padding-bottom: 15%;
   height: 100%;
   /* width: 100%; */
 }
@@ -125,18 +126,39 @@ label:has(+ input:focus) {
   color: var(--label-colour);
 }
 
+.logoAndTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 40%;
+  margin: auto;
+  padding-bottom: 32px;
+}
+
+.logoImg {
+  height: 100px;
+  width: 100px;
+}
+
 /* TODO implement media queries for larger screens */
 @media screen and (min-width: 768px) {
+
+  .logoImg {
+    height: 100px;
+    width: 100px;
+  }
 
   .formWrapper {
     display: block;
     padding: 8%;
+    padding-top: 64px;
   }
 
   .formWrapper > .card {
-    width: 70%;
-    margin-left: 15%;
-    margin-right: 15%;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
 
