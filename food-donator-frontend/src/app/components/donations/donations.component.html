@@ -9,7 +9,10 @@
   </div>
 
   <div class="col s12 m12 l12">
-    <table *ngIf="this.currentDonations?.length === 0 || emptyFilter">
+    <div class="noCurrent">
+      <span class="button_text"></span>
+    </div>
+    <table *ngIf="this.currentDonations?.length === 0 || emptyFilter" class="noCurrentTxt">
       <tbody>
         <tr *ngIf="this.currentDonations?.length === 0">
           <td colspan="4" style="text-align: center;">

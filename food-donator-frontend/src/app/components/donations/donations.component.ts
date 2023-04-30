@@ -34,9 +34,20 @@ export class DonationsComponent {
           if(donations) {
             this.currentDonations = donations;
             this.tempDonationsHolder = donations;
+            $('.noCurrent').removeClass('button_text--loading');
+            $('.noCurrent').removeClass('button--loading');
+            $('.noCurrent').css('display','none');
           }
+          $('.noCurrentTxt').css('visibility', 'visible');
+          $('.button_text').css('display', 'none');
         });
       }
+    });
+
+    $(() => {
+      // loaders
+      $('.noCurrent').addClass('button_text--loading');
+      $('.noCurrent').addClass('button--loading');
     });
   }
 
