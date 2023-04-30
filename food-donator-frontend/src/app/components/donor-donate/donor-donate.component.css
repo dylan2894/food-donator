@@ -2,6 +2,7 @@
   --deep-purple-accent-2: #7c4dff;
   --indigo-lighten-2: #7986cb;
   --indigo-lighten-4: #c5cae9;
+  --indigo-darken-1: #3949ab;
 }
 
 .mat-stepper-vertical {
@@ -88,7 +89,7 @@ body {
 }
 
 .dropdown-content li > span {
-  color: var(--indigo-lighten-2);
+  color: var(--indigo-darken-1);
 }
 
 .lever::after {

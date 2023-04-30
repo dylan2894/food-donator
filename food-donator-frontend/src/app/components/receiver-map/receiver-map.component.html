@@ -13,10 +13,10 @@
 </div>
 
 <!-- Donor Select -->
-<div id="donorSelect" class="input-field col s12">
+<div id="donorSelect" class="input-field col s12 indigo darken-1">
   <select id="donorInnerSelect" (change)="onChange($event)">
     <option value="" disabled selected>Choose your option</option>
-    <option *ngFor="let donor of donors" [value]="donor.id">
+    <option *ngFor="let donor of donors" [value]="donor.id" class="indigo darken-1">
       {{ donor.name }}
     </option>
   </select>
@@ -24,14 +24,14 @@
 </div>
 
 <!-- My Location button -->
-<button (click)="centerMapOnMyLocation()" class="myLocationBtn btn">
+<button (click)="centerMapOnMyLocation()" class="myLocationBtn btn indigo darken-1">
   <div style="margin-right: 5px;" class="material-icons">my_location</div>
   <span>My Location</span>
 </button>
 
 <!-- FAB Key/Legend -->
 <div class="fixed-action-btn">
-  <a id="mapFab" class="btn-floating btn-large indigo lighten-2">
+  <a id="mapFab" class="btn-floating btn-large indigo darken-1">
     <i class="large material-icons">map</i>
   </a>
   <ul>
@@ -55,7 +55,7 @@
 
 
 <!-- Feature Discovery -->
-<div class="tap-target indigo lighten-3" data-target="mapFab">
+<div class="tap-target indigo darken-1" data-target="mapFab">
   <div class="tap-target-content">
     <h5>Map Key</h5>
     <p>Use the map key to find current and upcoming donations. As well as donors would don't currently have a donation.</p>

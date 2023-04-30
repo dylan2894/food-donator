@@ -106,7 +106,6 @@ p {
   width: 250px;
   padding-right: 25px;
   border-radius: 2px;
-  background-color: var(--indigo-lighten-3);
 }
 
 #donorSelect input {
@@ -142,7 +141,6 @@ p {
   margin-top: 10px !important;
   line-height: 100%;
   width: 250px !important;
-  background-color: var(--indigo-lighten-3);
 }
 
 .fixed-action-btn {
@@ -240,6 +238,10 @@ input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
 
 .select-wrapper input.select-dropdown {
   z-index: 0;
+}
+
+.tap-target-content {
+  color: var(--light);
 }
 
 /* Bigger screens */
