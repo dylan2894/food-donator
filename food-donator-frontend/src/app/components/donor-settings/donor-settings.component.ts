@@ -216,7 +216,7 @@ export class DonorSettingsComponent implements AfterViewInit {
           this.nameCheck = false;
         }
       } else {
-        //TODO no changes were made, hide the Cancel and Save Changes buttons
+        this.cancelChanges();
       }
     } catch (e) {
       console.error(e);

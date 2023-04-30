@@ -14,6 +14,7 @@ import PhoneNumUtil from 'src/app/utils/PhoneNumUtil';
 export class DoneeSettingsComponent {
   currentUser: User|null = null;
   phoneNumCheck = false;
+  phoneNumFieldErrors = false;
   editDetailsForm: FormGroup;
 
   constructor(
@@ -23,7 +24,7 @@ export class DoneeSettingsComponent {
     private authenticationService: AuthenticationService
     ){
     this.editDetailsForm = this.fb.group({
-      phoneNumField: new FormControl('', [Validators.required])
+      phoneNumField: new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(9)])
     });
 
     const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
@@ -34,56 +35,61 @@ export class DoneeSettingsComponent {
     });
   }
 
-  toggleChangePhoneNum(phoneNum: string) {
-    if(this.phoneNumCheck) {
-      if(!phoneNum || phoneNum == "") {
-        this.phoneNumCheck = false;
-        this.editDetailsForm.controls.phoneNumField.setValue(this.currentUser?.phone_num);
-        return;
-      }
-
-      if(!confirm("Save phone number changes?")){
-        this.phoneNumCheck = false;
-        this.editDetailsForm.controls.phoneNumField.setValue(this.currentUser?.phone_num);
-        return;
-      }
-
-      this.changePhoneNum(phoneNum);
-      this.phoneNumCheck = false;
-      return;
+  changePhoneNum(phoneNum: string): boolean {
+    if (phoneNum == this.currentUser?.phone_num || phoneNum == '') {
+      return false;
     }
 
-    this.phoneNumCheck = true;
+    if (this.editDetailsForm.controls.phoneNumField.errors) {
+      this.phoneNumFieldErrors = true;
+      return false;
+    }
+    this.phoneNumFieldErrors = false;
+
+    if (this.currentUser != null) {
+      // set the current user's phone number to the new phone number
+      this.currentUser.phone_num = phoneNum;
+    }
+
+    return true;
   }
 
-  changePhoneNum(phoneNum: string) {
+  showChanges() {
+    $('#cancelAndSaveBtnContainer').css('display', 'flex');
+  }
+
+  async saveChanges(phoneNum: string) {
     try {
-      if(this.currentUser != null) {
+      if (this.changePhoneNum(phoneNum)) {
+        // a field has been altered, update the user.
+        if (this.currentUser) {
+          const updateResponse = await this.userService.updateUser(this.currentUser);
 
-        console.log(this.currentUser.phone_num)
-        console.log(phoneNum)
+          // successfully updated user toast
+          M.toast({
+            html: `
+            <span class="material-symbols-outlined" style="margin-right: 8px;">check</span>
+            Successfully updated your information.`
+          });
 
-        if(this.currentUser.phone_num == phoneNum){
-          M.toast({html: 'Successfully updated phone number.'})
-          return;
+          // set fields to readonly
+          this.phoneNumCheck = false;
+
+          // reset form
+          this.cancelChanges();
         }
-
-        // set the current user's phone number to the new phone number
-        this.currentUser.phone_num = phoneNum;
-
-        // update the current user
-        this.userService.updateUser(this.currentUser).then((updateResponse) => {
-
-            // successfully updated user
-            M.toast({html: 'Successfully updated phone number. Please sign in again.'})
-            console.log("successfully updated phone number");
-            this.phoneNumCheck = false;
-        });
+      } else {
+        this.cancelChanges();
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e);
-      M.toast({html: 'Failed to update phone number. Try again later.'})
-      console.log("failed to update phone number");
+      M.toast({ html: 'Failed to update your information.' })
     }
+  }
+
+  cancelChanges() {
+    this.phoneNumCheck = false;
+    this.editDetailsForm.controls.phoneNumField.setValue(this.currentUser?.phone_num);
+    $('#cancelAndSaveBtnContainer').css('display', 'none');
   }
 }
