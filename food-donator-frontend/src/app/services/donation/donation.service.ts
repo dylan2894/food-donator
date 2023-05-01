@@ -142,6 +142,16 @@ export class DonationService {
     return null;
   }
 
+  async getCurrentAndUpcomingDonationsByNonReservedByUserId(id: string): Promise<Donation[] | null> {
+    const donations = await this.getCurrentAndUpcomingDonationsByUserId(id);
+    if(donations) {
+      return donations.filter((donation) => {
+        return donation.reserved == false;
+      });
+    }
+    return null;
+  }
+
   async getPastDonationsByUserId(id: string): Promise<Donation[] | null> {
     try {
       const donations = await this.getDonationsByUserId(id) as Donation[];

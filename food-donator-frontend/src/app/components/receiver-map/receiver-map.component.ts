@@ -125,15 +125,17 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
         donors.forEach((donor: User) => {
           const promise = new Promise<void>((resolve) => {
           // Push donors onto the markers array
-          this.donationService.getDonationsByUserId(donor.id).then((donations) => {
+          this.donationService.getCurrentAndUpcomingDonationsByNonReservedByUserId(donor.id).then((donations) => {
               let determinedColor = MapUtil.RED_MARKER;
 
-              if(donations != null && this.donationService.isUpcomingDonationByDonationArray(donations)) {
+              console.log(donations);
+
+              if(donations && this.donationService.isUpcomingDonationByDonationArray(donations)) {
                 // set marker color to yellow
                 determinedColor = MapUtil.YELLOW_MARKER;
               }
 
-              if(donations != null && this.donationService.isCurrentDonationByDonationArray(donations)) {
+              if(donations && this.donationService.isCurrentDonationByDonationArray(donations)) {
                 // set marker color to green
                 determinedColor = MapUtil.GREEN_MARKER;
               }
@@ -260,7 +262,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     this.currentDonorAddress = donorAddress;
 
     // fetch donations for this donor
-    this.donationService.getCurrentAndUpcomingDonationsByUserId(donorId).then((donations) => {
+    this.donationService.getCurrentAndUpcomingDonationsByNonReservedByUserId(donorId).then((donations) => {
       this.currentDonorDonations = donations;
       $("#flexContainer").css('text-align','left');
       $('.modal').modal('open');
