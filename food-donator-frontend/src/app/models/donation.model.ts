@@ -6,4 +6,5 @@ export interface Donation {
   endtime: string,
   description: string,
   reserved: boolean
+  recipients: string[];
 }

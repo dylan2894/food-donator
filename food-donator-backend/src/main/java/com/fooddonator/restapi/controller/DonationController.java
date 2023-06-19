@@ -135,6 +135,10 @@ public class DonationController {
       //.filter(donation -> donation.endtime >= )
       .collect(Collectors.toList());
     }
+
+    logger.info("Donations:");
+    logger.info(donations);
+    logger.info(currentAndUpcomingDonations);
   
     Collections.sort(currentAndUpcomingDonations);
     return new ResponseEntity<>(currentAndUpcomingDonations, null, HttpStatus.OK);

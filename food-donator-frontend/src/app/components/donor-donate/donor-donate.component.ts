@@ -204,7 +204,8 @@ export class DonorDonateComponent implements OnInit {
           starttime: this.startTime,
           endtime: this.endTime,
           description: this.description,
-          reserved: false
+          reserved: false,
+          recipients: []
         }
         this.donations.push(donation);
         return;
@@ -230,7 +231,8 @@ export class DonorDonateComponent implements OnInit {
           starttime: this.startTime,
           endtime: this.endTime,
           description: this.description,
-          reserved: false
+          reserved: false,
+          recipients: []
         }
         this.donations.push(donation);
       }
@@ -258,6 +260,8 @@ export class DonorDonateComponent implements OnInit {
                 );
               }
             }
+          }).catch((err) => {
+            console.error(err);
           });
         });
 
@@ -274,7 +278,8 @@ export class DonorDonateComponent implements OnInit {
           M.toast({ html: "Failed to create donation, please try again." });
         });
       }
+    }).catch((err) => {
+      console.error(err);
     });
   }
-
 }

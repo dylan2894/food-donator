@@ -125,10 +125,8 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
         donors.forEach((donor: User) => {
           const promise = new Promise<void>((resolve) => {
           // Push donors onto the markers array
-          this.donationService.getCurrentAndUpcomingDonationsByNonReservedByUserId(donor.id).then((donations) => {
+          this.donationService.getCurrentAndUpcomingDonationsByNonReservedByUserId(donor.id, this.currentUser!).then((donations) => {
               let determinedColor = MapUtil.RED_MARKER;
-
-              console.log(donations);
 
               if(donations && this.donationService.isUpcomingDonationByDonationArray(donations)) {
                 // set marker color to yellow
@@ -163,7 +161,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
                 },
               });
               resolve();
-            });
+            }).catch(err => console.error(err) );
           });
           promises.push(promise);
         });
@@ -182,11 +180,11 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           // open Feature Discovery
           $('.tap-target').tapTarget('open');
 
-        });
+        }).catch(err => console.error(err) );
         // set the donors to be supplied in the donor select
         this.donors = donors;
       }
-    });
+    }).catch(err => console.error(err) );
   }
 
   /**
@@ -262,14 +260,14 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     this.currentDonorAddress = donorAddress;
 
     // fetch donations for this donor
-    this.donationService.getCurrentAndUpcomingDonationsByNonReservedByUserId(donorId).then((donations) => {
+    this.donationService.getCurrentAndUpcomingDonationsByNonReservedByUserId(donorId, this.currentUser!).then((donations) => {
       this.currentDonorDonations = donations;
       $("#flexContainer").css('text-align','left');
       $('.modal').modal('open');
       if(this.currentDonorDonations?.length == 0) {
         $("#flexContainer").css('text-align','center');
       }
-    });
+    }).catch(err => console.error(err) );
   }
 
   carouselPrev(e: Event) {

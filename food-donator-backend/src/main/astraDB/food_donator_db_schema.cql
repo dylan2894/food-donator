@@ -16,7 +16,9 @@ CREATE TABLE IF NOT EXISTS main_keyspace.donation (
   donationDate bigint,
   startTime time,
   endTime time,
-  description text
+  description text,
+  reserved boolean,
+  recipients set<text>
 );
 
 CREATE TABLE IF NOT EXISTS main_keyspace.tags (

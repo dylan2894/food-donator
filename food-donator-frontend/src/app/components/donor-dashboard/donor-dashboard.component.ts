@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Donation } from 'src/app/models/donation.model';
+import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
 import { SidenavService } from 'src/app/services/sidenav/sidenav.service';
@@ -16,6 +17,9 @@ export class DonorDashboardComponent {
   currentAndUpcomingDonations: Donation[] = [];
   pastDonations: Donation[] = [];
   currentDonationCounter = 0;
+  selectedDonation: Donation | null = null;
+  reservedRecipients: string[] = [];
+  currentRecipient = '';
 
   constructor(
     public dateUtil: DateUtil,
@@ -30,24 +34,30 @@ export class DonorDashboardComponent {
           if (donations != null) {
             $('.noCurrent').removeClass('button_text--loading');
             $('.noCurrent').removeClass('button--loading');
-            $('.noCurrent').css('display','none');
+            $('.noCurrent').css('display', 'none');
             this.currentAndUpcomingDonations = donations;
           }
           $('.noCurrentTxt').css('visibility', 'visible');
           $('.button_text').css('display', 'none');
+        }).catch((err) => {
+          console.error(err);
         });
 
         this.donationService.getPastDonationsByUserId(user.id).then((donations) => {
           if (donations != null) {
             $('.noPast').removeClass('button_text--loading');
             $('.noPast').removeClass('button--loading');
-            $('.noPast').css('display','none');
+            $('.noPast').css('display', 'none');
             this.pastDonations = donations;
           }
           $('.noPastTxt').css('visibility', 'visible');
           $('.button_text').css('display', 'none');
+        }).catch((err) => {
+          console.error(err);
         });
       }
+    }).catch((err) => {
+      console.error(err);
     });
 
     $(() => {
@@ -66,6 +76,9 @@ export class DonorDashboardComponent {
       $('#pastCollapsible').collapsible({
         accordion: false
       });
+
+      // initialize the modals
+      $('.modal').modal();
 
       setTimeout(() => {
         // initialize the dropdowns
@@ -98,20 +111,41 @@ export class DonorDashboardComponent {
     }
   }
 
+  getRecipient(e: Event) {
+    return (e.target as HTMLInputElement).value;
+  }
+
+  addRecipientToReserved(recipientPhoneNum: string) {
+    if(!this.reservedRecipients.includes(recipientPhoneNum) && this.currentRecipient != '') {
+      this.reservedRecipients.push(recipientPhoneNum.slice(6).replace(/[ ]/g, ''));
+    }
+    this.currentRecipient = '';
+  }
+
+  markAsReservedClicked(donation: Donation, e: Event) {
+    //e.stopPropagation();
+    this.selectedDonation = donation;
+    this.reservedRecipients = [];
+  }
+
   /**
    * Marks the donation slot as reserved if not already reserved. If already reserved, marks the donation slot as open
    */
   markAsReserved(donation: Donation, e: Event) {
-    e.stopPropagation();
+    //e.stopPropagation();
 
-    if(donation.reserved) {
+    if (donation.reserved) {
       donation.reserved = false;
+      donation.recipients = [];
     } else {
       donation.reserved = true;
+      donation.recipients = this.reservedRecipients;
     }
 
     this.donationService.updateDonation(donation).then((updatedDonation) => {
       console.log("Update Donation response: ", updatedDonation);
+    }).catch((err) => {
+      console.error(err);
     });
   }
 }
