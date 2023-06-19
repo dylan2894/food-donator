@@ -1,6 +1,8 @@
 package com.fooddonator.restapi.utils;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 import com.fooddonator.restapi.model.Donation;
 
 public final class DonationMapper {
@@ -30,6 +32,9 @@ public final class DonationMapper {
     }
     if(map.get("reserved") != null) {
       donation.reserved = (Boolean) map.get("reserved");
+    }
+    if(map.get("recipients") != null) {
+      donation.recipients = (ArrayList<String>) map.get("recipients");
     }
   
     return donation;

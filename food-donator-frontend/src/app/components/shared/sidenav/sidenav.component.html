@@ -2,7 +2,7 @@
   <i class="material-icons md-36">menu</i>
 </div>
 
-<ul id="slide-out-donor" class="sidenav sidenav-fixed">
+<ul id="slide-out-donor" class="sidenav sidenav-fixed indigo darken-1">
   <div *ngIf="this.isDonor" id="navBtnWrapper">
     <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/dashboard']">Dashboard</a></li>
     <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/donate']">Donate</a></li>

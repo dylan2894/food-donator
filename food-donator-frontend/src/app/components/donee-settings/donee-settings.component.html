@@ -19,15 +19,24 @@
       <div>
         <input id="phoneNumField" formControlName="phoneNumField" type="text" prefix="(+27)" mask=' 00 000 0000'
           [value]="this.phoneNumUtil.format(this.currentUser?.phone_num!)" [readOnly]="!this.phoneNumCheck">
-        <button id="editPhoneNumBtn" class="btn-flat waves-effect"
-          (click)="this.toggleChangePhoneNum(this.editDetailsForm.controls.phoneNumField.value)">
-          <i *ngIf="!this.phoneNumCheck" class="material-symbols-outlined">edit</i>
-          <span *ngIf="this.phoneNumCheck">
+        <button *ngIf="!this.phoneNumCheck" id="editPhoneNumBtn" class="btn-flat waves-effect"
+          (click)="this.phoneNumCheck = !this.phoneNumCheck; this.showChanges()">
+          <i class="material-symbols-outlined">edit</i>
+          <!-- <span *ngIf="this.phoneNumCheck">
             Save Changes
             <i class="material-symbols-outlined check">check</i>
-          </span>
+          </span> -->
         </button>
       </div>
+      <small *ngIf="phoneNumFieldErrors">Please enter a valid phone
+        number.
+      </small>
     </form>
   </div>
 </div>
+<span id="cancelAndSaveBtnContainer" class="">
+  <button (click)="this.cancelChanges()" id="cancelBtn" class="btn indigo lighten-3">Cancel</button>
+  <button
+    (click)="this.saveChanges(this.editDetailsForm.controls.phoneNumField.getRawValue())"
+    id="saveChangesBtn" class="btn green lighten-1">Save Changes</button>
+</span>

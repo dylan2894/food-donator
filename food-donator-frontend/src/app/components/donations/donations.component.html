@@ -1,5 +1,5 @@
 <div class="row top-nav">
-  <h3>All Donations</h3>
+  <h3>Donations</h3>
 </div>
 
 <div id="donationContainer" class="row">
@@ -9,20 +9,14 @@
   </div>
 
   <div class="col s12 m12 l12">
-    <table *ngIf="this.currentDonations?.length === 0 || emptyFilter">
-      <tbody>
-        <tr *ngIf="this.currentDonations?.length === 0">
-          <td colspan="4" style="text-align: center;">
-            <label>No current or upcoming donations.</label>
-          </td>
-        </tr>
-        <tr *ngIf="emptyFilter">
-          <td colspan="4" style="text-align: center;">
-            <label>No donations match this filter</label>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="noCurrent">
+      <span class="button_text"></span>
+    </div>
+    <div *ngIf="this.currentDonations.length === 0 || emptyFilter" style="margin-top: 16px; text-align: center;" class="noCurrentTxt">
+      <img src="../../../assets/images/no_items_mobile.png" width="200px" height="150px" >
+      <div>No current or upcoming donations.</div>
+      <label *ngIf="emptyFilter">No donations match this filter</label>
+    </div>
   </div>
 
   <!-- Donations -->
@@ -32,4 +26,10 @@
     [donation]="donation"
     [donorId]="donation.userid"
     [isCurrent]="this.donationService.isCurrentDonationByDonation(donation)"></app-card>
+</div>
+
+<div *ngIf="this.currentDonations.length === 0" class="attribution">Illustration by
+  <a href="https://icons8.com/illustrations/author/627444">Julia G</a>
+  from
+  <a href="https://icons8.com/illustrations">Ouch!</a>
 </div>

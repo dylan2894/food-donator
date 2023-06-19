@@ -18,31 +18,31 @@
 }
 
 /* Custom scrollbar */
-/* width */
 ::-webkit-scrollbar {
-  width: 10px;
-  border-radius: 10px;
+  display: none;
+  /* width: 8px;
+  border-radius: 10px; */
 }
 
 /* Track */
-::-webkit-scrollbar-track {
-  background: grey;
+/* ::-webkit-scrollbar-track {
+  background: var(--indigo-lighten-5);
   border-radius: 25px;
   height: 90%;
-}
+} */
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   background: #8b8b8b;
   border-radius: 25px;
-}
+} */
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+/* ::-webkit-scrollbar-thumb:hover {
   background: #555;
-}
+} */
 
-google-map {
+#receiverMap {
   display: block;
   width: 100%;
   height: 100%;
@@ -67,9 +67,9 @@ p {
 
 .carousel-item.card {
   /* width: 400px !important; */
-  max-height: 40vh !important;
-  min-height: 40vh !important;
-  height: 40vh !important;
+  max-height: 41vh !important;
+  min-height: 41vh !important;
+  height: 41vh !important;
 }
 
 .card .carousel.carousel-slider .carousel-item {
@@ -106,7 +106,6 @@ p {
   width: 250px;
   padding-right: 25px;
   border-radius: 2px;
-  background-color: var(--indigo-lighten-3);
 }
 
 #donorSelect input {
@@ -138,7 +137,6 @@ p {
   margin-top: 10px !important;
   line-height: 100%;
   width: 250px !important;
-  background-color: var(--indigo-lighten-3);
 }
 
 .fixed-action-btn {
@@ -157,7 +155,7 @@ p {
 #modal1 {
   z-index: 99999;
   background-color: var(--indigo-lighten-5);
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .modal.bottom-sheet {
@@ -170,17 +168,16 @@ tr, td, th {
   padding: 2px;
 }
 
-#savedPinsContainer {
-  float: none;
+#modalDonorAddressContainer {
   display: flex;
   flex-direction: row;
-  align-items: center;
   margin-top: 10px;
-  margin-bottom: 10px;
 }
 
-#savedPinsContainer > i {
-  margin-right: 10px;
+#modalDonorAddressContainer > .material-symbols-outlined {
+  padding: 0%;
+  margin-right: 8px;
+  font-size: 32px;
 }
 
 #modalHeading {
@@ -239,15 +236,19 @@ input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
   z-index: 0;
 }
 
+.tap-target-content {
+  color: var(--light);
+}
+
 /* Bigger screens */
 @media only screen and (min-width: 769px) {
-  #scheduleContainer {
-    width: 50%;
+  #modalDonorAddressContainer {
+    line-height: 32px;
   }
 
-  #savedPinsContainer {
-    float: right;
-  }
+  /* #scheduleContainer {
+    width: 50%;
+  } */
 
   #actionButtonsContainer {
     display: inline-block;

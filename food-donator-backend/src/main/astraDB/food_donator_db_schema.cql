@@ -16,7 +16,9 @@ CREATE TABLE IF NOT EXISTS main_keyspace.donation (
   donationDate bigint,
   startTime time,
   endTime time,
-  description text
+  description text,
+  reserved boolean,
+  recipients set<text>
 );
 
 CREATE TABLE IF NOT EXISTS main_keyspace.tags (
@@ -35,6 +37,10 @@ INSERT INTO main_keyspace.tags (id, name) VALUES (uuid(), 'Grains');
 INSERT INTO main_keyspace.tags (id, name) VALUES (uuid(), 'Long Life Milk');
 INSERT INTO main_keyspace.tags (id, name) VALUES (uuid(), 'Blankets');
 INSERT INTO main_keyspace.tags (id, name) VALUES (uuid(), 'Clothes');
+INSERT INTO main_keyspace.tags (id, name) VALUES (uuid(), 'Toiletries');
+INSERT INTO main_keyspace.tags (id, name) VALUES (uuid(), 'Dried Fruit');
+INSERT INTO main_keyspace.tags (id, name) VALUES (uuid(), 'Other');
+
 
 CREATE INDEX IF NOT EXISTS ON main_keyspace.user(phone_num);
 CREATE INDEX IF NOT EXISTS ON main_keyspace.user(type);

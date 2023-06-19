@@ -54,7 +54,7 @@
               <i class="material-symbols-outlined">free_cancellation</i>
               Unreserve
             </li>
-            <li *ngIf="!donation.reserved" (click)="this.markAsReserved(donation, $event)">
+            <li *ngIf="!donation.reserved" data-target="reserveModal" class="modal-trigger" (click)="this.markAsReservedClicked(donation, $event)">
               <i class="material-symbols-outlined">event_busy</i>
               Mark as Reserved
             </li>
@@ -118,5 +118,25 @@
         </div>
       </li>
     </ul>
+  </div>
+</div>
+
+<!-- Mark as reserved Modal Structure -->
+<div id="reserveModal" class="modal">
+  <div class="modal-content">
+    <h4>Reserve Donation</h4>
+    <label>Enter the phone number for each recipient:</label>
+    <input
+    [value]="this.currentRecipient"
+    (input)="this.currentRecipient = this.getRecipient($event)"
+    prefix="(+27)"
+    mask=' 00 000 0000'
+    class="input">
+    <button class="btn " (click)="this.addRecipientToReserved(this.currentRecipient)">Add Recipient</button>
+
+    <!-- TODO add chips for each donee who this donation is reserved for -->
+  </div>
+  <div class="modal-footer">
+    <button class="modal-close waves-effect waves-green btn-flat" (click)="this.markAsReserved(this.selectedDonation!, $event)">Mark as Reserved</button>
   </div>
 </div>

@@ -10,7 +10,7 @@
           <div class="actionButtonsInner">
             <label>Need directions?</label>
             <br>
-            <a [href]="this.googleMapsDirectionsLink" target="_blank"><button class="btn-small">Google Maps</button></a>
+            <a [href]="this.googleMapsDirectionsLink" target="_blank"><button class="btn">Google Maps</button></a>
             <br>
             <label style="display: inline-block; margin-top: 15px;">Arrived? Notify the Donor</label>
             <br>
@@ -18,7 +18,7 @@
               [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.correspondingDonor?.phone_num!) + '?text=' + myEncodeURIComponent(this.prefilledText)"
               target="_blank">
               <!-- <img alt="Chat on WhatsApp" src="../../../assets/images/WhatsAppButtonGreenLarge.svg"/> -->
-              <button class="btn-small" style="min-width: 187px;">Chat on WhatsApp</button>
+              <button class="btn" style="min-width: 187px;">Chat on WhatsApp</button>
             </a>
           </div>
         </div>
@@ -72,11 +72,13 @@
   </div>
 </div>
 
-<div *ngIf="this.forCarousel" class="card carousel-item" style="width: 98% !important;">
+<div *ngIf="this.forCarousel" class="card carousel-item">
   <div class="card-content" style="height: 100%;">
-    <span class="card-title">{{
-      this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation!.donationdate)) }}
+    <span class="card-title">
+      <!-- Ellipsis 'more info' button -->
+      {{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation!.donationdate)) }}
       <i class="activator material-icons right">more_vert</i>
+
       <!-- Slide up revealed info -->
       <div class="card-reveal">
         <span class="card-title grey-text text-darken-4">{{ this.correspondingDonor?.name }}<i
@@ -85,7 +87,7 @@
           <div class="actionButtonsInner">
             <label>Need directions?</label>
             <br>
-            <a [href]="this.googleMapsDirectionsLink" target="_blank"><button class="btn-small">Google Maps</button></a>
+            <a [href]="this.googleMapsDirectionsLink" target="_blank"><button class="btn">Google Maps</button></a>
             <br>
             <label style="display: inline-block; margin-top: 15px;">Arrived? Notify the Donor</label>
             <br>
@@ -93,11 +95,12 @@
               [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.correspondingDonor?.phone_num!) + '?text=' + myEncodeURIComponent(this.prefilledText)"
               target="_blank">
               <!-- <img alt="Chat on WhatsApp" src="../../../assets/images/WhatsAppButtonGreenLarge.svg"/> -->
-              <button class="btn-small" style="min-width: 187px;">Chat on WhatsApp</button>
+              <button class="btn" style="min-width: 187px;">Chat on WhatsApp</button>
             </a>
           </div>
         </div>
       </div>
+
     </span>
 
     <!-- Upcoming or Current donation -->

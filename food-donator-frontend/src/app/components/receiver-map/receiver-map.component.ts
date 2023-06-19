@@ -29,9 +29,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   donors: User[] = [];
   currentUser: User | null = null;
-  currentDonor: User | null = null;
   currentDonorName = "";
   currentDonorPhoneNum = "";
+  currentDonorAddress = "";
   currentDonorDonations: Donation[] | null = [];
   mapOptions: google.maps.MapOptions;
   center: CenterMapInput | null = null;
@@ -80,12 +80,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       // initialize the slide in sidenav
       $('.sidenav').sidenav();
 
+      // ensure the materialize popout sidenav closes properly
       $( "#slide-out-donee" ).on("close", () => {
         this.closeMenu();
-      });
-
-      $('button').on('click', (e: Event) => {
-        e.stopPropagation();
       });
 
       // initialize the popup marker modal
@@ -95,13 +92,14 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           $('.carousel.carousel-slider').carousel({
             noWrap: true,
             fullWidth: false,
+            numVisible: 10,
             preventLoop: true,
             padding: 20,
             dist: 0
           });
           $('.carousel-slider').slider({
-            full_width: true
-          }); //must be full_width: true for mobile
+            full_width: false
+          });
         }
       });
 
@@ -127,22 +125,24 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
         donors.forEach((donor: User) => {
           const promise = new Promise<void>((resolve) => {
           // Push donors onto the markers array
-          this.donationService.getDonationsByUserId(donor.id).then((donations) => {
+          this.donationService.getCurrentAndUpcomingDonationsByNonReservedByUserId(donor.id, this.currentUser!).then((donations) => {
               let determinedColor = MapUtil.RED_MARKER;
 
-              if(donations != null && this.donationService.isUpcomingDonationByDonationArray(donations)) {
+              if(donations && this.donationService.isUpcomingDonationByDonationArray(donations)) {
                 // set marker color to yellow
                 determinedColor = MapUtil.YELLOW_MARKER;
               }
 
-              if(donations != null && this.donationService.isCurrentDonationByDonationArray(donations)) {
+              if(donations && this.donationService.isCurrentDonationByDonationArray(donations)) {
                 // set marker color to green
                 determinedColor = MapUtil.GREEN_MARKER;
               }
 
+              // create a marker/pin on the map for each donor
               this.markers.push({
                 id: donor.id,
                 phoneNum: donor.phone_num,
+                address: donor.address,
                 position: {
                   lat: donor.lat!,
                   lng: donor.lon!
@@ -161,7 +161,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
                 },
               });
               resolve();
-            });
+            }).catch(err => console.error(err) );
           });
           promises.push(promise);
         });
@@ -180,16 +180,16 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           // open Feature Discovery
           $('.tap-target').tapTarget('open');
 
-        });
+        }).catch(err => console.error(err) );
         // set the donors to be supplied in the donor select
         this.donors = donors;
       }
-    });
+    }).catch(err => console.error(err) );
   }
 
   /**
-   * Centers the Google Map on the selected Donor when the donor select option changes
-   * @param event the event triggered by the HTML select change
+   * Centers the Google Map on the selected Donor when the donor select option changes.
+   * @param event the event triggered by the HTML select change.
    */
   async onChange(event: Event) {
     const donorInp = event.target as HTMLInputElement;
@@ -207,6 +207,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Centers the Google Map on the current donee user's location.
+   */
   centerMapOnMyLocation() {
     if(!navigator.geolocation) {
       alert("Your browser does not support geolocation. Please use a different browser.");
@@ -251,24 +254,35 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     $('#hiddenMenu').css('display', 'block');
   }
 
-  openModal(donorId: string, donorName: string, donorPhoneNum: string): void {
+  openModal(donorId: string, donorName: string, donorPhoneNum: string, donorAddress: string): void {
     this.currentDonorName = donorName;
     this.currentDonorPhoneNum = donorPhoneNum;
+    this.currentDonorAddress = donorAddress;
 
     // fetch donations for this donor
-    this.donationService.getCurrentAndUpcomingDonationsByUserId(donorId).then((donations) => {
+    this.donationService.getCurrentAndUpcomingDonationsByNonReservedByUserId(donorId, this.currentUser!).then((donations) => {
       this.currentDonorDonations = donations;
+      $("#flexContainer").css('text-align','left');
       $('.modal').modal('open');
-    });
+      if(this.currentDonorDonations?.length == 0) {
+        $("#flexContainer").css('text-align','center');
+      }
+    }).catch(err => console.error(err) );
   }
 
   carouselPrev(e: Event) {
+    // prevent materialize from scrolling the carousel wildly
     e.stopPropagation();
+
+    // move carousel one step
     $('.carousel').carousel('prev');
   }
 
   carouselNext(e: Event) {
+    // prevent materialize from scrolling the carousel wildly
     e.stopPropagation();
+
+    // move carousel one step
     $('.carousel').carousel('next');
   }
 }

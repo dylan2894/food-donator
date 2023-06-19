@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Donation } from 'src/app/models/donation.model';
+import { User } from 'src/app/models/user.model';
 import { RequestRouting } from 'src/app/shared/constants/request-routing';
 import { environment } from 'src/environments/environment';
 
@@ -138,6 +139,19 @@ export class DonationService {
       return resp;
     } catch(e) {
       console.error("[DONATION SERVICE] getCurrentAndUpcomingDonationsByNonReserved() error", e);
+    }
+    return null;
+  }
+
+  async getCurrentAndUpcomingDonationsByNonReservedByUserId(id: string, currentUser: User): Promise<Donation[] | null> {
+    const donations = await this.getCurrentAndUpcomingDonationsByUserId(id);
+    // eslint-disable-next-line no-debugger
+    debugger
+    if(donations) {
+      return donations.filter((donation) => {
+        console.log(donation)
+        return donation.reserved == false || donation.recipients.includes(currentUser.phone_num);
+      });
     }
     return null;
   }

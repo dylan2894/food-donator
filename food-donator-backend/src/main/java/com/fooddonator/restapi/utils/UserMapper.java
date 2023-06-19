@@ -12,6 +12,10 @@ public final class UserMapper {
     user.id = map.get("id").toString();
     user.password =map.get("password").toString();
     user.phone_num = map.get("phone_num").toString();
+    Object address = map.get("address");
+    if(address != null) {
+      user.address = (String) address;
+    }
     user.salt = map.get("salt").toString();
     user.lat = ((Number) map.get("lat")).doubleValue();
     user.lon = ((Number) map.get("lon")).doubleValue();

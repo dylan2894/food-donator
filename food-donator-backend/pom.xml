@@ -13,7 +13,7 @@
 	<artifactId>food-donator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>food-donator</name>
-	<description>Java back-end using Spring Boot for the Food Donator platform</description>
+	<description>Java back-end using Spring Boot for the CareBridge platform</description>
 	<properties>
 		<java.version>11</java.version>
     <maven.compiler.release>11</maven.compiler.release>

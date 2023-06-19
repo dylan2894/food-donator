@@ -84,6 +84,7 @@ public class UserController {
     logger.info("/user/readDonors");
     List<User> donors = repository.getDonors();
     donors.forEach(donor -> {
+      System.out.println("DONOR ADDRESS: " + donor.address);
       donor.password = null;
       donor.salt = null;
     });
