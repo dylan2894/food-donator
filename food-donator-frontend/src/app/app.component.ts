@@ -9,7 +9,7 @@ declare const $: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Food Donator';
+  title = 'CareBridge';
 
   constructor() {
     console.log("Env.link: " + environment.link);

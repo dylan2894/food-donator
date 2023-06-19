@@ -32,6 +32,9 @@ export class DonationsComponent {
         this.currentUser = user;
         this.donationService.getCurrentAndUpcomingDonationsByNonReserved().then((donations) => {
           if(donations) {
+            donations = donations.filter(donation => {
+              return donation.userid != this.currentUser?.id;
+            });
             this.currentDonations = donations;
             this.tempDonationsHolder = donations;
             $('.noCurrent').removeClass('button_text--loading');
