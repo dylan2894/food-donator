@@ -132,11 +132,17 @@
     prefix="(+27)"
     mask=' 00 000 0000'
     class="input">
-    <button class="btn " (click)="this.addRecipientToReserved(this.currentRecipient)">Add Recipient</button>
+    <button class="btn-flat" (click)="this.addRecipientToReserved(this.currentRecipient)">Add Recipient</button>
+    <p *ngIf="this.chips.length > 0">Recipients:</p>
+    <app-chip-selector [chips]="this.chips"></app-chip-selector>
 
     <!-- TODO add chips for each donee who this donation is reserved for -->
   </div>
-  <div class="modal-footer">
-    <button class="modal-close waves-effect waves-green btn-flat" (click)="this.markAsReserved(this.selectedDonation!, $event)">Mark as Reserved</button>
+  <div class="modal-footer" style="height: 68px;">
+    <button
+    [disabled]="!(this.reservedRecipients.length > 0)"
+    class="modal-close waves-effect waves-green btn"
+    (click)="this.markAsReserved(this.selectedDonation!, $event)"
+  >Mark as Reserved</button>
   </div>
 </div>

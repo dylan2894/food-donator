@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { Donation } from 'src/app/models/donation.model';
-import { User } from 'src/app/models/user.model';
+import { Tag } from 'src/app/models/tag.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
 import { SidenavService } from 'src/app/services/sidenav/sidenav.service';
-import { UserTagService } from 'src/app/services/user-tag/user-tag.service';
 import { Constants } from 'src/app/shared/constants/constants';
 import DateUtil from 'src/app/utils/DateUtil';
 
@@ -20,6 +19,7 @@ export class DonorDashboardComponent {
   selectedDonation: Donation | null = null;
   reservedRecipients: string[] = [];
   currentRecipient = '';
+  chips: Tag[] = [];
 
   constructor(
     public dateUtil: DateUtil,
@@ -27,6 +27,8 @@ export class DonorDashboardComponent {
     public donationService: DonationService,
     private authenticationService: AuthenticationService
   ) {
+    this.chips = [];
+
     const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if (user != null) {
@@ -116,8 +118,14 @@ export class DonorDashboardComponent {
   }
 
   addRecipientToReserved(recipientPhoneNum: string) {
-    if(!this.reservedRecipients.includes(recipientPhoneNum) && this.currentRecipient != '') {
-      this.reservedRecipients.push(recipientPhoneNum.slice(6).replace(/[ ]/g, ''));
+    const formattedPhoneNum = recipientPhoneNum.slice(6).replace(/[ ]/g, '');
+    if(!this.reservedRecipients.includes(formattedPhoneNum) && this.currentRecipient != '') {
+      this.reservedRecipients.push(formattedPhoneNum);
+      const chip: Tag = {
+        id: '',
+        name: recipientPhoneNum
+      };
+      this.chips.push(chip);
     }
     this.currentRecipient = '';
   }
@@ -126,6 +134,7 @@ export class DonorDashboardComponent {
     //e.stopPropagation();
     this.selectedDonation = donation;
     this.reservedRecipients = [];
+    this.chips = [];
   }
 
   /**

@@ -145,14 +145,14 @@ public class DonationController {
   }
 
   @GetMapping("/readAllCurrentAndUpcomingByNonReserved")
-  public ResponseEntity<List<Donation>> getCurrentAndUpcomingDonationsByNonReserved() {
+  public ResponseEntity<List<Donation>> getCurrentAndUpcomingDonationsByNonReserved(@RequestParam String phoneNum) {
     logger.info("/donation/readAllCurrentAndUpcomingByNonReserved");
     
     List<Donation> donations = this.getCurrentAndUpcomingDonations().getBody();
     if (donations != null) {
       List<Donation> nonReservedDonations = donations
           .stream()
-          .filter(donation -> !donation.getReserved())
+          .filter(donation -> !donation.getReserved() || donation.getRecipients().contains(phoneNum))
           .collect(Collectors.toList());
       return new ResponseEntity<>(nonReservedDonations, null, HttpStatus.OK);
     }

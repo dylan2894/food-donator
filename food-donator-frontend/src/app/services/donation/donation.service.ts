@@ -122,9 +122,9 @@ export class DonationService {
     return null;
   }
 
-  async getCurrentAndUpcomingDonationsByNonReserved() {
+  async getCurrentAndUpcomingDonationsByNonReserved(phoneNum: string) {
     const req = new Promise((resolve, reject) => {
-      this.http.get(this.baseUrl + "readAllCurrentAndUpcomingByNonReserved", { headers: this.headers }).subscribe({
+      this.http.get(this.baseUrl + "readAllCurrentAndUpcomingByNonReserved?phoneNum=" + phoneNum, { headers: this.headers }).subscribe({
         next: (resp) => {
           resolve(resp);
         },
@@ -145,8 +145,6 @@ export class DonationService {
 
   async getCurrentAndUpcomingDonationsByNonReservedByUserId(id: string, currentUser: User): Promise<Donation[] | null> {
     const donations = await this.getCurrentAndUpcomingDonationsByUserId(id);
-    // eslint-disable-next-line no-debugger
-    debugger
     if(donations) {
       return donations.filter((donation) => {
         console.log(donation)

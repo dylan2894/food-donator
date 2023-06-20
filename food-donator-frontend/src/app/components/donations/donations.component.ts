@@ -4,7 +4,7 @@ import { Tag } from 'src/app/models/tag.model';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
-import { UserTagService } from 'src/app/services/user-tag/user-tag.service';
+import { TagService } from 'src/app/services/tag/tag.service';
 import { Constants } from 'src/app/shared/constants/constants';
 import DateUtil from 'src/app/utils/DateUtil';
 
@@ -18,19 +18,26 @@ export class DonationsComponent {
   currentDonations: Donation[] = [];
   tempDonationsHolder: Donation[] = [];
   tags: Tag[] = [];
+  chips: Tag[] = [];
   emptyFilter = false;
 
   constructor(
     public donationService: DonationService,
     public dateUtil: DateUtil,
     private authenticationService: AuthenticationService,
-    private userTagService: UserTagService
+    private tagService: TagService
   ) {
+    this.tagService.getTags().then((tags) => {
+      if(tags != null) {
+        this.chips = tags;
+      }
+    });
+
     const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
       if(user != null) {
         this.currentUser = user;
-        this.donationService.getCurrentAndUpcomingDonationsByNonReserved().then((donations) => {
+        this.donationService.getCurrentAndUpcomingDonationsByNonReserved(this.currentUser.phone_num).then((donations) => {
           if(donations) {
             donations = donations.filter(donation => {
               return donation.userid != this.currentUser?.id;
