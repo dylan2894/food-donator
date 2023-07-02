@@ -37,7 +37,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   center: CenterMapInput | null = null;
   markers: IMarker[] = [];
   directionsService = new google.maps.DirectionsService();
-  directionsRenderer = new google.maps.DirectionsRenderer();
+  directionsRenderer = new google.maps.DirectionsRenderer({
+    'suppressMarkers' : true
+  });
 
   constructor(
     public phoneNumUtil: PhoneNumUtil,
@@ -225,9 +227,26 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     this.directionsService.route(request, (result, status) => {
       if (status == 'OK') {
         this.directionsRenderer.setDirections(result);
+        const leg = result?.routes[ 0 ].legs[ 0 ];
+        this.makeMarker( leg!.start_location, MapUtil.GREEN_MARKER, "My location" );
+        // this.makeMarker( leg!.end_location, MapUtil.GREEN_MARKER, 'end' );
         return;
       }
       console.error('Failed to calculate directions route', status);
+    });
+  }
+
+  makeMarker(location: google.maps.LatLng, icon: google.maps.Icon | string, title: string) {
+    const marker = new google.maps.Marker({
+      position: location,
+      map: this.map.googleMap,
+      title: title,
+      label: {
+        color: "black",
+        text: title,
+      },
+      animation: google.maps.Animation.BOUNCE,
+      icon: MapUtil.GREEN_MARKER
     });
   }
 
