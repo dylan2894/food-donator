@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Donation } from 'src/app/models/donation.model';
 import { Tag } from 'src/app/models/tag.model';
 import { User } from 'src/app/models/user.model';
@@ -27,6 +28,7 @@ export class CardComponent {
   constructor(
     public dateUtil: DateUtil,
     public phoneNumberUtil: PhoneNumUtil,
+    public router: Router,
     private userService: UserService,
     private userTagService: UserTagService
   ) {
@@ -70,6 +72,43 @@ export class CardComponent {
         });
       }
     });
+  }
+
+  onMapsClicked() {
+    if(!navigator.geolocation) {
+      alert("Your browser does not support geolocation. Please use a different browser.");
+    }
+
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0,
+    };
+
+    // get current position
+    navigator.geolocation.getCurrentPosition((position) => {
+      let reload = false;
+      if(this.router.url.includes('map')) {
+        reload = true;
+      }
+      // go to map view and pass origin and destination as url params
+      this.router.navigate(['/map'], {
+        queryParams: {
+          origin: this.myEncodeURIComponent(JSON.stringify([position.coords.latitude, position.coords.longitude])),
+          destination: this.myEncodeURIComponent(JSON.stringify([this.correspondingDonor?.lat, this.correspondingDonor?.lon]))
+        }
+      }).then(() => {
+      if(reload) {
+        window.location.reload();
+        //this.router.navigate(['/map'], { queryParamsHandling: "preserve"});
+      }
+      });
+
+
+
+    }, (err) => {
+      console.error(err);
+    }, options);
   }
 
   myEncodeURIComponent(text: string): string {

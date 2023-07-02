@@ -2,7 +2,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { GoogleMap } from '@angular/google-maps';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import M from 'materialize-css';
 import { IMarker } from 'src/app/models/Imarker.model';
 import { Donation } from 'src/app/models/donation.model';
@@ -36,6 +36,8 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   mapOptions: google.maps.MapOptions;
   center: CenterMapInput | null = null;
   markers: IMarker[] = [];
+  directionsService = new google.maps.DirectionsService();
+  directionsRenderer = new google.maps.DirectionsRenderer();
 
   constructor(
     public phoneNumUtil: PhoneNumUtil,
@@ -47,7 +49,8 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     private userService: UserService,
     private router: Router,
     private fb: FormBuilder,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private route: ActivatedRoute
     ) {
     const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
@@ -77,6 +80,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     $(() => {
+      //initialize the Directions API
+      this.directionsRenderer.setMap(this.map.googleMap!);
+
       // initialize the slide in sidenav
       $('.sidenav').sidenav();
 
@@ -115,6 +121,29 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       // initialize the tap target (Feature Discovery)
       $('.tap-target').tapTarget();
     });
+
+    const params = this.route.snapshot.queryParams;
+    if(params.origin != null && params.destination != null) {
+      const origin = JSON.parse(decodeURIComponent(params.origin));
+      const destination = JSON.parse(decodeURIComponent(params.destination));
+
+      // perform directions routing
+      const request = {
+        origin: {
+          lat: origin[0],
+          lng: origin[1]
+        },
+        destination: {
+          lat: destination[0],
+          lng: destination[1]
+        },
+        travelMode: google.maps.TravelMode.DRIVING
+      };
+      this.calcRoute(request);
+    } else {
+      //todo clear route
+      //this.directionsRenderer.set('directions', null);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -173,9 +202,14 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
             $('select').formSelect();
           }, 200); //200
 
-          // set the Map bounds to encompass all the donors
-          const bounds = this.mapUtil.getBoundsByMarkers(this.markers);
-          this.map.googleMap?.fitBounds(bounds);
+          // set the Map bounds to encompass all the donors when the Directions API is not in use
+          const params = this.route.snapshot.queryParams;
+          if(params.origin == null && params.destination == null) {
+            const bounds = this.mapUtil.getBoundsByMarkers(this.markers);
+            this.map.googleMap?.fitBounds(bounds);
+          } else {
+            this.map.googleMap?.setZoom(15);
+          }
 
           // open Feature Discovery
           $('.tap-target').tapTarget('open');
@@ -185,6 +219,16 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
         this.donors = donors;
       }
     }).catch(err => console.error(err) );
+  }
+
+  calcRoute(request: google.maps.DirectionsRequest) {
+    this.directionsService.route(request, (result, status) => {
+      if (status == 'OK') {
+        this.directionsRenderer.setDirections(result);
+        return;
+      }
+      console.error('Failed to calculate directions route', status);
+    });
   }
 
   /**
