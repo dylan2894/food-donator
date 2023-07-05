@@ -2,6 +2,16 @@
   width: calc(100% - 30px);
 }
 
+app-receiver-map {
+  display: block;
+  height: calc(100% - 64px);
+  overflow-y: hidden;
+}
+
+body {
+  height: calc(100% - 64px) !important;
+}
+
 /* Bigger screens */
 @media only screen and (min-width: 993px) {
   #doneeContainer {

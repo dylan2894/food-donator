@@ -1,0 +1,38 @@
+* {
+  --primary: #6369D1; /* Violet Blue Crayola */
+}
+
+nav, .nav-wrapper {
+  background-color: #7986cb;
+}
+
+.brand-logo {
+  cursor: pointer;
+}
+
+.btn {
+  height: 36px;
+}
+
+li {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.navLocationBtn {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  /* margin-top: 10px !important; */
+  margin: auto;
+}
+
+.dropdown-content li>a, .dropdown-content li>span {
+  color: var(--primary);
+}
+
+nav ul a:hover {
+  background-color: transparent;
+}

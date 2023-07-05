@@ -1,5 +1,5 @@
 <div class="google-map">
-  <google-map id="receiverMap" width="100%" height="100vh" [options]="mapOptions"
+  <google-map id="receiverMap" width="100%" height="100%" [options]="mapOptions"
   >
     <map-marker
       *ngFor="let marker of markers"
@@ -13,7 +13,7 @@
 </div>
 
 <!-- Donor Select -->
-<div id="donorSelect" class="input-field col s12 indigo darken-1">
+<!-- <div id="donorSelect" class="input-field col s12 indigo darken-1">
   <select id="donorInnerSelect" (change)="onChange($event)">
     <option value="" disabled selected>Choose your option</option>
     <option *ngFor="let donor of donors" [value]="donor.id" class="indigo darken-1">
@@ -21,13 +21,13 @@
     </option>
   </select>
   <label id="donorSelectLabel" for="donorInnerSelect">Select Donor</label>
-</div>
+</div> -->
 
 <!-- My Location button -->
-<button (click)="centerMapOnMyLocation()" class="myLocationBtn btn indigo darken-1">
+<!-- <button (click)="centerMapOnMyLocation()" class="myLocationBtn btn indigo darken-1">
   <div style="margin-right: 5px;" class="material-icons">my_location</div>
   <span>My Location</span>
-</button>
+</button> -->
 
 <!-- FAB Key/Legend -->
 <div class="fixed-action-btn">

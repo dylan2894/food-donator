@@ -98,7 +98,7 @@ p {
 .wrapper {
   margin-right: 25px;
 }
-
+/*
 #donorSelect {
   position: absolute;
   top: 0%;
@@ -106,21 +106,21 @@ p {
   width: 250px;
   padding-right: 25px;
   border-radius: 2px;
-}
+} */
 
-#donorSelect input {
+/* #donorSelect input {
   color: white;
 }
 
 #donorSelectLabel {
   color: var(--indigo-lighten-5);
-}
+} */
 
-#donorSelect, #donorSelectLabel {
+/* #donorSelect, #donorSelectLabel {
   padding-top: 25px;
   padding-bottom: 10px;
   padding-left: 25px;
-}
+} */
 
 .myLocationBtn {
   position: absolute;
@@ -219,11 +219,6 @@ tr, td, th {
   width: 75%;
 }
 
-/* #editPhoneNumBtn {
-  display: inline;
-  margin-left: 2px;
-} */
-
 input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
   cursor: default;
 }
@@ -240,15 +235,20 @@ input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
   color: var(--light);
 }
 
+.google-map, #receiverMap {
+  max-height: 100%;
+  height: 100% !important;
+}
+
+.map-container {
+  height: 100% !important;
+}
+
 /* Bigger screens */
 @media only screen and (min-width: 769px) {
   #modalDonorAddressContainer {
     line-height: 32px;
   }
-
-  /* #scheduleContainer {
-    width: 50%;
-  } */
 
   #actionButtonsContainer {
     display: inline-block;

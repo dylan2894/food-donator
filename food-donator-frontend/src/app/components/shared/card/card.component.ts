@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Donation } from 'src/app/models/donation.model';
 import { Tag } from 'src/app/models/tag.model';
 import { User } from 'src/app/models/user.model';

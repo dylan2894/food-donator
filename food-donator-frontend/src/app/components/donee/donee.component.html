@@ -1,5 +1,13 @@
-<app-sidenav [isDonor]="false"></app-sidenav>
-<app-receiver-map *ngIf="this.currentRoute?.includes('/map')"></app-receiver-map>
+<!-- <app-sidenav [isDonor]="false"></app-sidenav> -->
+<app-topnav
+(centerLocationEvent)="this.centerMapOnLocation($event)"
+></app-topnav>
+
+<app-receiver-map
+*ngIf="this.currentRoute?.includes('/map')"
+[centerLocationInput]="this.mapCenter"
+></app-receiver-map>
+
 <div id="doneeContainer" class="pushSidenav">
   <div class="nonMapContainer">
     <app-donee-settings *ngIf="this.currentRoute === '/donee-settings'"></app-donee-settings>

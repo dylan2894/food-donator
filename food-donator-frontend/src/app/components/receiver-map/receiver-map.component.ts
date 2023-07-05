@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { GoogleMap } from '@angular/google-maps';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,6 +26,13 @@ declare const $: any
   styleUrls: ['./receiver-map.component.css']
 })
 export class ReceiverMapComponent implements OnInit, AfterViewInit {
+  @Input()
+  set centerLocationInput(newCenter: CenterMapInput | null) {
+    console.log(newCenter)
+    if(newCenter) {
+      this.centerMapOnLocation(newCenter);
+    }
+  }
   @ViewChild(GoogleMap) map!: GoogleMap;
   donors: User[] = [];
   currentUser: User | null = null;
@@ -86,7 +93,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       this.directionsRenderer.setMap(this.map.googleMap!);
 
       // initialize the slide in sidenav
-      $('.sidenav').sidenav();
+      // $('.sidenav').sidenav();
 
       // ensure the materialize popout sidenav closes properly
       $( "#slide-out-donee" ).on("close", () => {
@@ -227,17 +234,21 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     this.directionsService.route(request, (result, status) => {
       if (status == 'OK') {
         this.directionsRenderer.setDirections(result);
-        const leg = result?.routes[ 0 ].legs[ 0 ];
+
+        // attach a marker to the origin of the Directions API route polyline
+        const leg = result?.routes[0].legs[0];
         this.makeMarker( leg!.start_location, MapUtil.GREEN_MARKER, "My location" );
-        // this.makeMarker( leg!.end_location, MapUtil.GREEN_MARKER, 'end' );
         return;
       }
       console.error('Failed to calculate directions route', status);
     });
   }
 
+  /**
+   * Used to attach a marker onto the Directions API route polyline
+   */
   makeMarker(location: google.maps.LatLng, icon: google.maps.Icon | string, title: string) {
-    const marker = new google.maps.Marker({
+    const _marker = new google.maps.Marker({
       position: location,
       map: this.map.googleMap,
       title: title,
@@ -246,56 +257,16 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
         text: title,
       },
       animation: google.maps.Animation.BOUNCE,
-      icon: MapUtil.GREEN_MARKER
+      icon: '../../../assets/icons/blue-dot.svg' //'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAMAAABhq6zVAAAAQlBMVEVMaXFCiv9Civ9Civ9Civ9Civ9Civ9Civ9Civ+Kt/9+r/9Pkv90qf9hnf9Civ9wpv9Ee/+Jtf9Gjf9/sP9Kj/9KXf+JdfukAAAACXRSTlMAGCD7088IcsuTBctUAAAAYUlEQVR4XlWOWQrAIBBDx302d73/VSu0UMxfQsgLAMSEzmGKcGRCkZylBHPyMJQmk44QIRWdVCuxlgQoRNLaoi4ILs/a9m6VszuGf4PSaX21eyD6oZ256/AHa/0L9RauOw+4XAWqGLX26QAAAABJRU5ErkJggg=='
     });
-  }
-
-  /**
-   * Centers the Google Map on the selected Donor when the donor select option changes.
-   * @param event the event triggered by the HTML select change.
-   */
-  async onChange(event: Event) {
-    const donorInp = event.target as HTMLInputElement;
-    const donorId = donorInp.value;
-    const donor = this.donors.find((donor) => {
-      return donor.id == donorId
-    });
-    if(donor) {
-      const newCenter: CenterMapInput = {
-        lat: donor.lat!,
-        lng: donor.lon!
-      }
-      this.center = newCenter;
-      this.map.googleMap?.panTo(this.center);
-    }
   }
 
   /**
    * Centers the Google Map on the current donee user's location.
    */
-  centerMapOnMyLocation() {
-    if(!navigator.geolocation) {
-      alert("Your browser does not support geolocation. Please use a different browser.");
-    }
-
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0,
-    };
-
-    // get current position
-    navigator.geolocation.getCurrentPosition((position) => {
-      // center map on current position
-      const newCenter: CenterMapInput = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      }
-      this.center = newCenter;
-      this.map.googleMap?.panTo(this.center);
-    }, (err) => {
-      console.error(err);
-    }, options);
+  centerMapOnLocation(newCenter: CenterMapInput) {
+    this.center = newCenter;
+    this.map.googleMap?.panTo(this.center);
   }
 
   logout(): void {
