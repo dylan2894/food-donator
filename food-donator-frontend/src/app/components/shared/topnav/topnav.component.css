@@ -36,3 +36,7 @@ li {
 nav ul a:hover {
   background-color: transparent;
 }
+
+.sidenav li > a {
+  color: var(--primary);
+}

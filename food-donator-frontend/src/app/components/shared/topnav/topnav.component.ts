@@ -23,7 +23,7 @@ export class TopnavComponent implements OnInit {
   ngOnInit() {
     $(() => {
       // initialize the top nav
-      // $('.sidenav').sidenav();
+      $('.sidenav').sidenav();
 
       // initialize the dropdown
       $(".dropdown-trigger").dropdown();

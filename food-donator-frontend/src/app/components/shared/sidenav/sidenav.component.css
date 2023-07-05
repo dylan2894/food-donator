@@ -73,7 +73,7 @@ app-sidenav .material-symbols-outlined:hover {
   width: 300px;
   text-align: left;
   /* color: var(--dark); */
-  color: rgba(238, 238, 238, 0.8);
+  /* color: rgba(238, 238, 238, 0.8); */
   /* text-shadow: black 0px 0px 2px; */
   /* text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; */
 }
