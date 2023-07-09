@@ -30,37 +30,30 @@
 </button> -->
 
 <!-- FAB Key/Legend -->
-<div class="fixed-action-btn">
-  <a id="mapFab" class="btn-floating btn-large indigo darken-1">
-    <i class="large material-icons">map</i>
+<div class="fabContainer">
+  <a class="btn-floating tooltipped red" data-position="top"
+    data-tooltip="Red pins indicate donors who do not have upcoming donations.">
+    <i class="material-icons">location_on</i>
   </a>
-  <ul>
-    <li>
-      <a class="btn-floating tooltipped red" data-position="left" data-tooltip="Red pins indicate donors who do not have upcoming donations.">
-        <i class="material-icons">location_on</i>
-      </a>
-    </li>
-    <li>
-      <a class="btn-floating tooltipped yellow darken-1" data-position="left" data-tooltip="Yellow pins are donors who have upcoming donations.">
-        <i class="material-icons">location_on</i>
-      </a>
-    </li>
-    <li>
-      <a class="btn-floating tooltipped green" data-position="left" data-tooltip="Green pins are donors who have current, active donations.">
-        <i class="material-icons">location_on</i>
-      </a>
-    </li>
-  </ul>
+  <a class="btn-floating tooltipped yellow darken-1" data-position="top"
+    data-tooltip="Yellow pins are donors who have upcoming donations.">
+    <i class="material-icons">location_on</i>
+  </a>
+  <a class="btn-floating tooltipped green" data-position="top"
+    data-tooltip="Green pins are donors who have current, active donations.">
+    <i class="material-icons">location_on</i>
+  </a>
 </div>
 
 
+
 <!-- Feature Discovery -->
-<div class="tap-target indigo darken-1" data-target="mapFab">
+<!-- <div class="tap-target indigo darken-1" data-target="mapFab">
   <div class="tap-target-content">
     <h5>Map Key</h5>
     <p>Use the map key to find current and upcoming donations. As well as donors would don't currently have a donation.</p>
   </div>
-</div>
+</div> -->
 
 <!-- Modal Structure -->
 <div id="modal1" class="modal bottom-sheet">

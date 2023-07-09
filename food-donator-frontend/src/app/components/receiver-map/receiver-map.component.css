@@ -244,6 +244,23 @@ input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
   height: 100% !important;
 }
 
+.fabContainer {
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  right: 0;
+  width: fit-content;
+  height: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-floating.tooltipped {
+  margin: 5px;
+  margin-bottom: 0px;
+}
+
+
 /* Bigger screens */
 @media only screen and (min-width: 769px) {
   #modalDonorAddressContainer {

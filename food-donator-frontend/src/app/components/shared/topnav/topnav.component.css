@@ -40,3 +40,13 @@ nav ul a:hover {
 .sidenav li > a {
   color: var(--primary);
 }
+
+.material-symbols-outlined {
+  /* height: 48px; */
+
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}

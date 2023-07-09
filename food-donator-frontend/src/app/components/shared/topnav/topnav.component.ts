@@ -4,6 +4,8 @@ import { CenterMapInput } from 'src/app/models/inputs/center-map-input.model';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user/user.service';
 import { Output, EventEmitter } from '@angular/core';
+import { Constants } from 'src/app/shared/constants/constants';
+import { SidenavService } from 'src/app/services/sidenav/sidenav.service';
 
 @Component({
   selector: 'app-topnav',
@@ -17,6 +19,7 @@ export class TopnavComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private sidenavService: SidenavService,
     private router: Router,
     private route: ActivatedRoute) { }
 
@@ -113,5 +116,11 @@ export class TopnavComponent implements OnInit {
       }
       this.centerLocationEvent.emit(newCenter);
     }
+  }
+
+  logout() {
+    window.sessionStorage.removeItem(Constants.FOOD_DONATOR_TOKEN);
+    this.router.navigateByUrl("/login");
+    this.sidenavService.clearOverlay();
   }
 }

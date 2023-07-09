@@ -28,7 +28,6 @@ declare const $: any
 export class ReceiverMapComponent implements OnInit, AfterViewInit {
   @Input()
   set centerLocationInput(newCenter: CenterMapInput | null) {
-    console.log(newCenter)
     if(newCenter) {
       this.centerMapOnLocation(newCenter);
     }

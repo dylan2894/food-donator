@@ -10,10 +10,30 @@
   <label id="donorSelectLabel" for="donorInnerSelect">Select Donor</label>
 </div> -->
 
-<!-- NEW DROPDOWN -->
-<ul id="dropdown1" class="dropdown-content">
+<!-- Donor Dropdown -->
+<ul id="donorDropdown" class="dropdown-content">
   <li *ngFor="let donor of donors" attr.data-val="{{ donor.id }}">
     <a (click)="this.onDonorSelect(donor)">{{ donor.name }}</a>
+  </li>
+</ul>
+
+<!-- Account Dropdown -->
+<ul id="accountDropdown" class="dropdown-content">
+  <li>
+    <a [routerLink]="['/donee-settings']" style="display: flex; align-content: center;">
+      <span class="material-symbols-outlined" style="margin-right: 10px;">
+        settings
+      </span>
+      Settings
+  </a>
+  </li>
+  <li (click)="this.logout()">
+    <a style="display: flex; align-content: center;">
+      <span class="material-symbols-outlined" style="margin-right: 10px;">
+        logout
+      </span>
+      Logout
+    </a>
   </li>
 </ul>
 
@@ -36,12 +56,36 @@
       </button> -->
     </ul>
     <ul class="right hide-on-med-and-down">
-      <li><a id="selectDonorText" class="dropdown-trigger" href="#!" data-target="dropdown1">Select a donor<i class="material-icons right">arrow_drop_down</i></a></li>
+      <li>
+        <a id="selectDonorText" class="dropdown-trigger" href="#!" data-target="donorDropdown">
+          Select a donor
+          <i class="material-icons right">arrow_drop_down</i>
+        </a>
+      </li>
+      <li
+      style="display: flex; align-content: center; justify-content: center; flex-wrap: wrap; height: 64px;"
+      >
+        <a id="selectDonorText" class="dropdown-trigger" href="#!" data-target="accountDropdown"
+        style="display: flex; align-content: center; justify-content: center; flex-wrap: wrap;"
+        >
+          <span class="material-symbols-outlined" style="height: fit-content;">
+            account_circle
+          </span>
+        </a>
+      </li>
     </ul>
   </div>
 </nav>
 
 <ul class="sidenav" id="mobile-demo">
+  <li><div class="user-view">
+    <div class="background">
+      <img src="https://materializecss.com/images/office.jpg">
+    </div>
+    <a href="#user"><img class="circle" src="../../../../assets/images/WhatsAppButtonGreenMedium.svg"></a>
+    <a href="#name"><span class="white-text name">John Doe</span></a>
+    <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+  </div></li>
   <li><a (click)="this.mapClicked();">Map</a></li>
   <li><a [routerLink]="['/donee-donations']">All Donations</a></li>
 </ul>
