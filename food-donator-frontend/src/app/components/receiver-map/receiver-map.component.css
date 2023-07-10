@@ -260,6 +260,19 @@ input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
   margin-bottom: 0px;
 }
 
+.panel.panel-primary {
+  position: absolute;
+  left: 10px;
+  top: 74px;
+  bottom: 10px;
+  width: 20%;
+  min-width: 300px;
+  padding: 10px;
+  background-color: #ffffff;
+  max-height: calc(100% - 64px);
+  overflow-y: scroll;
+}
+
 
 /* Bigger screens */
 @media only screen and (min-width: 769px) {

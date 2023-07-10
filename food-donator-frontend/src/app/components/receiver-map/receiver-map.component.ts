@@ -53,9 +53,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     public phoneNumberUtil: PhoneNumUtil,
     public donationService: DonationService,
     public sidenavService: SidenavService,
+    public router: Router,
     private mapUtil: MapUtil,
     private userService: UserService,
-    private router: Router,
     private fb: FormBuilder,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute
@@ -216,7 +216,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
             const bounds = this.mapUtil.getBoundsByMarkers(this.markers);
             this.map.googleMap?.fitBounds(bounds);
           } else {
-            this.map.googleMap?.setZoom(15);
+            this.map.googleMap?.setZoom(14);
           }
 
           // open Feature Discovery
@@ -237,6 +237,9 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
         // attach a marker to the origin of the Directions API route polyline
         const leg = result?.routes[0].legs[0];
         this.makeMarker( leg!.start_location, MapUtil.GREEN_MARKER, "My location" );
+
+        // render step by step instructions
+        this.directionsRenderer.setPanel(document.getElementById('directionsList'));
         return;
       }
       console.error('Failed to calculate directions route', status);
