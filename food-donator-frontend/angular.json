@@ -39,6 +39,7 @@
               "dist/styles-out/receiver-map.component.css",
               "dist/styles-out/register.component.css",
               "dist/styles-out/sidenav.component.css",
+              "dist/styles-out/topnav.component.css",
               "dist/styles-out/styles.css"
             ],
             "scripts": [

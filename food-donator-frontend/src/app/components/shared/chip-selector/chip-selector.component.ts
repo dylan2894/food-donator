@@ -13,6 +13,14 @@ export class ChipSelectorComponent {
   selectedArray: Tag[] = [];
   @Output() selectedEvent = new EventEmitter<Tag[]>();
 
+  constructor(private tagService: TagService) {
+    this.tagService.getTags().then((tags) => {
+      if(tags != null) {
+        this.chips = tags;
+      }
+    });
+  }
+
   toggleChipSelect(chip: Tag) {
     if(this.toggleEnabled) {
       // if chip is already selected, unselect it

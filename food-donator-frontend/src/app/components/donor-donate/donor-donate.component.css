@@ -111,6 +111,10 @@
   font-size: 0.7em;
 }
 
+.collapsible-header {
+  width: 100%;
+}
+
 /* Bigger screens */
 @media screen and (min-width: 993px) {
   mat-stepper, app-donor, app-donor-donate, #donorContainer {

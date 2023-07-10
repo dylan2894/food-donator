@@ -38,7 +38,7 @@ nav ul a:hover {
 }
 
 .sidenav li > a {
-  color: var(--primary);
+  color: rgba(238, 238, 238, .8);
 }
 
 .material-symbols-outlined {

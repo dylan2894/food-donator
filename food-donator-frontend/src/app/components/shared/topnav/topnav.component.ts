@@ -18,9 +18,9 @@ export class TopnavComponent implements OnInit {
   donors: User[] = [];
 
   constructor(
+    public router: Router,
     private userService: UserService,
     private sidenavService: SidenavService,
-    private router: Router,
     private route: ActivatedRoute) { }
 
   ngOnInit() {

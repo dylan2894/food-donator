@@ -12,7 +12,7 @@
       </li>
     </ul>
     <ul id="currentCollapsible" class="collapsible expandable">
-      <li *ngFor="let donation of this.currentAndUpcomingDonations;">
+      <li *ngFor="let donation of this.currentAndUpcomingDonations;" style="flex-direction: column;">
         <div class="collapsible-header">
           <table>
             <tbody>
@@ -80,7 +80,7 @@
       </li>
     </ul>
     <ul id="pastCollapsible" class="collapsible expandable">
-      <li *ngFor="let donation of this.pastDonations;">
+      <li *ngFor="let donation of this.pastDonations;" style="flex-direction: column;">
         <div class="collapsible-header">
           <table>
             <tbody>

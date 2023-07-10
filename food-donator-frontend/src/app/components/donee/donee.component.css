@@ -1,6 +1,6 @@
-#doneeContainer {
+/* #doneeContainer {
   width: calc(100% - 30px);
-}
+} */
 
 app-receiver-map {
   display: block;
@@ -14,9 +14,9 @@ body {
 
 /* Bigger screens */
 @media only screen and (min-width: 993px) {
-  #doneeContainer {
+  /* #doneeContainer {
     width: calc(100% - 330px);
-  }
+  } */
 
   .nonMapContainer {
     width: 100% !important;
