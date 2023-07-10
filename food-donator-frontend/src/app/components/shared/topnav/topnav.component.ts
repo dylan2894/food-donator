@@ -37,7 +37,7 @@ export class TopnavComponent implements OnInit {
         }
       });
 
-      $("#dropdown1").on("click", "li", function () {
+      $("#donorDropdown").on("click", "li", function () {
         const clickedItemText = $(this).text();
         $('#selectDonorText').text(clickedItemText).append("<i class='material-icons right'>arrow_drop_down</i>");
       });
