@@ -232,6 +232,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   calcRoute(request: google.maps.DirectionsRequest) {
     this.directionsService.route(request, (result, status) => {
       if (status == 'OK') {
+        // render directions polyline
         this.directionsRenderer.setDirections(result);
 
         // attach a marker to the origin of the Directions API route polyline
@@ -240,6 +241,8 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
 
         // render step by step instructions
         this.directionsRenderer.setPanel(document.getElementById('directionsList'));
+
+
         return;
       }
       console.error('Failed to calculate directions route', status);
@@ -261,6 +264,20 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       animation: google.maps.Animation.BOUNCE,
       icon: '../../../assets/icons/blue-dot.svg' //'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAMAAABhq6zVAAAAQlBMVEVMaXFCiv9Civ9Civ9Civ9Civ9Civ9Civ9Civ+Kt/9+r/9Pkv90qf9hnf9Civ9wpv9Ee/+Jtf9Gjf9/sP9Kj/9KXf+JdfukAAAACXRSTlMAGCD7088IcsuTBctUAAAAYUlEQVR4XlWOWQrAIBBDx302d73/VSu0UMxfQsgLAMSEzmGKcGRCkZylBHPyMJQmk44QIRWdVCuxlgQoRNLaoi4ILs/a9m6VszuGf4PSaX21eyD6oZ256/AHa/0L9RauOw+4XAWqGLX26QAAAABJRU5ErkJggg=='
     });
+  }
+
+  /**
+   * Shows directions steps on mobile
+   * */
+  showDirectionsList() {
+    $("#directionsList").css('display', 'block');
+  }
+
+  /**
+   * Hides directions steps on mobile
+   * */
+  closeDirectionsList() {
+    $("#directionsList").css('display', 'none');
   }
 
   /**

@@ -45,7 +45,23 @@
   </a>
 </div>
 
-<div id="directionsList" class="panel panel-primary" *ngIf="this.router.url !== '/map'"></div>
+<button *ngIf="this.router.url.includes('/map?origin')" id="showDirectionsBtn" class="btn" href="directionsList" (click)="this.showDirectionsList()">
+  Show Directions
+  <span id="upArrow" class="material-symbols-outlined">
+    expand_less
+  </span>
+  <span id="downArrow" class="material-symbols-outlined">
+    expand_more
+    </span>
+</button>
+<div id="directionsList" class="panel panel-primary" *ngIf="this.router.url !== '/map'">
+  <span style="display: flex; width: 100%; justify-content: center; user-select: none; cursor: pointer;" (click)="this.closeDirectionsList()">
+    Close Directions
+    <span class="material-symbols-outlined">
+      close
+    </span>
+  </span>
+</div>
 
 
 <!-- Feature Discovery -->

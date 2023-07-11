@@ -38,7 +38,7 @@ nav ul a:hover {
 }
 
 .sidenav li > a {
-  color: rgba(238, 238, 238, .8);
+  color: var(--primary)
 }
 
 .material-symbols-outlined {
@@ -49,4 +49,23 @@ nav ul a:hover {
   'wght' 400,
   'GRAD' 0,
   'opsz' 48
+}
+
+#rightNavList li {
+  height: 56px;
+}
+
+#selectDonorText {
+  display: none;
+}
+
+/* Bigger screens */
+@media only screen and (min-width: 769px) {
+  #rightNavList li {
+    height: 64px;
+  }
+
+  #selectDonorText {
+    display: inline-block;
+  }
 }
