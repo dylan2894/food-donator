@@ -1,6 +1,6 @@
 <div class="formWrapper">
 
-  <!-- TODO Logo and Title -->
+  <!-- Logo and Title -->
   <div class="logoAndTitle">
     <img src="../../../assets/icons/icon-512x512.png" class="logoImg" alt="CareBridge Logo">
     <h2 style="margin: 0 0 0 32px;" class="title">CareBridge</h2>
@@ -27,7 +27,7 @@
         </form>
       </div>
       <div id="register">
-        <form [formGroup]="registerForm" (ngSubmit)="this.register()">
+        <form [formGroup]="registerForm" (ngSubmit)="this.onSubmitRegister()">
           <label for="name">Name</label>
           <input id="name" formControlName="name" class="input" placeholder="Joe's Restaurant">
           <small *ngIf="invalidRegisterForm && registerForm.controls['name'].errors">Please enter a name</small>
@@ -93,6 +93,27 @@
         </form>
       </div>
     </div>
+  </div>
+
+  <!-- OTP modal -->
+  <div id="otpModal" class="modal">
+    <form [formGroup]="otpForm" (ngSubmit)="this.confirmOtp()">
+      <div class="modal-content">
+        <h4>One Time Pin</h4>
+        <p>Please enter the one-time-pin which you received by SMS</p>
+        <input formControlName="otpField" class="input" placeholder="1234">
+        <small *ngIf="invalidOtpForm && otpForm.controls['otpField'].errors?.['required']">
+          Please enter a one time pin
+        </small>
+        <small *ngIf="otpForm.controls['otpField'].errors?.['incorrectOtp']">
+          Incorrect one time pin, please enter a valid pin.
+        </small>
+      </div>
+      <div class="modal-footer">
+        <button class="waves-effect btn-flat" (click)="this.generateOtp()">Resend SMS</button>
+        <button class="waves-effect btn-flat" type="submit">Register</button>
+      </div>
+    </form>
   </div>
 
 </div>

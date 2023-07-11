@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { GoogleMap } from '@angular/google-maps';
 import { Router } from '@angular/router';
@@ -16,14 +16,17 @@ import PlacesAutocompleteUtil from 'src/app/utils/PlacesAutocompleteUtil';
   templateUrl: './login-register.component.html',
   styleUrls: ['./login-register.component.css']
 })
-export class LoginRegisterComponent {
+export class LoginRegisterComponent implements OnInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   isDonor = false;
   mapOptions: google.maps.MapOptions;
   loginForm: FormGroup;
   registerForm: FormGroup;
+  otpForm: FormGroup;
+  otp = '';
   invalidRegisterForm = false;
   invalidLoginForm = false;
+  invalidOtpForm = false;
   markers: IMarker[] = [];
 
   constructor(
@@ -41,10 +44,13 @@ export class LoginRegisterComponent {
     this.registerForm = this.fb.group({
       name: new FormControl('', [Validators.required]),
       phone_num: new FormControl('', [Validators.required]),
-      address: new FormControl('', [Validators.required]),
+      address: new FormControl(''),
       password: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [Validators.required]),
       type: new FormControl('', [Validators.required])
+    });
+    this.otpForm = this.fb.group({
+      otpField: new FormControl('', [Validators.required])
     });
 
     this.registerForm.controls['confirmPassword'].addValidators(
@@ -60,10 +66,17 @@ export class LoginRegisterComponent {
       fullscreenControl: false,
       styles: MapUtil.STYLES['hide']
     };
+  }
 
-    $(document).ready(() => {
+  ngOnInit() {
+    $(() => {
+      // initialize tabs component
       $('.tabs').tabs();
+
       $('.input').html('');
+
+      // initialize modal
+      $('.modal').modal({ dismissible: false});
 
       $('#donorCheckbox').on('click', () => {
         this.isDonor = true;
@@ -122,11 +135,9 @@ export class LoginRegisterComponent {
     this.invalidLoginForm = true;
   }
 
-  async register() {
+  async onSubmitRegister() {
     const phoneNumCtrl = this.registerForm.controls['phone_num'];
-    const passwordCtrl = this.registerForm.controls['password'];
     const typeOfUserCtrl = this.registerForm.controls['type'];
-    const nameCtrl = this.registerForm.controls['name'];
 
     const existingUser = await this.userService.getUserByPhoneNum(phoneNumCtrl.value);
 
@@ -138,49 +149,97 @@ export class LoginRegisterComponent {
 
     if(this.registerForm.valid
       && this.registerForm.controls['confirmPassword'].valid
-      && this.placesAutocompleteUtil.currentSelectedCoords != undefined
-      && this.placesAutocompleteUtil.currentSelectedAddress!= undefined
       && existingUser == null) {
+
+      if(typeOfUserCtrl.value == 'donor'
+        && (this.placesAutocompleteUtil.currentSelectedCoords == undefined
+        || this.placesAutocompleteUtil.currentSelectedAddress == undefined)
+      ) {
+        this.invalidRegisterForm = true;
+        return;
+      }
 
       this.invalidRegisterForm = false;
 
+      // present OTP modal
+      $('.modal').modal("open")
+
+      // generate and present OTP
+      this.generateOtp();
+      return;
+    }
+
+    this.invalidRegisterForm = true;
+  }
+
+  generateOtp() {
+    const digits = '0123456789';
+    let OTP = '';
+    for (let i = 0; i < 4; i++ ) {
+        OTP += digits[Math.floor(Math.random() * 10)];
+    }
+    this.otp = OTP;
+    //  present fake OTP via toast
+    M.Toast.dismissAll();
+    M.toast({html: `OTP: ${this.otp}`, displayLength: Infinity})
+  }
+
+  async confirmOtp() {
+    const otpCtrl = this.otpForm.controls['otpField'];
+
+    // TODO check if OTP is correct
+    if(otpCtrl.value == this.otp) {
+      this.invalidOtpForm = false;
+      console.log("Valid OTP entry:", otpCtrl.value);
+      //TODO register user
+      //await this.registerUser();
+      return;
+    }
+
+    this.invalidOtpForm = true;
+    this.otpForm.controls.otpField.setErrors({
+      incorrectOtp: true
+    });
+  }
+
+  async registerUser() {
+    const phoneNumCtrl = this.registerForm.controls['phone_num'];
+    const passwordCtrl = this.registerForm.controls['password'];
+    const typeOfUserCtrl = this.registerForm.controls['type'];
+    const nameCtrl = this.registerForm.controls['name'];
+
+    try {
+      const input: RegisterUserInput = {
+        name: nameCtrl.value,
+        type: typeOfUserCtrl.value,
+        phone_num: phoneNumCtrl.value,
+        password: passwordCtrl.value,
+        address: this.placesAutocompleteUtil.currentSelectedAddress,
+        lat: this.placesAutocompleteUtil.currentSelectedCoords?.lat(),
+        lon: this.placesAutocompleteUtil.currentSelectedCoords?.lng()
+      }
+
+      await this.registrationService.registerUser(input);
+
+      const loginInp: LoginInput = {
+        phone_num: phoneNumCtrl.value,
+        password: passwordCtrl.value
+      }
       try {
-        const input: RegisterUserInput = {
-          name: nameCtrl.value,
-          type: typeOfUserCtrl.value,
-          phone_num: phoneNumCtrl.value,
-          password: passwordCtrl.value,
-          address: this.placesAutocompleteUtil.currentSelectedAddress,
-          lat: this.placesAutocompleteUtil.currentSelectedCoords.lat(),
-          lon: this.placesAutocompleteUtil.currentSelectedCoords.lng()
-        }
-
-        await this.registrationService.registerUser(input);
-
-        const loginInp: LoginInput = {
-          phone_num: phoneNumCtrl.value,
-          password: passwordCtrl.value
-        }
-        try {
-          await this.authService.login(loginInp);
-          if(input.type == 'donor') {
-            this.router.navigateByUrl('/dashboard');
-          } else {
-            this.router.navigateByUrl('/map');
-          }
-        } catch(e) {
-          console.error(e);
-          M.toast({html: 'Failed to sign in.'})
+        await this.authService.login(loginInp);
+        if(input.type == 'donor') {
+          this.router.navigateByUrl('/dashboard');
+        } else {
+          this.router.navigateByUrl('/map');
         }
       } catch(e) {
         console.error(e);
         M.toast({html: 'Failed to sign in.'})
       }
-
-      return;
+    } catch(e) {
+      console.error(e);
+      M.toast({html: 'Failed to sign in.'})
     }
-
-    this.invalidRegisterForm = true;
   }
 
   validateConfirmedPassword(controlOne: AbstractControl, controlTwo: AbstractControl): ValidatorFn {
