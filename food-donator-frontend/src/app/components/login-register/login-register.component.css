@@ -56,7 +56,6 @@ small {
 .formWrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   padding-top: 15%;
   padding-bottom: 15%;
   height: 100%;
@@ -130,12 +129,14 @@ label:has(+ input:focus) {
 
 .logoAndTitle {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  width: 40%;
+  width: 20%;
   margin: auto;
-  padding-bottom: 32px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-bottom: 16px;
 }
 
 .logoImg {
@@ -144,11 +145,26 @@ label:has(+ input:focus) {
 }
 
 .title {
-  color: var(--dark);
+  color: #dbdbdb;
+  margin: 16px 0 0 16px;
+}
+
+#background {
+  height: 130%;
+  width: 100%;
+  background-position: top;
+  background-repeat: repeat;
 }
 
 /* Larger screens */
 @media screen and (min-width: 768px) {
+
+  #background {
+    height: 140%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 
   .logoImg {
     height: 100px;
@@ -167,5 +183,18 @@ label:has(+ input:focus) {
     margin-right: auto;
   }
 
+  .logoAndTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    margin: auto;
+    padding-bottom: 32px;
+  }
 
+  .title {
+    margin-top: 0px;
+    margin-left: 32px;
+  }
 }

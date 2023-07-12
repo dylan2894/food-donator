@@ -1,119 +1,121 @@
-<div class="formWrapper">
+<div id="background" style="background-image: url('../../../assets/images/login-background.svg');">
+  <div class="formWrapper">
 
-  <!-- Logo and Title -->
-  <div class="logoAndTitle">
-    <img src="../../../assets/icons/icon-512x512.png" class="logoImg" alt="CareBridge Logo">
-    <h2 style="margin: 0 0 0 32px;" class="title">CareBridge</h2>
-  </div>
-
-  <!-- Login/Register form -->
-  <div class="card grey lighten-4">
-    <div class="card-tabs">
-      <ul class="tabs tabs-fixed-width">
-        <li class="tab"><a class="active" href="/login#login">Login</a></li>
-        <li class="tab"><a href="/login#register">Register</a></li>
-      </ul>
+    <!-- Logo and Title -->
+    <div class="logoAndTitle">
+      <img src="../../../assets/icons/icon-512x512.png" class="logoImg" alt="CareBridge Logo">
+      <h2 class="title">CareBridge</h2>
     </div>
-    <div class="card-content grey lighten-4">
-      <div id="login">
-        <form [formGroup]="loginForm" (ngSubmit)="this.login()">
-          <label for="loginPhoneNum">Phone Number</label>
-          <input id="loginPhoneNum" prefix="(+27)" mask=' 00 000 0000' formControlName="phone_num" class="input">
-          <small *ngIf="invalidLoginForm && loginForm.controls['phone_num'].errors">Please enter a valid phone number</small>
-          <label for="loginPassword">Password</label>
-          <input id="loginPassword" type="password" formControlName="password" class="input" >
-          <small *ngIf="invalidLoginForm && loginForm.controls['password'].errors">Please enter a valid password</small>
-          <button class="btn"><span class="button_text">Login</span></button>
-        </form>
+
+    <!-- Login/Register form -->
+    <div class="card grey lighten-4">
+      <div class="card-tabs">
+        <ul class="tabs tabs-fixed-width">
+          <li class="tab"><a class="active" href="/login#login">Login</a></li>
+          <li class="tab"><a href="/login#register">Register</a></li>
+        </ul>
       </div>
-      <div id="register">
-        <form [formGroup]="registerForm" (ngSubmit)="this.onSubmitRegister()">
-          <label for="name">Name</label>
-          <input id="name" formControlName="name" class="input" placeholder="Joe's Restaurant">
-          <small *ngIf="invalidRegisterForm && registerForm.controls['name'].errors">Please enter a name</small>
-          <label for="registerPhoneNum">Phone Number</label>
-          <input id="registerPhoneNum" prefix="(+27)" mask=' 00 000 0000' formControlName="phone_num" class="input">
-          <small *ngIf="invalidRegisterForm && registerForm.controls['phone_num'].errors">Please enter a valid phone number</small>
-          <small
-            *ngIf="invalidRegisterForm
-            && registerForm.controls.address.hasError('existingUser')">
-              Please login with your existing account
-            </small>
-          <label for="registerPassword">Password</label>
-          <input id="registerPassword" type="password" formControlName="password" class="input">
-          <small *ngIf="invalidRegisterForm && registerForm.controls['password'].errors">Please enter a valid password</small>
-          <label for="confirmPassword">Confirm Password</label>
-          <input id="confirmPassword" type="password" formControlName="confirmPassword" class="input">
-          <small *ngIf="invalidRegisterForm && registerForm.controls['confirmPassword'].errors?.['required']">Please confirm your password</small>
-          <small
-            *ngIf="invalidRegisterForm &&
-            !registerForm.controls['confirmPassword'].errors?.['required'] &&
-            registerForm.controls['confirmPassword'].errors?.['match_error']">
-            Confirmed password does not match password
-          </small>
-          <label>Account Type</label>
-          <p class="infoTxt">Sign up as either a Donator or a Collector. Collectors can collect donations from Donators.</p>
-          <p>
-            <label>
-              <input (click)="this.onDonorTypeSelected()" type="radio" id="donorCheckbox" formControlName="type" value="donor" class="with-gap">
-              <span>Donator</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input type="radio" id="doneeCheckbox" formControlName="type" value="donee" class="with-gap">
-              <span>Collector</span>
-            </label>
-          </p>
-          <small *ngIf="invalidRegisterForm && registerForm.controls['type'].errors">Please select whether you are a Donor or Donee (Receiver)</small>
-          <div *ngIf="this.isDonor">
-            <label for="placesField">Address</label>
-            <input id="placesField" type="text" formControlName="address" class="input" placeholder="Enter your address">
-            <div id="infowindow-content">
-              <span id="placeName" class="title"></span><br />
-              <span id="placeAddress"></span>
-            </div>
+      <div class="card-content grey lighten-4">
+        <div id="login">
+          <form [formGroup]="loginForm" (ngSubmit)="this.login()">
+            <label for="loginPhoneNum">Phone Number</label>
+            <input id="loginPhoneNum" prefix="(+27)" mask=' 00 000 0000' formControlName="phone_num" class="input">
+            <small *ngIf="invalidLoginForm && loginForm.controls['phone_num'].errors">Please enter a valid phone number</small>
+            <label for="loginPassword">Password</label>
+            <input id="loginPassword" type="password" formControlName="password" class="input" >
+            <small *ngIf="invalidLoginForm && loginForm.controls['password'].errors">Please enter a valid password</small>
+            <button class="btn"><span class="button_text">Login</span></button>
+          </form>
+        </div>
+        <div id="register">
+          <form [formGroup]="registerForm" (ngSubmit)="this.onSubmitRegister()">
+            <label for="name">Name</label>
+            <input id="name" formControlName="name" class="input" placeholder="Joe's Restaurant">
+            <small *ngIf="invalidRegisterForm && registerForm.controls['name'].errors">Please enter a name</small>
+            <label for="registerPhoneNum">Phone Number</label>
+            <input id="registerPhoneNum" prefix="(+27)" mask=' 00 000 0000' formControlName="phone_num" class="input">
+            <small *ngIf="invalidRegisterForm && registerForm.controls['phone_num'].errors">Please enter a valid phone number</small>
             <small
-            *ngIf="invalidRegisterForm
-            && (this.placesAutocompleteUtil.currentSelectedCoords === undefined
-            || registerForm.controls['address'].errors)">
-              Please enter a valid address
+              *ngIf="invalidRegisterForm
+              && registerForm.controls.address.hasError('existingUser')">
+                Please login with your existing account
+              </small>
+            <label for="registerPassword">Password</label>
+            <input id="registerPassword" type="password" formControlName="password" class="input">
+            <small *ngIf="invalidRegisterForm && registerForm.controls['password'].errors">Please enter a valid password</small>
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" type="password" formControlName="confirmPassword" class="input">
+            <small *ngIf="invalidRegisterForm && registerForm.controls['confirmPassword'].errors?.['required']">Please confirm your password</small>
+            <small
+              *ngIf="invalidRegisterForm &&
+              !registerForm.controls['confirmPassword'].errors?.['required'] &&
+              registerForm.controls['confirmPassword'].errors?.['match_error']">
+              Confirmed password does not match password
             </small>
-            <google-map width="100%" height="200px" [options]="mapOptions">
-              <map-marker
-                *ngFor="let marker of this.markers"
-                [position]="marker.position"
-                [label]="marker.label!"
-                [title]="marker.title!"
-                [options]="marker.options!"
-              ></map-marker>
-            </google-map>
-          </div>
-          <button class="btn">Register</button>
-        </form>
+            <label>Account Type</label>
+            <p class="infoTxt">Sign up as either a Donator or a Collector. Collectors can collect donations from Donators.</p>
+            <p>
+              <label>
+                <input (click)="this.onDonorTypeSelected()" type="radio" id="donorCheckbox" formControlName="type" value="donor" class="with-gap">
+                <span>Donator</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="radio" id="doneeCheckbox" formControlName="type" value="donee" class="with-gap">
+                <span>Collector</span>
+              </label>
+            </p>
+            <small *ngIf="invalidRegisterForm && registerForm.controls['type'].errors">Please select whether you are a Donor or Donee (Receiver)</small>
+            <div *ngIf="this.isDonor">
+              <label for="placesField">Address</label>
+              <input id="placesField" type="text" formControlName="address" class="input" placeholder="Enter your address">
+              <div id="infowindow-content">
+                <span id="placeName" class="title"></span><br />
+                <span id="placeAddress"></span>
+              </div>
+              <small
+              *ngIf="invalidRegisterForm
+              && (this.placesAutocompleteUtil.currentSelectedCoords === undefined
+              || registerForm.controls['address'].errors)">
+                Please enter a valid address
+              </small>
+              <google-map width="100%" height="200px" [options]="mapOptions">
+                <map-marker
+                  *ngFor="let marker of this.markers"
+                  [position]="marker.position"
+                  [label]="marker.label!"
+                  [title]="marker.title!"
+                  [options]="marker.options!"
+                ></map-marker>
+              </google-map>
+            </div>
+            <button class="btn">Register</button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- OTP modal -->
-  <div id="otpModal" class="modal">
-    <form [formGroup]="otpForm" (ngSubmit)="this.confirmOtp()">
-      <div class="modal-content">
-        <h4>One Time Pin</h4>
-        <p>Please enter the one-time-pin which you received by SMS</p>
-        <input formControlName="otpField" class="input" placeholder="1234">
-        <small *ngIf="invalidOtpForm && otpForm.controls['otpField'].errors?.['required']">
-          Please enter a one time pin
-        </small>
-        <small *ngIf="otpForm.controls['otpField'].errors?.['incorrectOtp']">
-          Incorrect one time pin, please enter a valid pin.
-        </small>
-      </div>
-      <div class="modal-footer">
-        <button class="waves-effect btn-flat" (click)="this.generateOtp()">Resend SMS</button>
-        <button class="waves-effect btn" type="submit" style="width: fit-content; height: unset; margin-left: 4px;">Register</button>
-      </div>
-    </form>
-  </div>
+    <!-- OTP modal -->
+    <div id="otpModal" class="modal">
+      <form [formGroup]="otpForm" (ngSubmit)="this.confirmOtp()">
+        <div class="modal-content">
+          <h4>One Time Pin</h4>
+          <p>Please enter the one-time-pin which you received by SMS</p>
+          <input formControlName="otpField" class="input" placeholder="1234">
+          <small *ngIf="invalidOtpForm && otpForm.controls['otpField'].errors?.['required']">
+            Please enter a one time pin
+          </small>
+          <small *ngIf="otpForm.controls['otpField'].errors?.['incorrectOtp']">
+            Incorrect one time pin, please enter a valid pin.
+          </small>
+        </div>
+        <div class="modal-footer">
+          <button class="waves-effect btn-flat" (click)="this.generateOtp()">Resend SMS</button>
+          <button class="waves-effect btn" type="submit" style="width: fit-content; height: unset; margin-left: 4px;">Register</button>
+        </div>
+      </form>
+    </div>
 
+  </div>
 </div>

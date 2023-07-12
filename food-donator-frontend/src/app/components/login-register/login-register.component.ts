@@ -78,6 +78,18 @@ export class LoginRegisterComponent implements OnInit {
       // initialize modal
       $('.modal').modal({ dismissible: false});
 
+      // $('.tabs').on('click', (e: any) => {
+      //   const tab = e.target.hash;
+      //   console.log(tab)
+      //   if(tab == '#register') {
+      //     $('#background').css('height', 'calc(100% + 200px)');
+      //   }
+
+      //   if(tab == '#login') {
+      //     $('#background').css('height', '100%');
+      //   }
+      // });
+
       $('#donorCheckbox').on('click', () => {
         this.isDonor = true;
       });
