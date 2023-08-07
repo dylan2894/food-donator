@@ -35,6 +35,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   donors: User[] = [];
   currentUser: User | null = null;
+  currentDonorPosition: google.maps.LatLngLiteral | null = null;
   currentDonorName = "";
   currentDonorPhoneNum = "";
   currentDonorAddress = "";
@@ -46,6 +47,8 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   directionsRenderer = new google.maps.DirectionsRenderer({
     'suppressMarkers' : true
   });
+
+  displayShowMoreInstructionsBtn = false;
 
   constructor(
     public phoneNumUtil: PhoneNumUtil,
@@ -208,7 +211,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           // rerender donor select with list of fetched donors
           setTimeout(() => {
             $('select').formSelect();
-          }, 200); //200
+          }, 200);
 
           // set the Map bounds to encompass all the donors when the Directions API is not in use
           const params = this.route.snapshot.queryParams;
@@ -241,7 +244,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
 
         // render step by step instructions
         this.directionsRenderer.setPanel(document.getElementById('directionsList'));
-
+        this.showDirectionsList();
 
         return;
       }
@@ -271,6 +274,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
    * */
   showDirectionsList() {
     $("#directionsList").css('display', 'block');
+    this.displayShowMoreInstructionsBtn = false;
   }
 
   /**
@@ -278,6 +282,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
    * */
   closeDirectionsList() {
     $("#directionsList").css('display', 'none');
+    this.displayShowMoreInstructionsBtn = true;
   }
 
   /**
@@ -307,10 +312,11 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     $('#hiddenMenu').css('display', 'block');
   }
 
-  openModal(donorId: string, donorName: string, donorPhoneNum: string, donorAddress: string): void {
+  openModal(donorId: string, donorName: string, donorPhoneNum: string, donorAddress: string, donorPosition: google.maps.LatLngLiteral): void {
     this.currentDonorName = donorName;
     this.currentDonorPhoneNum = donorPhoneNum;
     this.currentDonorAddress = donorAddress;
+    this.currentDonorPosition = donorPosition;
 
     // fetch donations for this donor
     this.donationService.getCurrentAndUpcomingDonationsByNonReservedByUserId(donorId, this.currentUser!).then((donations) => {
@@ -338,4 +344,49 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     // move carousel one step
     $('.carousel').carousel('next');
   }
+
+  /**
+   * When a user clicks on the donor address to receive directions to the donor
+   */
+  onMapsClicked() {
+    if(!navigator.geolocation) {
+      alert("Your browser does not support geolocation. Please use a different browser.");
+    }
+
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0,
+    };
+
+    // get current position
+    navigator.geolocation.getCurrentPosition((position) => {
+      let reload = false;
+      if(this.router.url.includes('map')) {
+        reload = true;
+      }
+      // go to map view and pass origin and destination as url params
+      this.router.navigate(['/map'], {
+        queryParams: {
+          origin: this.myEncodeURIComponent(JSON.stringify([position.coords.latitude, position.coords.longitude])),
+          destination: this.myEncodeURIComponent(JSON.stringify([this.currentDonorPosition?.lat, this.currentDonorPosition?.lng]))
+        }
+      }).then(() => {
+      if(reload) {
+        window.location.reload();
+        //this.router.navigate(['/map'], { queryParamsHandling: "preserve"});
+      }
+      });
+
+
+
+    }, (err) => {
+      console.error(err);
+    }, options);
+  }
+
+  myEncodeURIComponent(text: string): string {
+    return encodeURIComponent(text);
+  }
+
 }

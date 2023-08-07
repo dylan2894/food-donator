@@ -7,7 +7,7 @@
       [label]="marker.label!"
       [title]="marker.title!"
       [options]="marker.options!"
-      (mapClick)="this.openModal(marker.id!, marker.title!, marker.phoneNum!, marker.address!)"
+      (mapClick)="this.openModal(marker.id!, marker.title!, marker.phoneNum!, marker.address!, marker.position!)"
     ></map-marker>
   </google-map>
 </div>
@@ -45,7 +45,8 @@
   </a>
 </div>
 
-<button *ngIf="this.router.url.includes('/map?origin')" id="showDirectionsBtn" class="btn" href="directionsList" (click)="this.showDirectionsList()">
+<!-- Google Maps directions instructions list -->
+<button *ngIf="this.router.url.includes('/map?origin') && this.displayShowMoreInstructionsBtn" id="showDirectionsBtn" class="btn" href="directionsList" (click)="this.showDirectionsList()">
   Show Directions
   <span id="upArrow" class="material-symbols-outlined">
     expand_less
@@ -54,7 +55,7 @@
     expand_more
     </span>
 </button>
-<div id="directionsList" class="panel panel-primary" *ngIf="this.router.url !== '/map'">
+<div id="directionsList" class="panel panel-primary" style="display: none;">
   <span style="display: flex; width: 100%; justify-content: center; user-select: none; cursor: pointer;" (click)="this.closeDirectionsList()">
     Close Directions
     <span class="material-symbols-outlined">
@@ -83,7 +84,7 @@
         <span class="material-symbols-outlined">
           home_pin
         </span>
-        <span>{{ this.currentDonorAddress }}</span>
+        <span id="addressLink" (click)="this.onMapsClicked()">{{ this.currentDonorAddress }}</span>
       </span>
     </span>
 
