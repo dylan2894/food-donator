@@ -70,7 +70,8 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       }
     });
 
-    // set the google map options
+    // TODO fetch user's map settings and apply the correct class of styles per map setting
+    // set the google map options according to the user's settings
     this.mapOptions = {
       //center: { lat: -25.781951024040037, lng: 28.338064949199595 },
       //zoom: 16,
@@ -85,7 +86,8 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
         position: google.maps.ControlPosition.RIGHT_CENTER
       },
       fullscreenControl: false,
-      styles: MapUtil.STYLES['hide']
+      styles: MapUtil.STYLES['darkMode2'],
+      //mapId: "efbf3e1e062eef4e"
     };
   }
 

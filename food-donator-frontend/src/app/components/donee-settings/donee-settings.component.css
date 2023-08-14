@@ -3,10 +3,29 @@
   width: 100%;
 }
 
+.container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.firstMapSettingsCol {
+  display: inline-block;
+  width: 180px;
+  font-size: 1.3rem;
+}
+
+.settingContainer {
+  line-height: 50px;
+}
+
 /* Bigger screens */
 @media only screen and (min-width: 769px) {
   .btn {
     margin: 0 0 8px 8px;
     width: auto;
+  }
+
+  .firstMapSettingsCol {
+    width: 200px;
   }
 }
