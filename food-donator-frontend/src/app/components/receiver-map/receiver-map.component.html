@@ -1,5 +1,5 @@
 <div class="google-map">
-  <google-map id="receiverMap" width="100%" height="100%" [options]="mapOptions"
+  <google-map id="receiverMap" width="100%" height="100%"
   >
     <map-marker
       *ngFor="let marker of markers"
@@ -12,26 +12,9 @@
   </google-map>
 </div>
 
-<!-- Donor Select -->
-<!-- <div id="donorSelect" class="input-field col s12 indigo darken-1">
-  <select id="donorInnerSelect" (change)="onChange($event)">
-    <option value="" disabled selected>Choose your option</option>
-    <option *ngFor="let donor of donors" [value]="donor.id" class="indigo darken-1">
-      {{ donor.name }}
-    </option>
-  </select>
-  <label id="donorSelectLabel" for="donorInnerSelect">Select Donor</label>
-</div> -->
-
-<!-- My Location button -->
-<!-- <button (click)="centerMapOnMyLocation()" class="myLocationBtn btn indigo darken-1">
-  <div style="margin-right: 5px;" class="material-icons">my_location</div>
-  <span>My Location</span>
-</button> -->
-
 <!-- FAB Key/Legend -->
 <div class="fabContainer">
-  <a class="btn-floating tooltipped red" data-position="top"
+  <!-- <a class="btn-floating tooltipped red" data-position="top"
     data-tooltip="Red pins indicate donors who do not have upcoming donations.">
     <i class="material-icons">location_on</i>
   </a>
@@ -42,7 +25,22 @@
   <a class="btn-floating tooltipped green" data-position="top"
     data-tooltip="Green pins are donors who have current, active donations.">
     <i class="material-icons">location_on</i>
+  </a> -->
+  <a class="tooltipped" data-position="top"
+    data-tooltip="Red pins indicate donors who do not have upcoming donations.">
+    <img [src]="mapUtil.getRedMarker()" alt="Red location pin">
   </a>
+  - No donations
+  <a class="tooltipped" data-position="top"
+    data-tooltip="Yellow pins are donors who have upcoming donations.">
+    <img [src]="mapUtil.getYellowMarker()" alt="Yellow location pin">
+  </a>
+  - Upcoming donations
+  <a class="tooltipped" data-position="top"
+    data-tooltip="Green pins are donors who have current, active donations.">
+    <img [src]="mapUtil.getGreenMarker()" alt="Green location pin">
+  </a>
+  - Active donations
 </div>
 
 <!-- Google Maps directions instructions list -->

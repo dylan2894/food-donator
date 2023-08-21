@@ -245,15 +245,19 @@ input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
 }
 
 .fabContainer {
+  display: flex;
+  align-items: center;
   position: absolute;
   bottom: 15px;
   left: 0;
   right: 0;
   width: fit-content;
+  max-width: 90vw;
   height: fit-content;
   margin-left: auto;
   margin-right: auto;
-  background-color: #9fa8da;
+  padding: 10px;
+  background-color: #dbdbdb;
 }
 
 .btn-floating.tooltipped {

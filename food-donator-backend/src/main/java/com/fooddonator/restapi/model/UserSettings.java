@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class UserSettings {
   public String phone_num;
   public Boolean poi;
-  public Boolean roads;
   public Boolean transit;
   public Boolean administrative;
+  public Boolean dark_map;
 }

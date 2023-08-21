@@ -65,9 +65,9 @@ public class UserSettingsRepository {
     UserSettings userSettings = new UserSettings();
     userSettings.phone_num = target.get("phone_num").toString();
     userSettings.poi = (Boolean) target.get("poi");
-    userSettings.roads = (Boolean) target.get("roads");
     userSettings.transit = (Boolean) target.get("transit");
     userSettings.administrative = (Boolean) target.get("administrative");
+    userSettings.dark_map = (Boolean) target.get("dark_map");
 
     return userSettings;
   }

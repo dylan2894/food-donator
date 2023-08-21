@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS main_keyspace.usertags (
 CREATE TABLE IF NOT EXISTS main_keyspace.usersettings (
   phone_num text PRIMARY KEY,
   poi boolean,
-  roads boolean,
+  dark_map boolean,
   transit boolean,
   administrative boolean
 );
@@ -49,7 +49,7 @@ INSERT INTO main_keyspace.tags (id, name) VALUES (uuid(), 'Toiletries');
 INSERT INTO main_keyspace.tags (id, name) VALUES (uuid(), 'Dried Fruit');
 INSERT INTO main_keyspace.tags (id, name) VALUES (uuid(), 'Other');
 
-INSERT INTO main_keyspace.usersettings (phone_num, poi, roads, transit, administrative) VALUES ('121231234', true, true, true, true);
+INSERT INTO main_keyspace.usersettings (phone_num, poi, dark_map, transit, administrative) VALUES ('121231234', true, true, true, true);
 
 
 CREATE INDEX IF NOT EXISTS ON main_keyspace.user(phone_num);

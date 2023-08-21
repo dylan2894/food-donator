@@ -1,4 +1,5 @@
 import { IMarker } from "../models/Imarker.model";
+import { UserSettings } from "../models/inputs/user-settings.model";
 
 export default class MapUtil {
 
@@ -101,25 +102,69 @@ export default class MapUtil {
     ],
     darkMode2: [
       {
-        "featureType": "all",
-        "stylers": [
-          { "color": "#C0C0C0" }
+        featureType: "all",
+        stylers: [
+          { color: "#C0C0C0" }
         ]
       },{
-        "featureType": "road.arterial",
-        "elementType": "geometry",
-        "stylers": [
-          { "color": "#CCFFFF" }
+        featureType: "road.arterial",
+        elementType: "geometry",
+        stylers: [
+          { color: "#CCFFFF" }
         ]
       },{
-        "featureType": "landscape",
-        "elementType": "labels",
-        "stylers": [
-          { "visibility": "off" }
+        featureType: "landscape",
+        elementType: "labels",
+        stylers: [
+          { visibility: "off" }
         ]
       }
     ]
   };
+
+  getGreenMarker() {
+    return MapUtil.GREEN_MARKER;
+  }
+
+  getYellowMarker() {
+    return MapUtil.YELLOW_MARKER;
+  }
+
+  getRedMarker() {
+    return MapUtil.RED_MARKER;
+  }
+
+  static getUserMapStyles(userMapSettings: UserSettings) {
+    let styles: google.maps.MapTypeStyle[] = [];
+
+    if(!userMapSettings.poi) {
+      styles.push({
+        featureType: "poi",
+        stylers: [{ visibility: "off" }],
+      });
+    }
+
+    if(!userMapSettings.transit) {
+      styles.push({
+        featureType: "transit",
+        stylers: [{ visibility: "off" }],
+      });
+    }
+
+    if(!userMapSettings.administrative) {
+      styles.push({
+        featureType: "administrative",
+        stylers: [{ visibility: "off" }],
+      });
+    }
+
+    // TODO set dark mode if user settings contain dark mode == true
+    if(userMapSettings.dark_map) {
+      styles = [...styles, ...this.STYLES["darkMode"]];
+    }
+
+    return styles;
+  }
 
   getBoundsByMarkers(markers: IMarker[]){
     let north = 0;

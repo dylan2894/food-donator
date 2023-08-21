@@ -108,7 +108,7 @@ export class DoneeSettingsComponent {
       const userSettings: UserSettings = {
         phone_num: this.currentUser?.phone_num,
         poi: !!$('#poiSwitch').prop('checked'),
-        roads: !!this.currentUserSettings?.roads,
+        dark_map: !!this.currentUserSettings?.dark_map,
         transit: !!this.currentUserSettings?.transit,
         administrative: !!this.currentUserSettings?.administrative
       }
@@ -116,25 +116,12 @@ export class DoneeSettingsComponent {
     }
   }
 
-  async roadsSwitched() {
+  transitSwitched() {
     if(this.currentUser?.phone_num) {
       const userSettings: UserSettings = {
         phone_num: this.currentUser.phone_num,
         poi: !!this.currentUserSettings?.poi,
-        roads: !!$('#roadsSwitch').prop('checked'),
-        transit: !!this.currentUserSettings?.transit,
-        administrative: !!this.currentUserSettings?.administrative
-      }
-      this.performSettingsUpdate(userSettings);
-    }
-  }
-
-  async transitSwitched() {
-    if(this.currentUser?.phone_num) {
-      const userSettings: UserSettings = {
-        phone_num: this.currentUser.phone_num,
-        poi: !!this.currentUserSettings?.poi,
-        roads: !!this.currentUserSettings?.roads,
+        dark_map: !!this.currentUserSettings?.dark_map,
         transit: !!$('#transitSwitch').prop('checked'),
         administrative: !!this.currentUserSettings?.administrative
       }
@@ -142,14 +129,27 @@ export class DoneeSettingsComponent {
     }
   }
 
-  async administrativeSwitched() {
+  administrativeSwitched() {
     if(this.currentUser?.phone_num) {
       const userSettings: UserSettings = {
         phone_num: this.currentUser.phone_num,
         poi: !!this.currentUserSettings?.poi,
-        roads: !!this.currentUserSettings?.roads,
+        dark_map: !!this.currentUserSettings?.dark_map,
         transit: !!this.currentUserSettings?.transit,
         administrative: !!$('#administrativeSwitch').prop('checked')
+      }
+      this.performSettingsUpdate(userSettings);
+    }
+  }
+
+  darkMapSwitched() {
+    if(this.currentUser?.phone_num) {
+      const userSettings: UserSettings = {
+        phone_num: this.currentUser.phone_num,
+        poi: !!this.currentUserSettings?.poi,
+        dark_map: !!$('#darkMapSwitch').prop('checked'),
+        transit: !!this.currentUserSettings?.transit,
+        administrative: !!this.currentUserSettings?.administrative
       }
       this.performSettingsUpdate(userSettings);
     }

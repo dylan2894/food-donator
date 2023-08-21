@@ -7,10 +7,12 @@ import M from 'materialize-css';
 import { IMarker } from 'src/app/models/Imarker.model';
 import { Donation } from 'src/app/models/donation.model';
 import { CenterMapInput } from 'src/app/models/inputs/center-map-input.model';
+import { UserSettings } from 'src/app/models/inputs/user-settings.model';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
 import { SidenavService } from 'src/app/services/sidenav/sidenav.service';
+import { UserSettingsService } from 'src/app/services/user-settings/user-settings.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { Constants } from 'src/app/shared/constants/constants';
 import DateUtil from 'src/app/utils/DateUtil';
@@ -35,6 +37,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   donors: User[] = [];
   currentUser: User | null = null;
+  currentUserSettings: UserSettings | null = null;
   currentDonorPosition: google.maps.LatLngLiteral | null = null;
   currentDonorName = "";
   currentDonorPhoneNum = "";
@@ -49,7 +52,6 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   });
 
   displayShowMoreInstructionsBtn = false;
-
   constructor(
     public phoneNumUtil: PhoneNumUtil,
     public dateUtil: DateUtil,
@@ -57,11 +59,12 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     public donationService: DonationService,
     public sidenavService: SidenavService,
     public router: Router,
-    private mapUtil: MapUtil,
+    public mapUtil: MapUtil,
     private userService: UserService,
     private fb: FormBuilder,
     private authenticationService: AuthenticationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userSettingsService: UserSettingsService
     ) {
     const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
@@ -70,12 +73,10 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       }
     });
 
-    // TODO fetch user's map settings and apply the correct class of styles per map setting
-    // set the google map options according to the user's settings
+    // initialize the map options
     this.mapOptions = {
       //center: { lat: -25.781951024040037, lng: 28.338064949199595 },
       //zoom: 16,
-
       zoomControl: true,
       zoomControlOptions: {
         position: google.maps.ControlPosition.RIGHT_CENTER,
@@ -85,10 +86,20 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       streetViewControlOptions: {
         position: google.maps.ControlPosition.RIGHT_CENTER
       },
-      fullscreenControl: false,
-      styles: MapUtil.STYLES['darkMode2'],
+      fullscreenControl: false
       //mapId: "efbf3e1e062eef4e"
     };
+
+    // TODO apply the correct class of styles per map setting
+    this.userSettingsService.getUserSettingsByJwt(jwt).then((userSettings) => {
+      if(userSettings) {
+        this.currentUserSettings = userSettings;
+      }
+
+      // set the google map options according to the user's settings
+      this.mapOptions.styles = userSettings ? MapUtil.getUserMapStyles(userSettings) : null,
+      this.map.googleMap?.setOptions(this.mapOptions);
+    });
   }
 
   ngOnInit() {
@@ -190,7 +201,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
                   lng: donor.lon!
                 },
                 label: {
-                  color: "black",
+                  color: this.currentUserSettings?.dark_map ? "#dbdbdb" : "black",
                   text: donor.name!,
                 },
                 title: donor.name!,
@@ -263,7 +274,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       map: this.map.googleMap,
       title: title,
       label: {
-        color: "black",
+        color: this.currentUserSettings?.dark_map ? "#dbdbdb" : "black",
         text: title,
       },
       animation: google.maps.Animation.BOUNCE,

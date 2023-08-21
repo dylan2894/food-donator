@@ -27,11 +27,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
   methods = {RequestMethod.POST, RequestMethod.GET}
 )
 public class UserSettingsController {
-  
-  private Logger logger = LogManager.getLogger(UserSettingsController.class);
-
   UserSettingsController() {}
 
+  private Logger logger = LogManager.getLogger(UserSettingsController.class);
   @Autowired
   private UserSettingsRepository userSettingsRepo;
   @Autowired

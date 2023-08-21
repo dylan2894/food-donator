@@ -46,18 +46,7 @@
         </span>
       </div>
       <div class="settingContainer">
-        <span class="firstMapSettingsCol">Roads</span>
-        <span class="switch" *ngIf="this.currentUserSettings">
-          <label>
-            Off
-            <input id="roadsSwitch" type="checkbox" (change)="this.roadsSwitched()" [checked]="this.currentUserSettings.roads">
-            <div class="lever"></div>
-            On
-          </label>
-        </span>
-      </div>
-      <div class="settingContainer">
-        <span class="firstMapSettingsCol">Transit</span>
+        <span class="firstMapSettingsCol">Transit Icons</span>
         <span class="switch" *ngIf="this.currentUserSettings">
           <label>
             Off
@@ -68,11 +57,22 @@
         </span>
       </div>
       <div class="settingContainer">
-        <span class="firstMapSettingsCol">Administrative</span>
+        <span class="firstMapSettingsCol">Area labels</span>
         <span class="switch" *ngIf="this.currentUserSettings">
           <label>
             Off
             <input id="administrativeSwitch" type="checkbox" (change)="this.administrativeSwitched()" [checked]="this.currentUserSettings.administrative">
+            <div class="lever"></div>
+            On
+          </label>
+        </span>
+      </div>
+      <div class="settingContainer">
+        <span class="firstMapSettingsCol">Dark Map</span>
+        <span class="switch" *ngIf="this.currentUserSettings">
+          <label>
+            Off
+            <input id="darkMapSwitch" type="checkbox" (change)="this.darkMapSwitched()" [checked]="this.currentUserSettings.dark_map">
             <div class="lever"></div>
             On
           </label>
