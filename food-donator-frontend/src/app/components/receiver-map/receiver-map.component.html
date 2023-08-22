@@ -13,21 +13,9 @@
 </div>
 
 <!-- FAB Key/Legend -->
-<div class="fabContainer">
-  <!-- <a class="btn-floating tooltipped red" data-position="top"
-    data-tooltip="Red pins indicate donors who do not have upcoming donations.">
-    <i class="material-icons">location_on</i>
-  </a>
-  <a class="btn-floating tooltipped yellow darken-1" data-position="top"
-    data-tooltip="Yellow pins are donors who have upcoming donations.">
-    <i class="material-icons">location_on</i>
-  </a>
-  <a class="btn-floating tooltipped green" data-position="top"
-    data-tooltip="Green pins are donors who have current, active donations.">
-    <i class="material-icons">location_on</i>
-  </a> -->
+<div *ngIf="!this.router.url.includes('/map?origin')" class="fabContainer">
   <a class="tooltipped" data-position="top"
-    data-tooltip="Red pins indicate donors who do not have upcoming donations.">
+    data-tooltip="Red pins are donors who do not have upcoming donations.">
     <img [src]="mapUtil.getRedMarker()" alt="Red location pin">
   </a>
   - No donations
