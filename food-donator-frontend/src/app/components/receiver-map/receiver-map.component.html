@@ -65,12 +65,23 @@
 
     <!-- Donor Address -->
     <span>
-      <h4 id="modalHeading">{{ this.currentDonorName }}</h4>
+      <h4 id="modalHeading">
+        {{ this.currentDonorName }}
+        <a aria-label="Chat on WhatsApp"
+          [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.currentDonorPhoneNum) + '?text=' + myEncodeURIComponent(this.prefilledText)"
+          target="_blank">
+          <!-- <img alt="Chat on WhatsApp" src="../../../assets/images/WhatsAppButtonGreenLarge.svg"/> -->
+          <button class="btn" style="min-width: 187px;">Chat on WhatsApp</button>
+        </a>
+      </h4>
+
       <span id="modalDonorAddressContainer">
         <span class="material-symbols-outlined">
           home_pin
         </span>
-        <span id="addressLink" (click)="this.onMapsClicked()">{{ this.currentDonorAddress }}</span>
+        <span id="addressLink" class="tooltipped" (click)="this.onMapsClicked()" data-position="bottom" data-tooltip="Need directions? Click this address to get directions">
+          {{ this.currentDonorAddress }}
+        </span>
       </span>
     </span>
 

@@ -42,6 +42,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
   currentDonorName = "";
   currentDonorPhoneNum = "";
   currentDonorAddress = "";
+  prefilledText = "Hi, I am contacting you from the CareBridge app.";
   currentDonorDonations: Donation[] | null = [];
   mapOptions: google.maps.MapOptions;
   center: CenterMapInput | null = null;
