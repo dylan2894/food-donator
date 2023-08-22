@@ -199,12 +199,12 @@ export class LoginRegisterComponent implements OnInit {
   async confirmOtp() {
     const otpCtrl = this.otpForm.controls['otpField'];
 
-    // TODO check if OTP is correct
+    // check if OTP is correct
     if(otpCtrl.value == this.otp) {
       this.invalidOtpForm = false;
-      console.log("Valid OTP entry:", otpCtrl.value);
-      //TODO register user
-      //await this.registerUser();
+      M.Toast.dismissAll();
+      // then register the user
+      await this.registerUser();
       return;
     }
 

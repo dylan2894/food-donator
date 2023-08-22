@@ -156,6 +156,14 @@ label:has(+ input:focus) {
   background-repeat: repeat;
 }
 
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before, [type="radio"].with-gap:checked+span:after {
+  border: 2px solid var(--indigo-lighten-2);
+}
+
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:after {
+  background-color: var(--indigo-lighten-2);
+}
+
 /* Larger screens */
 @media screen and (min-width: 768px) {
 

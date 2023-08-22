@@ -2,8 +2,10 @@ package com.fooddonator.restapi.repository;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fooddonator.restapi.constants.RequestKeys;
+import com.fooddonator.restapi.model.User;
 import com.fooddonator.restapi.model.UserSettings;
 
 @PropertySource("classpath:application.properties")
@@ -33,6 +36,31 @@ public class UserSettingsRepository {
   UserSettingsRepository() {
     this.restTemplate = new RestTemplate();
     this.restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());  
+  }
+
+  /**
+   * Creates a new {@link UserSettings} in the UserSettings table using AstraDB's REST API.
+   * @param user the new {@link UserSettings} to create in the DB
+   * @return the result from the AstraDB REST API request
+   */
+  public Map<String, Object> createUserSettings(UserSettings userSettings) {
+    logger.info("Creating UserSettings for phone_num: {}", userSettings.phone_num);
+
+    URI uri = UriComponentsBuilder.fromHttpUrl(ASTRA_REST_API_URL)
+      .pathSegment("/usersettings")
+      .build()
+      .toUri();
+
+    RequestEntity<UserSettings> req = RequestEntity.post(uri)
+      .header(RequestKeys.Header.X_CASSANDRA_TOKEN, ASTRA_DB_TOKEN)
+      .body(userSettings);
+
+    ResponseEntity<Map> resp = restTemplate.exchange(req, Map.class);
+    Map body = resp.getBody();
+    if(body != null) {
+      return (Map<String, Object>) body.get("data");
+    }
+    return new HashMap<>();
   }
 
   /**
