@@ -180,6 +180,13 @@ tr, td, th {
   font-size: 32px;
 }
 
+#modalDonarWhatsAppContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 44.75px;
+}
+
 #modalHeading {
   display: inline;
   width: fit-content;
@@ -295,12 +302,12 @@ input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
   z-index: 999999;
 }
 
-#addressLink {
+.link {
   color: var(--primary);
   font-size: 1.3rem;
 }
 
-#addressLink:hover {
+.link:hover {
   text-decoration: underline;
   cursor: pointer;
 }
