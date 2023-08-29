@@ -145,15 +145,23 @@ label:has(+ input:focus) {
 }
 
 .title {
-  color: #dbdbdb;
+  color: #eeeeee;
   margin: 16px 0 0 16px;
+
 }
 
 #background {
-  height: 130%;
-  width: 100%;
-  background-position: top;
-  background-repeat: repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+  /* height: 100vh;
+  width: 100vw; */
+  /* background-position: center;
+  background-repeat: no-repeat; */
+  background-size: cover;
 }
 
 [type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before, [type="radio"].with-gap:checked+span:after {
@@ -168,10 +176,9 @@ label:has(+ input:focus) {
 @media screen and (min-width: 768px) {
 
   #background {
-    height: 140%;
-    width: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
+
+    /* background-position: center;
+    background-repeat: no-repeat; */
   }
 
   .logoImg {
