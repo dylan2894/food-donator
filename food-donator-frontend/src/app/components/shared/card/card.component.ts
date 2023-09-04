@@ -74,6 +74,46 @@ export class CardComponent {
     });
   }
 
+  /**
+   * When a user clicks on the donor address to receive directions to the donor
+   */
+  onMapsClicked() {
+    if(!navigator.geolocation) {
+      alert("Your browser does not support geolocation. Please use a different browser.");
+    }
+
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0,
+    };
+
+    // get current position
+    navigator.geolocation.getCurrentPosition((position) => {
+      let reload = false;
+      if(this.router.url.includes('map')) {
+        reload = true;
+      }
+      // go to map view and pass origin and destination as url params
+      this.router.navigate(['/map'], {
+        queryParams: {
+          origin: this.myEncodeURIComponent(JSON.stringify([position.coords.latitude, position.coords.longitude])),
+          destination: this.myEncodeURIComponent(JSON.stringify([this.correspondingDonor?.lat, this.correspondingDonor?.lon]))
+        }
+      }).then(() => {
+      if(reload) {
+        window.location.reload();
+        //this.router.navigate(['/map'], { queryParamsHandling: "preserve"});
+      }
+      });
+
+
+
+    }, (err) => {
+      console.error(err);
+    }, options);
+  }
+
   myEncodeURIComponent(text: string): string {
     return encodeURIComponent(text);
   }

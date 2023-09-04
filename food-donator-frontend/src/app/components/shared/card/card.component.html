@@ -9,6 +9,11 @@
         <div id="actionButtonsContainer">
           <div class="actionButtonsInner">
             <label>Need directions?</label>
+            <!-- <a [href]="this.googleMapsDirectionsLink" target="_blank"> -->
+              <br>
+              <button class="btn" (click)="this.onMapsClicked()">Google Maps</button>
+            <!-- </a> -->
+            <!-- <button class="btn" (click)="this.onMapsClicked()">Google Maps</button> -->
             <br>
             <label style="display: inline-block; margin-top: 15px;">Arrived? Notify the Donor</label>
             <br>
@@ -75,30 +80,28 @@
     <span class="card-title">
       <!-- Ellipsis 'more info' button -->
       {{ this.dateUtil.numericToTextDate(this.dateUtil.epochDateToReadable(donation!.donationdate)) }}
-      <i class="activator material-icons right">more_vert</i>
+      <!-- <i class="activator material-icons right">more_vert</i> -->
 
       <!-- Slide up revealed info -->
-      <div class="card-reveal">
+      <!-- <div class="card-reveal">
         <span class="card-title grey-text text-darken-4">{{ this.correspondingDonor?.name }}<i
             class="material-icons right">close</i></span>
         <div id="actionButtonsContainer">
           <div class="actionButtonsInner">
             <label>Need directions?</label>
             <br>
-            <!-- <a [href]="this.googleMapsDirectionsLink" target="_blank"><button class="btn">Google Maps</button></a> -->
-            <!-- <button class="btn" (click)="this.onMapsClicked()">Google Maps</button> -->
+
             <br>
             <label style="display: inline-block; margin-top: 15px;">Arrived? Notify the Donor</label>
             <br>
             <a aria-label="Chat on WhatsApp"
               [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.correspondingDonor?.phone_num!) + '?text=' + myEncodeURIComponent(this.prefilledText)"
               target="_blank">
-              <!-- <img alt="Chat on WhatsApp" src="../../../assets/images/WhatsAppButtonGreenLarge.svg"/> -->
               <button class="btn" style="min-width: 187px;">Chat on WhatsApp</button>
             </a>
           </div>
         </div>
-      </div>
+      </div> -->
 
     </span>
 
