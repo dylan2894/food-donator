@@ -47,7 +47,7 @@
 app-sidenav .material-symbols-outlined {
   user-select: none;
   transition: all 100ms;
-  color: rgba(238, 238, 238, 0.8);
+  color: #eeeeee;
   /* text-shadow: black 0px 0px 2px; */
 
   /* color: var(--dark); */
@@ -55,7 +55,7 @@ app-sidenav .material-symbols-outlined {
 }
 
 app-sidenav .material-symbols-outlined:hover {
-  color: #2b2c40;
+  color: #a3bdd3;
   cursor: pointer;
   text-shadow: none;
 }
@@ -72,6 +72,7 @@ app-sidenav .material-symbols-outlined:hover {
   display: block;
   width: 300px;
   text-align: left;
+  color: #eeeeee;
   /* color: var(--dark); */
   /* color: rgba(238, 238, 238, 0.8); */
   /* text-shadow: black 0px 0px 2px; */
@@ -79,7 +80,7 @@ app-sidenav .material-symbols-outlined:hover {
 }
 
 .sidenav li > a:hover {
-  color: rgba(30, 30, 30, 0.8);
+  color: #a3bdd3;
   text-shadow: none;
 }
 
