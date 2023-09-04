@@ -57,6 +57,8 @@ th {
 
 .card {
   border: 1px solid black;
+  top: -30px !important;
+  position: absolute !important;
 }
 
 .card, .card-content {
