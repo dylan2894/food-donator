@@ -154,7 +154,7 @@ label:has(+ input:focus) {
   position: absolute;
   top: 0;
   left: 0;
-  bottom: -350px;
+  bottom: -400px;
   right: 0;
   z-index: -1;
   /* height: 100vh;
