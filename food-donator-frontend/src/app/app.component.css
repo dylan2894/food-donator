@@ -158,3 +158,8 @@ a {
   bottom: 0;
   right: 4px;
 }
+
+app-donee {
+  display: block;
+  height: 100%;
+}

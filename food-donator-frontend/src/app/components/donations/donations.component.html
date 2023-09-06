@@ -5,7 +5,7 @@
 <div id="donationContainer" class="row">
   <!-- Filter by tags -->
   <div style="padding: 0 0.75rem;">
-    <app-chip-selector (selectedEvent)="filterByChips($event)"></app-chip-selector>
+    <app-chip-selector [chips]="this.chips" [toggleEnabled]="true" (selectedEvent)="filterByChips($event)"></app-chip-selector>
   </div>
 
   <div class="col s12 m12 l12">

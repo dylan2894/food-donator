@@ -51,7 +51,7 @@
       </span>
       <small *ngIf="locationFieldErrors">Please select a valid location.</small>
 
-      <div id="horizontalContainer">
+      <div id="horizontalContainer" style="height: 180px;">
         <google-map width="100%" height="180px" [options]="mapOptions">
           <map-marker *ngFor="let marker of this.markers" [position]="marker.position" [label]="marker.label!"
             [title]="marker.title!" [options]="marker.options!"></map-marker>

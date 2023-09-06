@@ -1,0 +1,76 @@
+<!-- Donor Dropdown -->
+<ul id="donorDropdown" class="dropdown-content">
+  <li *ngFor="let donor of donors" attr.data-val="{{ donor.id }}">
+    <a (click)="this.onDonorSelect(donor)">{{ donor.name }}</a>
+  </li>
+</ul>
+
+<!-- Account Dropdown -->
+<ul id="accountDropdown" class="dropdown-content">
+  <li>
+    <a [routerLink]="['/donee-settings']" style="display: flex; align-content: center;">
+      <span class="material-symbols-outlined" style="margin-right: 10px;">
+        settings
+      </span>
+      Settings
+  </a>
+  </li>
+  <li (click)="this.logout()">
+    <a style="display: flex; align-content: center;">
+      <span class="material-symbols-outlined" style="margin-right: 10px;">
+        logout
+      </span>
+      Logout
+    </a>
+  </li>
+</ul>
+
+<nav>
+  <div class="nav-wrapper">
+
+    <!-- Logo -->
+    <a (click)="this.mapClicked()" class="brand-logo" style="line-height: 59px;">
+      <img src="../../../../assets/icons/icon-128x128.png" height="50px" width="50px" style="margin: auto; vertical-align: middle; display: inline-block; margin-left: 7px;">
+    </a>
+
+    <!-- Burger menu for mobile -->
+    <a data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+
+    <!-- Left side nav items -->
+    <ul class="center hide-on-med-and-down" style="padding-left: 57px;">
+      <li><a  (click)="this.mapClicked();">Map</a></li>
+      <li><a [routerLink]="['/donee-donations']">All Donations</a></li>
+      <li *ngIf="this.router.url.includes('/map')" style="height: 64px; margin-left: 15px;"><a class="navLocationBtn waves-effect waves-light btn" (click)="centerMapOnMyLocation()">
+        <div style="margin-right: 5px;" class="material-icons">my_location</div>
+        My Location
+      </a></li>
+    </ul>
+
+    <!-- Right side nav items -->
+    <ul id="rightNavList" class="right">
+      <li *ngIf="this.router.url === '/map'">
+        <a id="selectDonorText" class="dropdown-trigger" href="#!" data-target="donorDropdown">
+          Select a donor
+          <i class="material-icons right">arrow_drop_down</i>
+        </a>
+      </li>
+      <li
+      style="display: flex; align-content: center; justify-content: center; flex-wrap: wrap;"
+      >
+        <a id="selectDonorText" class="dropdown-trigger" href="#!" data-target="accountDropdown"
+        style="display: flex; align-content: center; justify-content: center; flex-wrap: wrap;"
+        >
+          <span class="material-symbols-outlined" style="height: fit-content;">
+            account_circle
+          </span>
+        </a>
+      </li>
+    </ul>
+
+  </div>
+</nav>
+
+<ul class="sidenav" id="mobile-demo">
+  <li><a (click)="this.mapClicked();">Map</a></li>
+  <li><a [routerLink]="['/donee-donations']">All Donations</a></li>
+</ul>

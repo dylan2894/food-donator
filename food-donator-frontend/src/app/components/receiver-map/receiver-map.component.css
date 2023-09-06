@@ -98,7 +98,7 @@ p {
 .wrapper {
   margin-right: 25px;
 }
-
+/*
 #donorSelect {
   position: absolute;
   top: 0%;
@@ -106,21 +106,21 @@ p {
   width: 250px;
   padding-right: 25px;
   border-radius: 2px;
-}
+} */
 
-#donorSelect input {
+/* #donorSelect input {
   color: white;
 }
 
 #donorSelectLabel {
   color: var(--indigo-lighten-5);
-}
+} */
 
-#donorSelect, #donorSelectLabel {
+/* #donorSelect, #donorSelectLabel {
   padding-top: 25px;
   padding-bottom: 10px;
   padding-left: 25px;
-}
+} */
 
 .myLocationBtn {
   position: absolute;
@@ -180,6 +180,13 @@ tr, td, th {
   font-size: 32px;
 }
 
+#modalDonarWhatsAppContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 44.75px;
+}
+
 #modalHeading {
   display: inline;
   width: fit-content;
@@ -219,11 +226,6 @@ tr, td, th {
   width: 75%;
 }
 
-/* #editPhoneNumBtn {
-  display: inline;
-  margin-left: 2px;
-} */
-
 input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
   cursor: default;
 }
@@ -240,15 +242,116 @@ input[type="text"]:read-only, h1, h2, h3, h4, h5, h6, form {
   color: var(--light);
 }
 
+.google-map, #receiverMap {
+  max-height: 100%;
+  height: 100% !important;
+}
+
+.map-container {
+  height: 100% !important;
+}
+
+.fabContainer {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  right: 0;
+  width: fit-content;
+  max-width: 90vw;
+  height: 45px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  background-color: #b7babe;
+}
+
+#showDirectionsBtn {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  height: 50px;
+  width: calc(100% - 20px);
+  z-index: 999;
+}
+
+.tooltipped > img {
+  height: 30px;
+}
+
+#upArrow {
+  display: inline-block;
+}
+
+#downArrow {
+  display: none;
+}
+
+.panel.panel-primary {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  max-height: 40%;
+  width: 100%;
+  padding: 10px;
+  background-color: #ffffff;
+  overflow-y: scroll;
+  z-index: 999999;
+}
+
+.link {
+  color: var(--primary);
+  font-size: 1.3rem;
+}
+
+.link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /* Bigger screens */
 @media only screen and (min-width: 769px) {
+  #upArrow {
+    display: none;
+  }
+
+  #downArrow {
+    display: inline-block;
+  }
+
+  #showDirectionsBtn {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 74px;
+    left: 10px;
+    height: 50px;
+    width: 20%;
+    min-width: 300px;
+    z-index: 999;
+  }
+
+  .panel.panel-primary {
+    display: block;
+    position: absolute;
+    left: 10px;
+    top: 74px;
+    /* bottom: 10px; */
+    width: 20%;
+    min-width: 300px;
+    padding: 10px;
+    background-color: #ffffff;
+    height: fit-content;
+    max-height: calc(100% - 64px);
+    overflow-y: scroll;
+  }
+
   #modalDonorAddressContainer {
     line-height: 32px;
   }
-
-  /* #scheduleContainer {
-    width: 50%;
-  } */
 
   #actionButtonsContainer {
     display: inline-block;

@@ -56,7 +56,6 @@ small {
 .formWrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   padding-top: 15%;
   padding-bottom: 15%;
   height: 100%;
@@ -130,12 +129,14 @@ label:has(+ input:focus) {
 
 .logoAndTitle {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  width: 40%;
+  width: 20%;
   margin: auto;
-  padding-bottom: 32px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-bottom: 16px;
 }
 
 .logoImg {
@@ -144,11 +145,40 @@ label:has(+ input:focus) {
 }
 
 .title {
-  color: var(--dark);
+  color: #eeeeee;
+  margin: 16px 0 0 16px;
+
+}
+
+#background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: -400px;
+  right: 0;
+  z-index: -1;
+  /* height: 100vh;
+  width: 100vw; */
+  background-position: center;
+  background-size: cover;
+}
+
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before, [type="radio"].with-gap:checked+span:after {
+  border: 2px solid var(--indigo-lighten-2);
+}
+
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:after {
+  background-color: var(--indigo-lighten-2);
 }
 
 /* Larger screens */
 @media screen and (min-width: 768px) {
+
+  #background {
+
+    /* background-position: center;
+    background-repeat: no-repeat; */
+  }
 
   .logoImg {
     height: 100px;
@@ -167,5 +197,18 @@ label:has(+ input:focus) {
     margin-right: auto;
   }
 
+  .logoAndTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    margin: auto;
+    padding-bottom: 32px;
+  }
 
+  .title {
+    margin-top: 0px;
+    margin-left: 32px;
+  }
 }

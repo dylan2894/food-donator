@@ -195,6 +195,8 @@ export class DonorSettingsComponent implements AfterViewInit {
       if (this.changePhoneNum(phoneNum) || this.changeName(name) || this.changeLocation(address)) {
         // a field has been altered, update the user.
         if (this.currentUser) {
+          $('#cancelAndSaveBtnContainer').css('display', 'none');
+
           const updateResponse = await this.userService.updateUser(this.currentUser);
 
           // successfully updated user toast

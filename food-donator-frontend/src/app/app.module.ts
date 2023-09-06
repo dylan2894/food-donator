@@ -36,6 +36,7 @@ import { ChipSelectorComponent } from './components/shared/chip-selector/chip-se
 import { CollapsibleItemBodyComponent } from './components/shared/collapsible-item-body/collapsible-item-body.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { RecurringComponent } from './components/shared/recurring/recurring.component';
+import { TopnavComponent } from './components/shared/topnav/topnav.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { RecurringComponent } from './components/shared/recurring/recurring.comp
     DonationsComponent,
     ChipSelectorComponent,
     CollapsibleItemBodyComponent,
-    RecurringComponent
+    RecurringComponent,
+    TopnavComponent
   ],
   imports: [
     BrowserModule,

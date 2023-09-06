@@ -2,41 +2,83 @@
   <h3>Settings</h3>
 </div>
 
-<div class="row">
-  <div class="col">
-    <!-- <h5>Push notifications</h5>
-    <div class="switch">
-    <label>
-      Off
-      <input type="checkbox">
-      <span class="lever"></span>
-      On
-    </label> -->
+<div class="container">
+  <!-- Personal Information -->
+  <div class="row">
+    <div class="col">
+      <h5>Personal Information</h5>
+      <form [formGroup]="editDetailsForm">
+        <span class="firstMapSettingsCol">Phone Number</span>
+        <div>
+          <input id="phoneNumField" formControlName="phoneNumField" type="text" prefix="(+27)" mask=' 00 000 0000'
+            [value]="this.phoneNumUtil.format(this.currentUser?.phone_num!)" [readOnly]="!this.phoneNumCheck">
+          <button *ngIf="!this.phoneNumCheck" id="editPhoneNumBtn" class="btn-flat waves-effect"
+            (click)="this.phoneNumCheck = !this.phoneNumCheck; this.showChanges()">
+            <i class="material-symbols-outlined">edit</i>
+          </button>
+        </div>
+        <small *ngIf="phoneNumFieldErrors">Please enter a valid phone
+          number.
+        </small>
+      </form>
+    </div>
+  </div>
+  <span id="cancelAndSaveBtnContainer">
+    <button (click)="this.cancelPersonalInfoChanges()" id="cancelBtn" class="btn indigo lighten-3">Cancel</button>
+    <button
+      (click)="this.savePersonalInfoChanges(this.editDetailsForm.controls.phoneNumField.getRawValue())"
+      id="saveChangesBtn" class="btn green lighten-1">Save Changes</button>
+  </span>
+  <div class="row">
 
-    <h5>Personal Information</h5>
-    <form [formGroup]="editDetailsForm">
-      Phone Number
-      <div>
-        <input id="phoneNumField" formControlName="phoneNumField" type="text" prefix="(+27)" mask=' 00 000 0000'
-          [value]="this.phoneNumUtil.format(this.currentUser?.phone_num!)" [readOnly]="!this.phoneNumCheck">
-        <button *ngIf="!this.phoneNumCheck" id="editPhoneNumBtn" class="btn-flat waves-effect"
-          (click)="this.phoneNumCheck = !this.phoneNumCheck; this.showChanges()">
-          <i class="material-symbols-outlined">edit</i>
-          <!-- <span *ngIf="this.phoneNumCheck">
-            Save Changes
-            <i class="material-symbols-outlined check">check</i>
-          </span> -->
-        </button>
+    <div class="col" style="width: 100%;">
+      <h5>Maps Settings</h5>
+      <!-- Maps Settings -->
+      <div class="settingContainer">
+        <span class="firstMapSettingsCol">Points of Interest</span>
+        <span class="switch" *ngIf="this.currentUserSettings">
+          <label>
+            Off
+            <input id="poiSwitch" type="checkbox" (change)="this.poiSwitched()" [checked]="this.currentUserSettings.poi">
+            <div class="lever"></div>
+            On
+          </label>
+        </span>
       </div>
-      <small *ngIf="phoneNumFieldErrors">Please enter a valid phone
-        number.
-      </small>
-    </form>
+      <div class="settingContainer">
+        <span class="firstMapSettingsCol">Transit Icons</span>
+        <span class="switch" *ngIf="this.currentUserSettings">
+          <label>
+            Off
+            <input id="transitSwitch" type="checkbox" (change)="this.transitSwitched()" [checked]="this.currentUserSettings.transit">
+            <div class="lever"></div>
+            On
+          </label>
+        </span>
+      </div>
+      <div class="settingContainer">
+        <span class="firstMapSettingsCol">Area labels</span>
+        <span class="switch" *ngIf="this.currentUserSettings">
+          <label>
+            Off
+            <input id="administrativeSwitch" type="checkbox" (change)="this.administrativeSwitched()" [checked]="this.currentUserSettings.administrative">
+            <div class="lever"></div>
+            On
+          </label>
+        </span>
+      </div>
+      <div class="settingContainer">
+        <span class="firstMapSettingsCol">Dark Map</span>
+        <span class="switch" *ngIf="this.currentUserSettings">
+          <label>
+            Off
+            <input id="darkMapSwitch" type="checkbox" (change)="this.darkMapSwitched()" [checked]="this.currentUserSettings.dark_map">
+            <div class="lever"></div>
+            On
+          </label>
+        </span>
+      </div>
+    </div>
+
   </div>
 </div>
-<span id="cancelAndSaveBtnContainer" class="">
-  <button (click)="this.cancelChanges()" id="cancelBtn" class="btn indigo lighten-3">Cancel</button>
-  <button
-    (click)="this.saveChanges(this.editDetailsForm.controls.phoneNumField.getRawValue())"
-    id="saveChangesBtn" class="btn green lighten-1">Save Changes</button>
-</span>

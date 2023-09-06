@@ -5,7 +5,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fooddonator.restapi.model.User;
+import com.fooddonator.restapi.model.UserSettings;
 import com.fooddonator.restapi.repository.UserRepository;
+import com.fooddonator.restapi.repository.UserSettingsRepository;
 
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
@@ -21,10 +23,13 @@ public class RegistrationService {
 
   @Autowired
   private UserRepository userRepo;
+  @Autowired
+  private UserSettingsRepository userSettingsRepo;
 
   /**
    * creates a hash of the provided password for storage 
    * and then creates a new {@link User} in the User table within the DB
+   * and then creates a new {@link UserSettings} for the corresponding new user in the UserSettings table within the DB
    * @param candidatePassword the password of the new User to register
    */
   public boolean registerUser(User userInput) throws Exception {
@@ -51,9 +56,14 @@ public class RegistrationService {
     // 4. save the Base64-encoded password salt
     userInput.salt = encodedNewSalt;
 
-    // 5. create a new user in the DB
     try {
+      // 5. create a new user in the DB
       this.userRepo.createUser(userInput);
+
+      // 6. create a new user settings entry in the DB
+      UserSettings userSettings = new UserSettings(userInput.phone_num, true, true, true, false);
+      this.userSettingsRepo.createUserSettings(userSettings);
+      
     } catch (Exception e) {
       throw e;
     }

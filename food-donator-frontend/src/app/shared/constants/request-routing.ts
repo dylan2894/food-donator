@@ -33,6 +33,11 @@ const User = {
   USER
 }
 
+const USER_SETTINGS = "user-settings/";
+const UserSettings = {
+  USER_SETTINGS
+}
+
 /**
  * Tag Service
  */
@@ -56,6 +61,7 @@ const Services = {
   Donation,
   Registration,
   User,
+  UserSettings,
   Tag,
   UserTag
 }

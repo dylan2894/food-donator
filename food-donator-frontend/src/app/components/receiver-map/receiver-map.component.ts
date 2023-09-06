@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { GoogleMap } from '@angular/google-maps';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import M from 'materialize-css';
 import { IMarker } from 'src/app/models/Imarker.model';
 import { Donation } from 'src/app/models/donation.model';
 import { CenterMapInput } from 'src/app/models/inputs/center-map-input.model';
+import { UserSettings } from 'src/app/models/inputs/user-settings.model';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { DonationService } from 'src/app/services/donation/donation.service';
 import { SidenavService } from 'src/app/services/sidenav/sidenav.service';
+import { UserSettingsService } from 'src/app/services/user-settings/user-settings.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { Constants } from 'src/app/shared/constants/constants';
 import DateUtil from 'src/app/utils/DateUtil';
@@ -26,28 +28,44 @@ declare const $: any
   styleUrls: ['./receiver-map.component.css']
 })
 export class ReceiverMapComponent implements OnInit, AfterViewInit {
+  @Input()
+  set centerLocationInput(newCenter: CenterMapInput | null) {
+    if(newCenter) {
+      this.centerMapOnLocation(newCenter);
+    }
+  }
   @ViewChild(GoogleMap) map!: GoogleMap;
   donors: User[] = [];
   currentUser: User | null = null;
+  currentUserSettings: UserSettings | null = null;
+  currentDonorPosition: google.maps.LatLngLiteral | null = null;
   currentDonorName = "";
   currentDonorPhoneNum = "";
   currentDonorAddress = "";
+  prefilledText = "Hi, I am contacting you from the CareBridge app.";
   currentDonorDonations: Donation[] | null = [];
   mapOptions: google.maps.MapOptions;
   center: CenterMapInput | null = null;
   markers: IMarker[] = [];
+  directionsService = new google.maps.DirectionsService();
+  directionsRenderer = new google.maps.DirectionsRenderer({
+    'suppressMarkers' : true
+  });
 
+  displayShowMoreInstructionsBtn = false;
   constructor(
     public phoneNumUtil: PhoneNumUtil,
     public dateUtil: DateUtil,
     public phoneNumberUtil: PhoneNumUtil,
     public donationService: DonationService,
     public sidenavService: SidenavService,
-    private mapUtil: MapUtil,
+    public router: Router,
+    public mapUtil: MapUtil,
     private userService: UserService,
-    private router: Router,
     private fb: FormBuilder,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private route: ActivatedRoute,
+    private userSettingsService: UserSettingsService
     ) {
     const jwt = window.sessionStorage.getItem(Constants.FOOD_DONATOR_TOKEN);
     this.authenticationService.getUserByJWT(jwt).then((user) => {
@@ -56,11 +74,10 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       }
     });
 
-    // set the google map options
+    // initialize the map options
     this.mapOptions = {
       //center: { lat: -25.781951024040037, lng: 28.338064949199595 },
       //zoom: 16,
-
       zoomControl: true,
       zoomControlOptions: {
         position: google.maps.ControlPosition.RIGHT_CENTER,
@@ -70,15 +87,29 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       streetViewControlOptions: {
         position: google.maps.ControlPosition.RIGHT_CENTER
       },
-      fullscreenControl: false,
-      styles: MapUtil.STYLES['hide']
+      fullscreenControl: false
+      //mapId: "efbf3e1e062eef4e"
     };
+
+    // TODO apply the correct class of styles per map setting
+    this.userSettingsService.getUserSettingsByJwt(jwt).then((userSettings) => {
+      if(userSettings) {
+        this.currentUserSettings = userSettings;
+      }
+
+      // set the google map options according to the user's settings
+      this.mapOptions.styles = userSettings ? MapUtil.getUserMapStyles(userSettings) : null,
+      this.map.googleMap?.setOptions(this.mapOptions);
+    });
   }
 
   ngOnInit() {
     $(() => {
+      //initialize the Directions API
+      this.directionsRenderer.setMap(this.map.googleMap!);
+
       // initialize the slide in sidenav
-      $('.sidenav').sidenav();
+      // $('.sidenav').sidenav();
 
       // ensure the materialize popout sidenav closes properly
       $( "#slide-out-donee" ).on("close", () => {
@@ -115,6 +146,29 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
       // initialize the tap target (Feature Discovery)
       $('.tap-target').tapTarget();
     });
+
+    const params = this.route.snapshot.queryParams;
+    if(params.origin != null && params.destination != null) {
+      const origin = JSON.parse(decodeURIComponent(params.origin));
+      const destination = JSON.parse(decodeURIComponent(params.destination));
+
+      // perform directions routing
+      const request = {
+        origin: {
+          lat: origin[0],
+          lng: origin[1]
+        },
+        destination: {
+          lat: destination[0],
+          lng: destination[1]
+        },
+        travelMode: google.maps.TravelMode.DRIVING
+      };
+      this.calcRoute(request);
+    } else {
+      //todo clear route
+      //this.directionsRenderer.set('directions', null);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -148,7 +202,7 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
                   lng: donor.lon!
                 },
                 label: {
-                  color: "black",
+                  color: this.currentUserSettings?.dark_map ? "#dbdbdb" : "black",
                   text: donor.name!,
                 },
                 title: donor.name!,
@@ -171,11 +225,16 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
           // rerender donor select with list of fetched donors
           setTimeout(() => {
             $('select').formSelect();
-          }, 200); //200
+          }, 200);
 
-          // set the Map bounds to encompass all the donors
-          const bounds = this.mapUtil.getBoundsByMarkers(this.markers);
-          this.map.googleMap?.fitBounds(bounds);
+          // set the Map bounds to encompass all the donors when the Directions API is not in use
+          const params = this.route.snapshot.queryParams;
+          if(params.origin == null && params.destination == null) {
+            const bounds = this.mapUtil.getBoundsByMarkers(this.markers);
+            this.map.googleMap?.fitBounds(bounds);
+          } else {
+            this.map.googleMap?.setZoom(14);
+          }
 
           // open Feature Discovery
           $('.tap-target').tapTarget('open');
@@ -187,52 +246,65 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     }).catch(err => console.error(err) );
   }
 
-  /**
-   * Centers the Google Map on the selected Donor when the donor select option changes.
-   * @param event the event triggered by the HTML select change.
-   */
-  async onChange(event: Event) {
-    const donorInp = event.target as HTMLInputElement;
-    const donorId = donorInp.value;
-    const donor = this.donors.find((donor) => {
-      return donor.id == donorId
-    });
-    if(donor) {
-      const newCenter: CenterMapInput = {
-        lat: donor.lat!,
-        lng: donor.lon!
+  calcRoute(request: google.maps.DirectionsRequest) {
+    this.directionsService.route(request, (result, status) => {
+      if (status == 'OK') {
+        // render directions polyline
+        this.directionsRenderer.setDirections(result);
+
+        // attach a marker to the origin of the Directions API route polyline
+        const leg = result?.routes[0].legs[0];
+        this.makeMarker( leg!.start_location, MapUtil.GREEN_MARKER, "My location" );
+
+        // render step by step instructions
+        this.directionsRenderer.setPanel(document.getElementById('directionsList'));
+        this.showDirectionsList();
+
+        return;
       }
-      this.center = newCenter;
-      this.map.googleMap?.panTo(this.center);
-    }
+      console.error('Failed to calculate directions route', status);
+    });
+  }
+
+  /**
+   * Used to attach a marker onto the Directions API route polyline
+   */
+  makeMarker(location: google.maps.LatLng, icon: google.maps.Icon | string, title: string) {
+    const _marker = new google.maps.Marker({
+      position: location,
+      map: this.map.googleMap,
+      title: title,
+      label: {
+        color: this.currentUserSettings?.dark_map ? "#dbdbdb" : "black",
+        text: title,
+      },
+      animation: google.maps.Animation.BOUNCE,
+      icon: '../../../assets/icons/blue-dot.svg' //'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAMAAABhq6zVAAAAQlBMVEVMaXFCiv9Civ9Civ9Civ9Civ9Civ9Civ9Civ+Kt/9+r/9Pkv90qf9hnf9Civ9wpv9Ee/+Jtf9Gjf9/sP9Kj/9KXf+JdfukAAAACXRSTlMAGCD7088IcsuTBctUAAAAYUlEQVR4XlWOWQrAIBBDx302d73/VSu0UMxfQsgLAMSEzmGKcGRCkZylBHPyMJQmk44QIRWdVCuxlgQoRNLaoi4ILs/a9m6VszuGf4PSaX21eyD6oZ256/AHa/0L9RauOw+4XAWqGLX26QAAAABJRU5ErkJggg=='
+    });
+  }
+
+  /**
+   * Shows directions steps on mobile
+   * */
+  showDirectionsList() {
+    $("#directionsList").css('display', 'block');
+    this.displayShowMoreInstructionsBtn = false;
+  }
+
+  /**
+   * Hides directions steps on mobile
+   * */
+  closeDirectionsList() {
+    $("#directionsList").css('display', 'none');
+    this.displayShowMoreInstructionsBtn = true;
   }
 
   /**
    * Centers the Google Map on the current donee user's location.
    */
-  centerMapOnMyLocation() {
-    if(!navigator.geolocation) {
-      alert("Your browser does not support geolocation. Please use a different browser.");
-    }
-
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0,
-    };
-
-    // get current position
-    navigator.geolocation.getCurrentPosition((position) => {
-      // center map on current position
-      const newCenter: CenterMapInput = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      }
-      this.center = newCenter;
-      this.map.googleMap?.panTo(this.center);
-    }, (err) => {
-      console.error(err);
-    }, options);
+  centerMapOnLocation(newCenter: CenterMapInput) {
+    this.center = newCenter;
+    this.map.googleMap?.panTo(this.center);
   }
 
   logout(): void {
@@ -254,10 +326,11 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     $('#hiddenMenu').css('display', 'block');
   }
 
-  openModal(donorId: string, donorName: string, donorPhoneNum: string, donorAddress: string): void {
+  openModal(donorId: string, donorName: string, donorPhoneNum: string, donorAddress: string, donorPosition: google.maps.LatLngLiteral): void {
     this.currentDonorName = donorName;
     this.currentDonorPhoneNum = donorPhoneNum;
     this.currentDonorAddress = donorAddress;
+    this.currentDonorPosition = donorPosition;
 
     // fetch donations for this donor
     this.donationService.getCurrentAndUpcomingDonationsByNonReservedByUserId(donorId, this.currentUser!).then((donations) => {
@@ -285,4 +358,49 @@ export class ReceiverMapComponent implements OnInit, AfterViewInit {
     // move carousel one step
     $('.carousel').carousel('next');
   }
+
+  /**
+   * When a user clicks on the donor address to receive directions to the donor
+   */
+  onMapsClicked() {
+    if(!navigator.geolocation) {
+      alert("Your browser does not support geolocation. Please use a different browser.");
+    }
+
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0,
+    };
+
+    // get current position
+    navigator.geolocation.getCurrentPosition((position) => {
+      let reload = false;
+      if(this.router.url.includes('map')) {
+        reload = true;
+      }
+      // go to map view and pass origin and destination as url params
+      this.router.navigate(['/map'], {
+        queryParams: {
+          origin: this.myEncodeURIComponent(JSON.stringify([position.coords.latitude, position.coords.longitude])),
+          destination: this.myEncodeURIComponent(JSON.stringify([this.currentDonorPosition?.lat, this.currentDonorPosition?.lng]))
+        }
+      }).then(() => {
+      if(reload) {
+        window.location.reload();
+        //this.router.navigate(['/map'], { queryParamsHandling: "preserve"});
+      }
+      });
+
+
+
+    }, (err) => {
+      console.error(err);
+    }, options);
+  }
+
+  myEncodeURIComponent(text: string): string {
+    return encodeURIComponent(text);
+  }
+
 }

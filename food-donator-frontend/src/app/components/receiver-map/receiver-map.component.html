@@ -1,5 +1,5 @@
 <div class="google-map">
-  <google-map id="receiverMap" width="100%" height="100vh" [options]="mapOptions"
+  <google-map id="receiverMap" width="100%" height="100%"
   >
     <map-marker
       *ngFor="let marker of markers"
@@ -7,78 +7,91 @@
       [label]="marker.label!"
       [title]="marker.title!"
       [options]="marker.options!"
-      (mapClick)="this.openModal(marker.id!, marker.title!, marker.phoneNum!, marker.address!)"
+      (mapClick)="this.openModal(marker.id!, marker.title!, marker.phoneNum!, marker.address!, marker.position!)"
     ></map-marker>
   </google-map>
 </div>
 
-<!-- Donor Select -->
-<div id="donorSelect" class="input-field col s12 indigo darken-1">
-  <select id="donorInnerSelect" (change)="onChange($event)">
-    <option value="" disabled selected>Choose your option</option>
-    <option *ngFor="let donor of donors" [value]="donor.id" class="indigo darken-1">
-      {{ donor.name }}
-    </option>
-  </select>
-  <label id="donorSelectLabel" for="donorInnerSelect">Select Donor</label>
+<!-- FAB Key/Legend -->
+<div *ngIf="!this.router.url.includes('/map?origin')" class="fabContainer">
+  <a class="tooltipped" data-position="top"
+    data-tooltip="Red pins are donors who do not have upcoming donations.">
+    <img [src]="mapUtil.getRedMarker()" alt="Red location pin">
+  </a>
+  - No donations
+  <a class="tooltipped" data-position="top"
+    data-tooltip="Yellow pins are donors who have upcoming donations.">
+    <img [src]="mapUtil.getYellowMarker()" alt="Yellow location pin">
+  </a>
+  - Upcoming donations
+  <a class="tooltipped" data-position="top"
+    data-tooltip="Green pins are donors who have current, active donations.">
+    <img [src]="mapUtil.getGreenMarker()" alt="Green location pin">
+  </a>
+  - Active donations
 </div>
 
-<!-- My Location button -->
-<button (click)="centerMapOnMyLocation()" class="myLocationBtn btn indigo darken-1">
-  <div style="margin-right: 5px;" class="material-icons">my_location</div>
-  <span>My Location</span>
+<!-- Google Maps directions instructions list -->
+<button *ngIf="this.router.url.includes('/map?origin') && this.displayShowMoreInstructionsBtn" id="showDirectionsBtn" class="btn" href="directionsList" (click)="this.showDirectionsList()">
+  Show Directions
+  <span id="upArrow" class="material-symbols-outlined">
+    expand_less
+  </span>
+  <span id="downArrow" class="material-symbols-outlined">
+    expand_more
+    </span>
 </button>
-
-<!-- FAB Key/Legend -->
-<div class="fixed-action-btn">
-  <a id="mapFab" class="btn-floating btn-large indigo darken-1">
-    <i class="large material-icons">map</i>
-  </a>
-  <ul>
-    <li>
-      <a class="btn-floating tooltipped red" data-position="left" data-tooltip="Red pins indicate donors who do not have upcoming donations.">
-        <i class="material-icons">location_on</i>
-      </a>
-    </li>
-    <li>
-      <a class="btn-floating tooltipped yellow darken-1" data-position="left" data-tooltip="Yellow pins are donors who have upcoming donations.">
-        <i class="material-icons">location_on</i>
-      </a>
-    </li>
-    <li>
-      <a class="btn-floating tooltipped green" data-position="left" data-tooltip="Green pins are donors who have current, active donations.">
-        <i class="material-icons">location_on</i>
-      </a>
-    </li>
-  </ul>
+<div id="directionsList" class="panel panel-primary" style="display: none;">
+  <span style="display: flex; width: 100%; justify-content: center; user-select: none; cursor: pointer;" (click)="this.closeDirectionsList()">
+    Close Directions
+    <span class="material-symbols-outlined">
+      close
+    </span>
+  </span>
 </div>
 
 
 <!-- Feature Discovery -->
-<div class="tap-target indigo darken-1" data-target="mapFab">
+<!-- <div class="tap-target indigo darken-1" data-target="mapFab">
   <div class="tap-target-content">
     <h5>Map Key</h5>
     <p>Use the map key to find current and upcoming donations. As well as donors would don't currently have a donation.</p>
   </div>
-</div>
+</div> -->
 
 <!-- Modal Structure -->
 <div id="modal1" class="modal bottom-sheet">
   <div class="modal-content">
 
-    <!-- Save Pin -->
+    <!-- Donor Address -->
     <span>
-      <h4 id="modalHeading">{{ this.currentDonorName }}</h4>
+      <h4 id="modalHeading">
+        {{ this.currentDonorName }}
+        <!-- <a id="whatsappBtn" aria-label="Chat on WhatsApp"
+          [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.currentDonorPhoneNum) + '?text=' + myEncodeURIComponent(this.prefilledText)"
+          target="_blank">
+          <button class="btn" style="min-width: 187px;">Chat on WhatsApp</button>
+        </a> -->
+      </h4>
+
       <span id="modalDonorAddressContainer">
-        <span class="material-symbols-outlined">
+        <span class="material-symbols-outlined" style="color: black;">
           home_pin
         </span>
-        <span>{{ this.currentDonorAddress }}</span>
+        <span class="tooltipped link" (click)="this.onMapsClicked()" data-position="bottom" data-tooltip="Need directions? Click this address to get directions">
+          {{ this.currentDonorAddress }}
+        </span>
       </span>
-      <!-- <span id="savedPinsContainer">
-        <i class="material-symbols-outlined center">bookmarks</i>
-        Save Pin
-      </span> -->
+      <div id="modalDonarWhatsAppContainer">
+        <img style="display: inline-block; width: 23px; height: 23px; margin-left: 5px; margin-top: 8px; margin-bottom: 8px; margin-right: 12px;" src="../../../assets/images/WhatsApp-bw-small.svg">
+        <a id="whatsappBtn" aria-label="Chat on WhatsApp"
+        [attr.href]=" 'https://wa.me/' + this.phoneNumberUtil.toInternationalCode(this.currentDonorPhoneNum) + '?text=' + myEncodeURIComponent(this.prefilledText)"
+        target="_blank">
+          <span class="link" style="display: inline-block; width: fit-content;">
+            Chat on WhatsApp
+          </span>
+        </a>
+      </div>
     </span>
 
     <div id="flexContainer">
@@ -95,7 +108,7 @@
 
       <!-- Carousel within Modal -->
       <ng-template #loadCarousel>
-        <div class="carousel carousel-slider">
+        <div class="carousel carousel-slider" style="position: absolute; top: 35%;">
           <div (click)="this.carouselPrev($event)" class="carousel-left-chevron">
             <i class="material-symbols-outlined">chevron_left</i>
           </div>

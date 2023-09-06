@@ -3,6 +3,7 @@ com\fooddonator\restapi\constants\ResponseKeys.class
 com\fooddonator\restapi\utils\PhoneNumUtil.class
 com\fooddonator\restapi\service\RegistrationService.class
 com\fooddonator\restapi\repository\DonationRepository.class
+com\fooddonator\restapi\repository\UserSettingsRepository.class
 com\fooddonator\restapi\model\UserTag.class
 com\fooddonator\restapi\utils\DonationMapper.class
 com\fooddonator\restapi\repository\UserRepository.class
@@ -14,9 +15,11 @@ com\fooddonator\restapi\constants\RequestRouting$Donation$Controller.class
 com\fooddonator\restapi\constants\ApplicationPropertiesKeys.class
 com\fooddonator\restapi\utils\UserMapper.class
 com\fooddonator\restapi\constants\RequestRouting$Donation$Repository.class
+com\fooddonator\restapi\controller\UserSettingsController.class
 com\fooddonator\restapi\model\Donation.class
 com\fooddonator\restapi\constants\RequestRouting$Donation.class
 com\fooddonator\restapi\utils\TagMapper.class
+com\fooddonator\restapi\model\UserSettings.class
 com\fooddonator\restapi\controller\DonationController.class
 com\fooddonator\restapi\repository\TagRepository.class
 com\fooddonator\restapi\Application.class

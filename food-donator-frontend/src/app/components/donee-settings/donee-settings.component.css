@@ -1,6 +1,44 @@
+* {
+  --primary: #6369D1; /* Violet Blue Crayola */
+  --secondary: #C6C6C6; /* Silver */
+
+  --warning: #FDB849; /* Maximum Yellow Red */
+  --danger: #F21B3F; /* Red Munsell */
+  --success: #60B67A; /* Medium Sea Green */
+
+  --dark: #36363E; /* Jet */
+  --darkRGB: 21, 21, 24;
+  --light: #FBF5F3; /* Snow */
+
+  --deep-purple-accent-2: #7c4dff;
+  --indigo-lighten-2: #7986cb;
+  --indigo-lighten-3: #9fa8da;
+  --indigo-lighten-4: #c5cae9;
+  --indigo-lighten-5: #e8eaf6;
+}
+
 .btn {
   margin-top: 8px;
   width: 100%;
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.firstMapSettingsCol {
+  display: inline-block;
+  width: 180px;
+  font-size: 1.3rem;
+}
+
+.settingContainer {
+  line-height: 50px;
+}
+
+.switch label input[type=checkbox]:checked+.lever {
+  background-color: var(--indigo-lighten-2);
 }
 
 /* Bigger screens */
@@ -8,5 +46,9 @@
   .btn {
     margin: 0 0 8px 8px;
     width: auto;
+  }
+
+  .firstMapSettingsCol {
+    width: 200px;
   }
 }

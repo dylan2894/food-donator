@@ -9,7 +9,7 @@
     <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/donor-donations']">All Donations</a></li>
   </div>
   <div *ngIf="!this.isDonor" id="navBtnWrapper">
-    <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/map']">Map</a></li>
+    <li><a (click)="this.mapClicked();">Map</a></li>
     <li><a (click)="this.sidenavService.clearOverlay()" [routerLink]="['/donee-donations']">All Donations</a></li>
   </div>
 

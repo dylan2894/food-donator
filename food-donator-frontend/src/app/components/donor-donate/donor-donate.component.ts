@@ -106,12 +106,10 @@ export class DonorDonateComponent implements OnInit {
   }
 
   setRecurringUnit(unit: string) {
-    console.log(unit);
     this.recurringUnit = unit;
   }
 
   setRecurringQuantity(quantity: number) {
-    console.log(quantity);
     this.recurringQuantity = quantity;
   }
 

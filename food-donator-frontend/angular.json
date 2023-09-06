@@ -39,6 +39,7 @@
               "dist/styles-out/receiver-map.component.css",
               "dist/styles-out/register.component.css",
               "dist/styles-out/sidenav.component.css",
+              "dist/styles-out/topnav.component.css",
               "dist/styles-out/styles.css"
             ],
             "scripts": [
@@ -58,7 +59,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
+                  "maximumWarning": "1.2mb",
                   "maximumError": "1.5mb"
                 },
                 {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Tag } from 'src/app/models/tag.model';
 import { TagService } from 'src/app/services/tag/tag.service';
 
@@ -8,7 +8,8 @@ import { TagService } from 'src/app/services/tag/tag.service';
   styleUrls: ['./chip-selector.component.css']
 })
 export class ChipSelectorComponent {
-  chips: Tag[] = [];
+  @Input() chips: Tag[] = [];
+  @Input() toggleEnabled = false;
   selectedArray: Tag[] = [];
   @Output() selectedEvent = new EventEmitter<Tag[]>();
 
@@ -21,22 +22,24 @@ export class ChipSelectorComponent {
   }
 
   toggleChipSelect(chip: Tag) {
-    // if chip is already selected, unselect it
-    if(this.selectedArray.includes(chip)) {
-      this.selectedArray = this.removeSelection(chip);
+    if(this.toggleEnabled) {
+      // if chip is already selected, unselect it
+      if(this.selectedArray.includes(chip)) {
+        this.selectedArray = this.removeSelection(chip);
 
-      $('.chipSelectorChip:contains("'+chip.name+'")').removeClass("selected");
-      $('.chipSelectorChip:contains("'+chip.name+'")').html(chip.name); // remove the close icon
+        $('.chipSelectorChip:contains("'+chip.name+'")').removeClass("selected");
+        $('.chipSelectorChip:contains("'+chip.name+'")').html(chip.name); // remove the close icon
 
+        this.selectedEvent.emit(this.selectedArray);
+        return;
+      }
+
+      // if chip is not selected, select it
+      this.selectedArray.push(chip);
+      $('.chipSelectorChip:contains("'+chip.name+'")').addClass("selected");
+      $('.chipSelectorChip:contains("'+chip.name+'")').html(chip.name + "<i class='close material-icons'>close</i>");
       this.selectedEvent.emit(this.selectedArray);
-      return;
     }
-
-    // if chip is not selected, select it
-    this.selectedArray.push(chip);
-    $('.chipSelectorChip:contains("'+chip.name+'")').addClass("selected");
-    $('.chipSelectorChip:contains("'+chip.name+'")').html(chip.name + "<i class='close material-icons'>close</i>");
-    this.selectedEvent.emit(this.selectedArray);
   }
 
   private removeSelection(chip: Tag) {

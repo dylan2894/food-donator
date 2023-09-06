@@ -16,3 +16,8 @@ html, body {
   margin: 0;
   padding: 0;
 }
+
+app-root {
+  display: block;
+  height: 100%;
+}
